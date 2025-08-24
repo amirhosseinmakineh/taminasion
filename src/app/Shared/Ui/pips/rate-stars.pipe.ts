@@ -1,4 +1,4 @@
-// src/app/Shared/Ui/pipes/rate-stars.pipe.ts
+// src/app/Shared/Ui/pips/rate-stars.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
 import { RateEnum } from '../../../../../Enums/RateEnum.enum'
 
