@@ -9,6 +9,7 @@ import { BusinessDto } from '../../Interfaces/Businises/BusinessDto';
   selector: 'app-business-search',
   templateUrl: './BusinessSearch.component.html',
   styleUrls: ['./BusinessSearch.component.css'],
+  standalone: false,
 })
 export class BusinessSearchComponent implements OnInit {
   @Input() business?: { rate: number | null };
