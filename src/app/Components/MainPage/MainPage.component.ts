@@ -1,16 +1,13 @@
 import { BusinessCity } from './../../Interfaces/Businises/BusinessCity';
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { BusinessService } from './../../services/business.service';
 import { BusinessRegion } from './../../Interfaces/Businises/BusinessRegion.';
 import { BusinessNeighborhood } from './../../Interfaces/Businises/BusinessNeighberhood';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'app-MainPage',
+  selector: 'app-main-page',
   templateUrl: './MainPage.component.html',
   styleUrls: ['./MainPage.component.css'],
-  imports: [CommonModule, FormsModule],
 })
 export class MainPageComponent implements OnInit {
 private service = inject(BusinessService);
