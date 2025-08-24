@@ -1,13 +1,14 @@
-import { BusinessCity } from './../../Interfaces/Businises/BusinessCity';
+import { BusinessCity } from '../../shared/interfaces/Businises/BusinessCity';
 import { Component, OnInit, inject } from '@angular/core';
-import { BusinessService } from './../../services/business.service';
-import { BusinessRegion } from './../../Interfaces/Businises/BusinessRegion.';
-import { BusinessNeighborhood } from './../../Interfaces/Businises/BusinessNeighberhood';
+import { BusinessService } from '../../shared/services/business.service';
+import { BusinessRegion } from '../../shared/interfaces/Businises/BusinessRegion.';
+import { BusinessNeighborhood } from '../../shared/interfaces/Businises/BusinessNeighberhood';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-main-page',
   templateUrl: './MainPage.component.html',
   styleUrls: ['./MainPage.component.css'],
+  standalone: false
 })
 export class MainPageComponent implements OnInit {
 private service = inject(BusinessService);

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { BusinessCity } from '../Interfaces/Businises/BusinessCity';
-import { BusinessRegion } from '../Interfaces/Businises/BusinessRegion.';
-import { BusinessNeighborhood } from '../Interfaces/Businises/BusinessNeighberhood';
-import { CategoryDto } from '../Interfaces/Businises/CategoryDto';
-import { BusinessServiceDto } from '../Interfaces/Businises/BusinessServiceDto';
-import { BusinessDto } from '../Interfaces/Businises/BusinessDto';
+import { BusinessCity } from '../interfaces/Businises/BusinessCity';
+import { BusinessRegion } from '../interfaces/Businises/BusinessRegion.';
+import { BusinessNeighborhood } from '../interfaces/Businises/BusinessNeighberhood';
+import { CategoryDto } from '../interfaces/Businises/CategoryDto';
+import { BusinessServiceDto } from '../interfaces/Businises/BusinessServiceDto';
+import { BusinessDto } from '../interfaces/Businises/BusinessDto';
 
 @Injectable({
   providedIn: 'root'

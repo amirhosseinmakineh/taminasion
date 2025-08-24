@@ -1,4 +1,4 @@
-import { RateEnum } from "../../../../Enums/RateEnum.enum"
+import { RateEnum } from "../../../../../Enums/RateEnum.enum"
 
 export interface BusinessDto {
 businessLogo : string,

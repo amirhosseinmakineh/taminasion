@@ -1,14 +1,15 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BusinessService } from '../../services/business.service';
-import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
-import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
-import { BusinessDto } from '../../Interfaces/Businises/BusinessDto';
+import { BusinessService } from '../../shared/services/business.service';
+import { CategoryDto } from '../../shared/interfaces/Businises/CategoryDto';
+import { BusinessServiceDto } from '../../shared/interfaces/Businises/BusinessServiceDto';
+import { BusinessDto } from '../../shared/interfaces/Businises/BusinessDto';
 
 @Component({
   selector: 'app-business-search',
   templateUrl: './BusinessSearch.component.html',
   styleUrls: ['./BusinessSearch.component.css'],
+  standalone: false
 })
 export class BusinessSearchComponent implements OnInit {
   @Input() business?: { rate: number | null };
