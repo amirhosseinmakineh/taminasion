@@ -1,15 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { MainPageComponent } from "./Components/MainPage/MainPage.component";
-import { BusinessSearchComponent } from "./Components/BusinessSearch/BusinessSearch.component";
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [MainPageComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
-constructor(){}ngOnInit(): void {
-  }
-};
+export class AppComponent implements OnInit {
+  constructor() {}
+
+  ngOnInit(): void {}
+}
