@@ -1,9 +1,10 @@
 import { BusinessCity } from './../../Interfaces/Businises/BusinessCity';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { BusinessService } from './../../services/business.service';
-import { BusinessRegion } from './../../Interfaces/Businises/BusinessRegion.';
+import { BusinessRegion } from './../../Interfaces/Businises/BusinessRegion';
 import { BusinessNeighborhood } from './../../Interfaces/Businises/BusinessNeighberhood';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-main-page',
   templateUrl: './MainPage.component.html',
@@ -11,8 +12,11 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class MainPageComponent implements OnInit {
-private service = inject(BusinessService);
-private router = inject(Router)
+  constructor(
+    private service: BusinessService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {}
   cities: BusinessCity[] = [];
   regions: BusinessRegion[] = [];
   neighborhoods: BusinessNeighborhood[] = [];
@@ -23,7 +27,9 @@ private router = inject(Router)
   selectedNeighborhoodId: number = -1;
 
   ngOnInit(): void {
-    this.loadCities();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadCities();
+    }
   }
 
   loadCities(): void {
