@@ -1,6 +1,6 @@
-import { platformDynamicServer } from '@angular/platform-server';
-import { AppModule } from './app/app.module';
+import { platformServer } from '@angular/platform-server';
+import { AppServerModule } from './app/app.server.module';
 
-const bootstrap = () => platformDynamicServer().bootstrapModule(AppModule);
+const bootstrap = () => platformServer().bootstrapModule(AppServerModule);
 
 export default bootstrap;

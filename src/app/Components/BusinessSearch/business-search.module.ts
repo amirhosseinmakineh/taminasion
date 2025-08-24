@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
 import { BusinessSearchComponent } from './BusinessSearch.component';
-import { RateStarsPipe } from '../../Shared/Ui/pips/RateStars.pip';
+import { RateStarsPipe } from '../../Shared/Ui/pips/rate-stars.pipe';
 
 const routes: Routes = [{ path: '', component: BusinessSearchComponent }];
 
