@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BusinessService } from '../../services/business.service';
 import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto } from '../../Interfaces/Businises/BusinessDto';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-business-search',
@@ -14,8 +15,11 @@ import { BusinessDto } from '../../Interfaces/Businises/BusinessDto';
 export class BusinessSearchComponent implements OnInit {
   @Input() business?: { rate: number | null };
 
-  private route = inject(ActivatedRoute);
-  private service = inject(BusinessService);
+  constructor(
+    private route: ActivatedRoute,
+    private service: BusinessService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {}
 //Properties
 
   cityId = -1;
@@ -26,14 +30,16 @@ selectedCategories: number[] = [];
 BusinessServiceDto : BusinessServiceDto[] = [];
 BusinessDto : BusinessDto[] = [];
   ngOnInit(): void {
-    this.LoadCategories();
-    this.LoadServices();
+    if (isPlatformBrowser(this.platformId)) {
+      this.LoadCategories();
+      this.LoadServices();
 
-    this.route.queryParams.subscribe(params => {
-      this.neighberHoodId = +params['neighberHoodId'] || 0;  // + برای تبدیل به number
-      // اینجا میتونی API بزنی بر اساس neighborhoodId
-    this.LoadBusineses(this.neighberHoodId);
-    });
+      this.route.queryParams.subscribe(params => {
+        this.neighberHoodId = +params['neighberHoodId'] || 0;  // + برای تبدیل به number
+        // اینجا میتونی API بزنی بر اساس neighborhoodId
+        this.LoadBusineses(this.neighberHoodId);
+      });
+    }
   }
   LoadCategories(){
 this.service.getAllCategories().subscribe({
