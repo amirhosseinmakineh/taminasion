@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-main-page',
   templateUrl: './MainPage.component.html',
   styleUrls: ['./MainPage.component.css'],
+  standalone: false,
 })
 export class MainPageComponent implements OnInit {
 private service = inject(BusinessService);
