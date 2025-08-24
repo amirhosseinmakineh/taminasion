@@ -1,17 +1,12 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { BusinessService } from '../../services/business.service';
 import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto } from '../../Interfaces/Businises/BusinessDto';
-import {RateStarsPipe} from '../../Shared/Ui/pips/RateStars.pip'
 
 @Component({
-  selector: 'app-BusinessSearch',
-  standalone: true,
-  imports: [CommonModule, HttpClientModule,RateStarsPipe], // ⬅️ مهم اگر در جای دیگری نیاوردی
+  selector: 'app-business-search',
   templateUrl: './BusinessSearch.component.html',
   styleUrls: ['./BusinessSearch.component.css'],
 })
