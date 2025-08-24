@@ -1,0 +1,75 @@
+
+<div class="container">
+  <div class="logo">
+    <h1>Timinasion</h1>
+  </div>
+  <div class="menu">
+    <ul>
+      <li>صاحبان کسب و کار</li>
+      <li>درباره ما</li>
+      <li>تماس با ما</li>
+    </ul>
+  </div>
+  <div class="login">
+    <button>ثبت نام</button>
+    <button>ورود</button>
+  </div>
+</div>
+
+<div id="circle1"><img src="/Ellipse 14.png" alt=""></div>
+<div id="circle2"><img src="/Ellipse 15.png" alt=""></div>
+<div id="circle3"><img src="/Ellipse 16.png" alt=""></div>
+<div id="circle4"><img src="/Ellipse 17.png" alt=""></div>
+<div id="circle5"><img src="/Ellipse 18.png" alt=""></div>
+
+<div class="title">
+  <h1>رزرو آنلاین نوبت از هزاران آرایشگاه</h1>
+  <h4>با تایمیناسیون</h4>
+</div>
+
+<div class="searchbusiness">
+  <div class="search">
+
+<!-- انتخاب شهر -->
+<select [(ngModel)]="selectedCityId" (change)="onCityChange()">
+  <option value="-1" disabled selected>انتخاب شهر</option>
+  <option *ngFor="let city of cities" [value]="city.id">
+    {{ city.name }}
+  </option>
+</select>
+
+<!-- انتخاب منطقه -->
+<select [(ngModel)]="selectedRegionId" (change)="onRegionChange()" [disabled]="regions.length === 0">
+  <option value="-1" disabled selected>انتخاب منطقه</option>
+  <option *ngFor="let region of regions" [value]="region.id">
+    {{ region.regionName }}
+  </option>
+</select>
+
+<!-- انتخاب محله (فقط نمایشی، چون در منطق پروژه گفته بودی با region لود میشه) -->
+<select [(ngModel)]="selectedNeighborhoodId" [disabled]="neighborhoods.length === 0">
+  <option value="-1" disabled selected>انتخاب محله</option>
+  <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">
+    {{ neighborhood.neighborhoodName }}
+  </option>
+</select>
+
+   <input type="submit" (click)="GoToSearchPage()" placeholder="جستجو">
+  </div>
+</div>
+  <div class="numberofcustomer">
+<div class="stats-container">
+    <div class="stat-item">
+    <span class="stat-number">۱۶۰۰۰+</span>
+    <span class="stat-label">تعداد نوبت روزانه</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">۸۰۰+</span>
+    <span class="stat-label">آرایشگاه مردانه</span>
+  </div>
+    <div class="stat-item">
+    <span class="stat-number">۸۰۰+</span>
+    <span class="stat-label">آرایشگاه زنانه</span>
+  </div>
+  </div>
+</div>

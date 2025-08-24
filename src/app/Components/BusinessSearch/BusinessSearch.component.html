@@ -1,0 +1,396 @@
+
+<div class="container">
+  <div class="logo">
+    <h1>Timinasion</h1>
+  </div>
+  <div class="menu">
+    <ul>
+      <li>صاحبان کسب و کار</li>
+      <li>درباره ما</li>
+      <li>تماس با ما</li>
+    </ul>
+  </div>
+  <div class="login">
+    <button>ثبت نام</button>
+    <button>ورود</button>
+  </div>
+</div>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Timinasion – List</title>
+
+<!-- فونت فارسی نزدیک به فیگما -->
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Vazirmatn", sans-serif;
+    background: #FBFBFD;
+    direction: rtl;
+  }
+
+  .page {
+    max-width: 1152px;
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .tabset {
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 999px;
+    padding: 6px;
+    display: flex;
+    gap: 6px;
+    box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  }
+
+  .tab {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    color: #374151;
+    cursor: pointer;
+  }
+
+  .tab.is-active {
+    background: #7C3AED;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .date-chip {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #374151;
+    box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  }
+
+  .date-chip .sep {
+    width: 1px;
+    height: 16px;
+    background: #E5E7EB;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 320px 1fr; /* ستون اول سایدبار سمت راست */
+    gap: 16px;
+  }
+
+  /* سایدبار */
+  .sidebar {
+    background: #fff;
+    border: 1px solid #EAEAEA;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+    height: max-content;
+    position: sticky;
+    top: 14px;
+  }
+
+  .sb-title {
+    font-weight: 700;
+    color: #1F2937;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    font-size: 13px;
+    color: #374151;
+  }
+
+  .check input {
+    width: 18px;
+    height: 18px;
+    accent-color: #7C3AED;
+    cursor: pointer;
+  }
+
+  /* کارت‌ها */
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #EAEAEA;
+    border-radius: 18px;
+    box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+    padding: 16px 18px;
+  }
+
+  .card__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    border: 1px solid #E5E7EB;
+    background: #fff;
+    color: #374151;
+    line-height: 1;
+  }
+
+  .tag--purple {
+    background: #F4EDFF;
+    border-color: #E6DBFF;
+    color: #7C3AED;
+    font-weight: 600;
+  }
+
+  .tag--pink {
+    background: #FFF1F2;
+    border-color: #FFE4E6;
+    color: #E11D48;
+  }
+
+  .tag--orange {
+    background: #FFF7ED;
+    border-color: #FFEDD5;
+    color: #F97316;
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 16px;
+    margin: 4px 0 10px;
+    color: #111827;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+    color: #4B5563;
+  }
+
+  .meta__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .meta__rate {
+    background: black;
+    border: 1px solid #FFE999;
+    color: #6B5C00;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+
+  .price {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #4B5563;
+  }
+
+  .price strong {
+    color: #111827;
+    font-weight: 700;
+  }
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* یا center بسته به طرح */
+  gap: 8px;
+}
+
+  .btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .btn--primary {
+    background: #7C3AED;
+    color: #fff;
+  }
+
+  .btn--ghost {
+    background: #fff;
+    color: #7C3AED;
+    border: 1px solid #E6DBFF;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+
+  .divider {
+    height: 1px;
+    background: #E5E7EB;
+    margin: 16px -18px 8px;
+  }
+
+  .status {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #E11D48;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+  <!-- ردیف مرتب‌سازی + تاریخ -->
+  <div class="topbar">
+    <div class="tabset">
+      <div class="tab">امتیاز بیشتر</div>
+      <div class="tab is-active">ارزون‌ترین</div>
+      <div class="tab">گرون‌ترین</div>
+      <div class="tab">جدیدترین</div>
+    </div>
+    <div class="date-chip">
+      <span>۱ روز بعد</span>
+      <span class="sep"></span>
+      <span>۱۴۰۴/۰۵/۰۴</span>
+      <span class="sep"></span>
+      <span>هر روز</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- سایدبار -->
+<!-- سایدبار -->
+<aside class="sidebar">
+  <!-- نوع خدمات -->
+<div class="sb-title">نوع خدمات</div>
+
+<label class="check" *ngFor="let service of BusinessServiceDto">
+  <input
+    type="checkbox"
+    [value]="service.serviceId">
+  {{ service.serviceName }}
+</label>
+
+
+  <hr style="margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;">
+
+  <!-- بازه قیمت -->
+  <div class="sb-title">بازه قیمت</div>
+  <input type="range" min="0" max="100" value="50" style="width: 100%; accent-color: #7C3AED;">
+  <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
+    <input type="text" value="۱۹۰,۰۰۰ تومان" style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+    <input type="text" value="۷۰۰,۰۰۰ تومان" style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+  </div>
+
+  <hr style="margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;">
+
+  <!-- دسته‌بندی -->
+<div class="sb-title">دسته‌بندی</div>
+<label class="check" *ngFor="let cat of categories">
+  <input
+    type="checkbox"
+    [value]="cat.id"
+    (change)="onCategoryChange(cat, $event)">
+  {{ cat.name }}
+</label>
+
+</aside>
+
+
+    <!-- کارت‌ها -->
+<section>
+  <article class="card" *ngFor="let business of BusinessDto">
+    <div class="card__row">
+      <div>
+        <!-- تگ‌ها (اچیومنت‌ها) -->
+        <div class="tags">
+          <span class="tag" *ngFor="let tag of business.achevmentNames">{{ tag }}</span>
+        </div>
+
+        <!-- نام صاحب کسب‌وکار -->
+        <h3 class="title">{{ business.businessOwnerName }}</h3>
+
+        <div class="meta">
+          <div class="meta__item">
+            <!-- لوگوی کسب‌وکار -->
+          <img class="avatar" [src]="'http://localhost:5107/Images/' + business.businessLogo" alt="">
+
+
+            <div>
+              <!-- نام کسب‌وکار -->
+              <div class="pro__name">{{ business.businessName }}</div>
+
+              <!-- توضیحات یا قیمت -->
+              <div class="price">{{ business.description }}</div>
+              <div class="price">از {{ business.amount }} تومان</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- اکشن‌ها -->
+      <div class="actions">
+<!-- business-card.component.html -->
+  <div class="meta__item">
+<span class="meta__rate" *ngIf="business?.userRate != null; else noRate">
+  {{ business.userRate | rateStars }} <!-- maxStars=5, top=RateEnum.VeryGood -->
+</span>
+<ng-template #noRate><span class="meta__rate meta__rate--muted">بدون امتیاز</span></ng-template>
+  </div>
+
+
+        <!-- تایم نمونه (می‌تونی از API بیاری) -->
+        <div class="meta__item">۷:۰۰ – ۸:۰۰</div>
+
+        <button class="btn btn--primary">رزرو نوبت</button>
+      </div>
+    </div>
+  </article>
+</section>
+  </div>
+</main>
+</body>
+</html>

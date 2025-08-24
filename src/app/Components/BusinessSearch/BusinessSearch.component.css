@@ -1,0 +1,134 @@
+
+.container{
+  width: 1500px;
+  height: 150px;
+  background-color: white;
+  margin: 50px auto;
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+select {
+  margin: 0 25px;
+  padding: 15px 35px;
+  border-radius: 10px;
+  border: 2px solid black;
+  font-weight: bold;
+  font-size: 15px;
+  color: black !important;
+  background-color: white !important;
+  appearance: none;
+  cursor: pointer;
+}
+
+
+option {
+  color: black !important;
+  background-color: white !important;
+}
+
+.container .logo {
+  width: 25%;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+}
+.container .logo h1{
+  color: #0F2FA1;
+}
+.container .menu{
+width: 50%;
+position: absolute;
+top: 60px ;
+right: 40%;
+}
+.container .menu ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  text-align: center;
+}
+.container .menu ul li{
+  margin: 0px 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.container .login{
+  width: 25%;
+  position: absolute;
+  left: -10%;
+  top: 50px;
+}
+.container .login button:nth-child(1){
+  color: white;
+  border-color: #0F2FA1;
+  margin: 10px;
+  background-color: white;
+  border: 2px solid #0F2FA1;
+  color: #0F2FA1;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 15px;
+}
+.container .login button:nth-child(2){
+  color: white;
+  border-color: #0F2FA1;
+  margin: 10px;
+  background-color:#0F2FA1;
+  border: 2px solid #0F2FA1;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 15px;
+}
+.title{
+width: 681;
+height: 148;
+top: 333px;
+left: 380px;
+margin: -600px 0;
+}
+.title h1{
+font-family: Yekan Bakh FaNum;
+font-weight: 700;
+font-size: 48px;
+line-height: 100%;
+letter-spacing: 0%;
+text-align: center;
+
+
+}
+.title  h4{
+font-family: Yekan Bakh FaNum;
+font-weight: 700;
+font-size: 48px;
+line-height: 0%;
+letter-spacing: 0%;
+text-align: center;
+color: #4A6DEC;
+}
+ .searchbusiness{
+  position: absolute;
+  background-color: white;
+  width: 900px;
+  height: 140px;
+  border-radius: 15px;
+  left: 20%;
+}
+.searchbusiness .search {
+  position: absolute;
+}
+
+.searchbusiness .search button{
+  padding: 15px 35px;
+  background-color: #0F2FA1;
+  border: 2px solid #0F2FA1;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+}

@@ -1,6 +1,12 @@
+import { routes } from './app/app.routes';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
+import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
+import { provideRouter, withRouterConfig } from '@angular/router';
 
-bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(),
+    provideRouter(routes) // این خط HttpClient رو برای کل اپلیکیشن فراهم می‌کنه
+  ]
+}).catch(err => console.error(err));
