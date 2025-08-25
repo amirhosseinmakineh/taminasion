@@ -55,6 +55,7 @@ return this.http.get<BusinessServiceDto[]>(url);
 getAllBusineses(
   neighberHoodId: number,
   categoryId?: number,
+  serviceIds?: number[],
   take: number = 6,
   skip: number = 0,
   maxAmount?: number
@@ -69,11 +70,24 @@ getAllBusineses(
   if (categoryId !== undefined) {
     params = params.set('categoryId', categoryId.toString());
   }
+  if (serviceIds && serviceIds.length) {
+    serviceIds.forEach(id => {
+      params = params.append('serviceIdes', id.toString());
+    });
+  }
   if (maxAmount !== undefined) {
     params = params.set('maxAmount', maxAmount.toString());
   }
 
   return this.http.get<BusinessDto[]>(url, { params });
+}
+
+reserveServices(timeId: number, serviceIds: number[]): Observable<any> {
+  const url = `${this.BASE_URL}/Reserve`;
+  return this.http.post(url, {
+    businessOwnerTimeId: timeId,
+    serviceIds,
+  });
 }
 
 }
