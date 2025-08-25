@@ -63,12 +63,12 @@ getAllBusineses(
   const url = `${this.BASE_URL}/Busineses`;
 
   let params = new HttpParams()
-    .set('neighberHoodId', filter.neighberHoodId.toString())
-    .set('skip', (filter.skip ?? 0).toString())
-    .set('take', (filter.take ?? 6).toString());
+    .set('neighberHoodId', neighberHoodId.toString())
+    .set('skip', skip.toString())
+    .set('take', take.toString());
 
-  if (filter.categoryId !== undefined) {
-    params = params.set('categoryId', filter.categoryId.toString());
+  if (categoryId !== undefined) {
+    params = params.set('categoryId', categoryId.toString());
   }
 
   if (serviceIds && serviceIds.length) {
@@ -76,11 +76,9 @@ getAllBusineses(
       params = params.append('serviceIds', id.toString());
     });
   }
-  if (filter.serviceIds && filter.serviceIds.length) {
-    params = params.set('serviceIdes', filter.serviceIds.join(','));
-  }
-  if (filter.maxAmount !== undefined) {
-    params = params.set('maxAmount', filter.maxAmount.toString());
+
+  if (maxAmount !== undefined) {
+    params = params.set('maxAmount', maxAmount.toString());
   }
 
   return this.http.get<BusinessDto[]>(url, { params });
