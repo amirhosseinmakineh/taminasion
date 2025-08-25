@@ -5,6 +5,7 @@ import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto, BusinessDayTimeDto } from '../../Interfaces/Businises/BusinessDto';
 import { isPlatformBrowser } from '@angular/common';
+import { BusinessFilter } from '../../Interfaces/Businises/BusinessFilter';
 
 @Component({
   selector: 'app-business-search',
@@ -76,7 +77,14 @@ LoadServices(){
 }
 
   LoadBusineses(neighberHoodId: number, categoryId?: number, serviceIds?: number[]): void {
-    this.service.getAllBusineses(neighberHoodId, categoryId, serviceIds, this.take, this.skip).subscribe({
+    const filter: BusinessFilter = {
+      neighberHoodId,
+      categoryId,
+      serviceIds,
+      take: this.take,
+      skip: this.skip,
+    };
+    this.service.getAllBusineses(filter).subscribe({
       next: (data) => {
         this.BusinessDto = data;
       },

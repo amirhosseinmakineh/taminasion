@@ -8,6 +8,7 @@ import { BusinessNeighborhood } from '../Interfaces/Businises/BusinessNeighberho
 import { CategoryDto } from '../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto } from '../Interfaces/Businises/BusinessDto';
+import { BusinessFilter } from '../Interfaces/Businises/BusinessFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -52,31 +53,24 @@ const url = `${this.BASE_URL}/GetBusinessService`;
 return this.http.get<BusinessServiceDto[]>(url);
 }
 
-getAllBusineses(
-  neighberHoodId: number,
-  categoryId?: number,
-  serviceIds?: number[],
-  take: number = 6,
-  skip: number = 0,
-  maxAmount?: number
-): Observable<BusinessDto[]> {
+getAllBusineses(filter: BusinessFilter): Observable<BusinessDto[]> {
   const url = `${this.BASE_URL}/Busineses`;
 
   let params = new HttpParams()
-    .set('neighberHoodId', neighberHoodId.toString())
-    .set('skip', skip.toString())
-    .set('take', take.toString());
+    .set('neighberHoodId', filter.neighberHoodId.toString())
+    .set('skip', (filter.skip ?? 0).toString())
+    .set('take', (filter.take ?? 6).toString());
 
-  if (categoryId !== undefined) {
-    params = params.set('categoryId', categoryId.toString());
+  if (filter.categoryId !== undefined) {
+    params = params.set('categoryId', filter.categoryId.toString());
   }
-  if (serviceIds && serviceIds.length) {
-    serviceIds.forEach(id => {
+  if (filter.serviceIds && filter.serviceIds.length) {
+    filter.serviceIds.forEach(id => {
       params = params.append('serviceIdes', id.toString());
     });
   }
-  if (maxAmount !== undefined) {
-    params = params.set('maxAmount', maxAmount.toString());
+  if (filter.maxAmount !== undefined) {
+    params = params.set('maxAmount', filter.maxAmount.toString());
   }
 
   return this.http.get<BusinessDto[]>(url, { params });
