@@ -4,7 +4,6 @@ import { BusinessService } from '../../services/business.service';
 import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto, BusinessDayTimeDto } from '../../Interfaces/Businises/BusinessDto';
-import { BusinessDto } from '../../Interfaces/Businises/BusinessDto';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
