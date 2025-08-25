@@ -33,7 +33,6 @@ selectedServices: number[] = [];
 availableServices: BusinessServiceDto[] = [];
 selectedModalServices: number[] = [];
 
-
   // pagination
   skip = 0;
   take = 6;
@@ -76,6 +75,7 @@ LoadServices(){
     }
   })
 }
+
 
   LoadBusineses(neighberHoodId: number, categoryId?: number, serviceIds?: number[]): void {
     const filter: BusinessFilter = {

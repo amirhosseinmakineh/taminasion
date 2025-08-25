@@ -76,8 +76,11 @@ getAllBusineses(
       params = params.append('serviceIds', id.toString());
     });
   }
-  if (maxAmount !== undefined) {
-    params = params.set('maxAmount', maxAmount.toString());
+  if (filter.serviceIds && filter.serviceIds.length) {
+    params = params.set('serviceIdes', filter.serviceIds.join(','));
+  }
+  if (filter.maxAmount !== undefined) {
+    params = params.set('maxAmount', filter.maxAmount.toString());
   }
 
   return this.http.get<BusinessDto[]>(url, { params });
