@@ -33,6 +33,7 @@ selectedServices: number[] = [];
 availableServices: BusinessServiceDto[] = [];
 selectedModalServices: number[] = [];
 
+
   // pagination
   skip = 0;
   take = 6;
@@ -84,7 +85,7 @@ LoadServices(){
       take: this.take,
       skip: this.skip,
     };
-    this.service.getAllBusineses(filter).subscribe({
+    this.service.getAllBusineses(neighberHoodId, categoryId, serviceIds, this.take, this.skip).subscribe({
       next: (data) => {
         this.BusinessDto = data;
       },

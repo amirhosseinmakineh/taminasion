@@ -52,8 +52,14 @@ getAllServices() : Observable<BusinessServiceDto[]>{
 const url = `${this.BASE_URL}/GetBusinessService`;
 return this.http.get<BusinessServiceDto[]>(url);
 }
-
-getAllBusineses(filter: BusinessFilter): Observable<BusinessDto[]> {
+getAllBusineses(
+  neighberHoodId: number,
+  categoryId?: number,
+  serviceIds?: number[],
+  take: number = 6,
+  skip: number = 0,
+  maxAmount?: number
+): Observable<BusinessDto[]> {
   const url = `${this.BASE_URL}/Busineses`;
 
   let params = new HttpParams()
@@ -64,13 +70,14 @@ getAllBusineses(filter: BusinessFilter): Observable<BusinessDto[]> {
   if (filter.categoryId !== undefined) {
     params = params.set('categoryId', filter.categoryId.toString());
   }
-  if (filter.serviceIds && filter.serviceIds.length) {
-    filter.serviceIds.forEach(id => {
-      params = params.append('serviceIdes', id.toString());
+
+  if (serviceIds && serviceIds.length) {
+    serviceIds.forEach(id => {
+      params = params.append('serviceIds', id.toString());
     });
   }
-  if (filter.maxAmount !== undefined) {
-    params = params.set('maxAmount', filter.maxAmount.toString());
+  if (maxAmount !== undefined) {
+    params = params.set('maxAmount', maxAmount.toString());
   }
 
   return this.http.get<BusinessDto[]>(url, { params });
