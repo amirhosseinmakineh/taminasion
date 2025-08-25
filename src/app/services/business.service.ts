@@ -55,6 +55,7 @@ return this.http.get<BusinessServiceDto[]>(url);
 getAllBusineses(
   neighberHoodId: number,
   categoryId?: number,
+  serviceIds?: number[],
   take: number = 6,
   skip: number = 0,
   maxAmount?: number
@@ -68,6 +69,11 @@ getAllBusineses(
 
   if (categoryId !== undefined) {
     params = params.set('categoryId', categoryId.toString());
+  }
+  if (serviceIds && serviceIds.length) {
+    serviceIds.forEach(id => {
+      params = params.append('serviceIds', id.toString());
+    });
   }
   if (maxAmount !== undefined) {
     params = params.set('maxAmount', maxAmount.toString());

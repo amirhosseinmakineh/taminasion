@@ -310,7 +310,8 @@
 <label class="check" *ngFor="let service of BusinessServiceDto">
   <input
     type="checkbox"
-    [value]="service.serviceId">
+    [value]="service.serviceId"
+    (change)="onServiceChange(service.serviceId, $event)">
   {{ service.serviceName }}
 </label>
 
