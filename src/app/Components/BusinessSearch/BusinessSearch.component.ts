@@ -76,15 +76,16 @@ LoadServices(){
   })
 }
 
-  LoadBusineses(neighberHoodId: number): void {
+
+  LoadBusineses(neighberHoodId: number, categoryId?: number, serviceIds?: number[]): void {
     const filter: BusinessFilter = {
       neighberHoodId,
-      categoryId: this.selectedCategories.length ? this.selectedCategories[0] : undefined,
-      serviceIds: this.selectedServices,
+      categoryId,
+      serviceIds,
       take: this.take,
       skip: this.skip,
     };
-    this.service.getAllBusineses(filter).subscribe({
+    this.service.getAllBusineses(neighberHoodId, categoryId, serviceIds, this.take, this.skip).subscribe({
       next: (data) => {
         this.BusinessDto = data;
       },
@@ -104,7 +105,8 @@ LoadServices(){
     }
 
     this.skip = 0;
-    this.LoadBusineses(this.neighberHoodId);
+    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
+    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
   onServiceChange(serviceId: number, event: Event) {
@@ -115,7 +117,8 @@ LoadServices(){
       this.selectedServices = this.selectedServices.filter(id => id !== serviceId);
     }
     this.skip = 0;
-    this.LoadBusineses(this.neighberHoodId);
+    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
+    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
   onModalServiceChange(serviceId: number, event: Event) {
@@ -130,13 +133,15 @@ LoadServices(){
   // pagination handlers
   nextPage() {
     this.skip += this.take;
-    this.LoadBusineses(this.neighberHoodId);
+    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
+    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
   prevPage() {
     if (this.skip >= this.take) {
       this.skip -= this.take;
-      this.LoadBusineses(this.neighberHoodId);
+      const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
+      this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
     }
   }
 
