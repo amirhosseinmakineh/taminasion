@@ -190,3 +190,43 @@ color: #4A6DEC;
   gap: 8px;
   margin: 16px 0;
 }
+
+/* Responsive layout for small screens */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    height: auto;
+    margin: 20px auto;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container .logo,
+  .container .menu,
+  .container .login {
+    position: static;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .container .menu ul {
+    flex-direction: column;
+    align-items: center;
+  }
+  .searchbusiness {
+    position: static;
+    width: 90%;
+    margin: 40px auto;
+    height: auto;
+  }
+  .searchbusiness .search {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .searchbusiness .search select,
+  .searchbusiness .search button {
+    margin: 5px 0;
+  }
+}
