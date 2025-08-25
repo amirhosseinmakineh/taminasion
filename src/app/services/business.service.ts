@@ -73,9 +73,11 @@ getAllBusineses(
   }
 
   if (serviceIds && serviceIds.length) {
-    paramsObject['serviceIds'] = serviceIds.map(id => id.toString());
-  }
 
+    serviceIds.forEach(id => {
+      params = params.append('serviceIds', id.toString());
+    });
+  }
   if (maxAmount !== undefined) {
     paramsObject['maxAmount'] = maxAmount.toString();
   }
