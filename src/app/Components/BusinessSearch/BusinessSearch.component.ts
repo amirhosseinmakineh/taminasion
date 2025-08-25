@@ -28,6 +28,7 @@ categories : CategoryDto[] = [];
 selectedCategories: number[] = [];
 BusinessServiceDto : BusinessServiceDto[] = [];
 BusinessDto : BusinessDto[] = [];
+selectedServices: number[] = [];
 
   // pagination
   skip = 0;
@@ -72,8 +73,8 @@ LoadServices(){
   })
 }
 
-  LoadBusineses(neighberHoodId: number, categoryId?: number): void {
-    this.service.getAllBusineses(neighberHoodId, categoryId, this.take, this.skip).subscribe({
+  LoadBusineses(neighberHoodId: number, categoryId?: number, serviceIds?: number[]): void {
+    this.service.getAllBusineses(neighberHoodId, categoryId, serviceIds, this.take, this.skip).subscribe({
       next: (data) => {
         this.BusinessDto = data;
       },
@@ -94,21 +95,33 @@ LoadServices(){
 
     this.skip = 0;
     const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-    this.LoadBusineses(this.neighberHoodId, categoryId);
+    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
+  }
+
+  onServiceChange(serviceId: number, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedServices.push(serviceId);
+    } else {
+      this.selectedServices = this.selectedServices.filter(id => id !== serviceId);
+    }
+    this.skip = 0;
+    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
+    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
   // pagination handlers
   nextPage() {
     this.skip += this.take;
     const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-    this.LoadBusineses(this.neighberHoodId, categoryId);
+    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
   prevPage() {
     if (this.skip >= this.take) {
       this.skip -= this.take;
       const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-      this.LoadBusineses(this.neighberHoodId, categoryId);
+      this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
     }
   }
 
