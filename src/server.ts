@@ -4,6 +4,10 @@ import {
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
+import {
+  ɵsetAngularAppEngineManifest as setAngularAppEngineManifest,
+  ɵsetAngularAppManifest as setAngularAppManifest,
+} from '@angular/ssr';
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,7 +16,18 @@ const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+
+async function createAngularApp() {
+  const [engineManifest, appManifest] = await Promise.all([
+    import('./angular-app-engine-manifest.mjs'),
+    import('./angular-app-manifest.mjs'),
+  ]);
+  setAngularAppEngineManifest(engineManifest.default);
+  setAngularAppManifest(appManifest.default);
+  return new AngularNodeAppEngine();
+}
+
+const angularApp = createAngularApp();
 
 /**
  * Example Express Rest API endpoints can be defined here.
@@ -42,7 +57,7 @@ app.use(
  */
 app.use('/**', (req, res, next) => {
   angularApp
-    .handle(req)
+    .then((engine) => engine.handle(req))
     .then((response) =>
       response ? writeResponseToNodeResponse(response, res) : next(),
     )

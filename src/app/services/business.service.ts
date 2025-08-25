@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { BusinessCity } from '../Interfaces/Businises/BusinessCity';
-import { BusinessRegion } from '../Interfaces/Businises/BusinessRegion.';
+import { BusinessRegion } from '../Interfaces/Businises/BusinessRegion';
 import { BusinessNeighborhood } from '../Interfaces/Businises/BusinessNeighberhood';
 import { CategoryDto } from '../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../Interfaces/Businises/BusinessServiceDto';
