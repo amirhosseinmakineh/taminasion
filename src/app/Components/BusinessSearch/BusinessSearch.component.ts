@@ -5,6 +5,7 @@ import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto, BusinessDayTimeDto } from '../../Interfaces/Businises/BusinessDto';
 import { isPlatformBrowser } from '@angular/common';
+import { BusinessFilter } from '../../Interfaces/Businises/BusinessFilter';
 
 @Component({
   selector: 'app-business-search',
@@ -29,6 +30,9 @@ selectedCategories: number[] = [];
 BusinessServiceDto : BusinessServiceDto[] = [];
 BusinessDto : BusinessDto[] = [];
 selectedServices: number[] = [];
+availableServices: BusinessServiceDto[] = [];
+selectedModalServices: number[] = [];
+
 
   // pagination
   skip = 0;
@@ -74,6 +78,13 @@ LoadServices(){
 }
 
   LoadBusineses(neighberHoodId: number, categoryId?: number, serviceIds?: number[]): void {
+    const filter: BusinessFilter = {
+      neighberHoodId,
+      categoryId,
+      serviceIds,
+      take: this.take,
+      skip: this.skip,
+    };
     this.service.getAllBusineses(neighberHoodId, categoryId, serviceIds, this.take, this.skip).subscribe({
       next: (data) => {
         this.BusinessDto = data;
@@ -110,6 +121,15 @@ LoadServices(){
     this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
+  onModalServiceChange(serviceId: number, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedModalServices.push(serviceId);
+    } else {
+      this.selectedModalServices = this.selectedModalServices.filter(id => id !== serviceId);
+    }
+  }
+
   // pagination handlers
   nextPage() {
     this.skip += this.take;
@@ -140,12 +160,17 @@ LoadServices(){
       ...new Set(business.businessDayTimeDtos.map((d) => d.dayOfWeek)),
     ];
     this.currentDayIndex = 0;
+    this.availableServices = this.BusinessServiceDto.filter(
+      s => s.businessId === business.id
+    );
+    this.selectedModalServices = [];
     this.showModal = true;
   }
 
   closeModal() {
     this.showModal = false;
     this.selectedBusiness = null;
+    this.selectedModalServices = [];
   }
 
   getDayName(day: number): string {
@@ -174,8 +199,17 @@ LoadServices(){
   }
 
   reserve(time: BusinessDayTimeDto) {
-    // TODO: call reserve API
-    time.isReserved = true;
+    if (!this.selectedModalServices.length) {
+      return;
+    }
+    this.service.reserveServices(time.businessOwnerTimeId, this.selectedModalServices).subscribe({
+      next: () => {
+        time.isReserved = true;
+      },
+      error: (err) => {
+        console.error('خطا در رزرو:', err);
+      }
+    });
   }
 
 }

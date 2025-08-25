@@ -179,6 +179,13 @@ color: #4A6DEC;
   border-bottom: 1px solid #E5E7EB;
 }
 
+.service-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
 .time-row .reserved {
   color: #E11D48;
   font-weight: 600;

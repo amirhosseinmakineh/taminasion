@@ -8,6 +8,7 @@ import { BusinessNeighborhood } from '../Interfaces/Businises/BusinessNeighberho
 import { CategoryDto } from '../Interfaces/Businises/CategoryDto';
 import { BusinessServiceDto } from '../Interfaces/Businises/BusinessServiceDto';
 import { BusinessDto } from '../Interfaces/Businises/BusinessDto';
+import { BusinessFilter } from '../Interfaces/Businises/BusinessFilter';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,6 @@ getAllServices() : Observable<BusinessServiceDto[]>{
 const url = `${this.BASE_URL}/GetBusinessService`;
 return this.http.get<BusinessServiceDto[]>(url);
 }
-
 getAllBusineses(
   neighberHoodId: number,
   categoryId?: number,
@@ -63,13 +63,14 @@ getAllBusineses(
   const url = `${this.BASE_URL}/Busineses`;
 
   let params = new HttpParams()
-    .set('neighberHoodId', neighberHoodId.toString())
-    .set('skip', skip.toString())
-    .set('take', take.toString());
+    .set('neighberHoodId', filter.neighberHoodId.toString())
+    .set('skip', (filter.skip ?? 0).toString())
+    .set('take', (filter.take ?? 6).toString());
 
-  if (categoryId !== undefined) {
-    params = params.set('categoryId', categoryId.toString());
+  if (filter.categoryId !== undefined) {
+    params = params.set('categoryId', filter.categoryId.toString());
   }
+
   if (serviceIds && serviceIds.length) {
     serviceIds.forEach(id => {
       params = params.append('serviceIds', id.toString());
@@ -80,6 +81,14 @@ getAllBusineses(
   }
 
   return this.http.get<BusinessDto[]>(url, { params });
+}
+
+reserveServices(timeId: number, serviceIds: number[]): Observable<any> {
+  const url = `${this.BASE_URL}/Reserve`;
+  return this.http.post(url, {
+    businessOwnerTimeId: timeId,
+    serviceIds,
+  });
 }
 
 }

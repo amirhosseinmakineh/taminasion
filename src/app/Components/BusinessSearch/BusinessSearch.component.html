@@ -406,6 +406,14 @@
     <button class="btn btn--ghost" (click)="nextDay()" [disabled]="currentDayIndex === uniqueDays.length - 1">روز بعد</button>
   </div>
   <div class="modal-body">
+    <div class="services">
+      <h3>انتخاب سرویس</h3>
+      <div *ngFor="let s of availableServices" class="service-row">
+        <input type="checkbox" (change)="onModalServiceChange(s.serviceId, $event)">
+        <span>{{ s.serviceName }}</span>
+      </div>
+    </div>
+    <hr />
     <div *ngFor="let time of timesForCurrentDay" class="time-row">
       <span>{{ time.from }} - {{ time.to }}</span>
       <span *ngIf="time.isReserved" class="reserved">رزرو شده</span>
