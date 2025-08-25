@@ -373,23 +373,48 @@
 
       <!-- اکشن‌ها -->
       <div class="actions">
-<!-- business-card.component.html -->
-  <div class="meta__item">
-<span class="meta__rate" *ngIf="business?.userRate != null; else noRate">
-  {{ business.userRate | rateStars }} <!-- maxStars=5, top=RateEnum.VeryGood -->
-</span>
-<ng-template #noRate><span class="meta__rate meta__rate--muted">بدون امتیاز</span></ng-template>
-  </div>
-
+        <div class="meta__item">
+          <ng-container *ngIf="business?.userRate != null; else noRate">
+            <span *ngFor="let filled of getStars(business.userRate)" class="star" [class.filled]="filled">★</span>
+          </ng-container>
+          <ng-template #noRate>
+            <span class="meta__rate meta__rate--muted">بدون امتیاز</span>
+          </ng-template>
+        </div>
 
         <!-- تایم نمونه (می‌تونی از API بیاری) -->
         <div class="meta__item">۷:۰۰ – ۸:۰۰</div>
 
-        <button class="btn btn--primary">رزرو نوبت</button>
+        <button class="btn btn--primary" (click)="openModal(business)">رزرو نوبت</button>
       </div>
     </div>
   </article>
 </section>
+
+<div class="pagination">
+  <button class="btn btn--ghost" (click)="prevPage()" [disabled]="skip === 0">صفحه قبل</button>
+  <button class="btn btn--ghost" (click)="nextPage()">صفحه بعد</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
+<div class="modal" *ngIf="showModal">
+  <div class="modal-header">
+    <button class="btn btn--ghost" (click)="prevDay()" [disabled]="currentDayIndex === 0">روز قبل</button>
+    <span>{{ getDayName(uniqueDays[currentDayIndex]) }}</span>
+    <button class="btn btn--ghost" (click)="nextDay()" [disabled]="currentDayIndex === uniqueDays.length - 1">روز بعد</button>
+  </div>
+  <div class="modal-body">
+    <div *ngFor="let time of timesForCurrentDay" class="time-row">
+      <span>{{ time.from }} - {{ time.to }}</span>
+      <span *ngIf="time.isReserved" class="reserved">رزرو شده</span>
+      <button *ngIf="!time.isReserved" class="btn btn--primary" (click)="reserve(time)">رزرو</button>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top:10px;">
+    <button class="btn btn--ghost" (click)="closeModal()">بستن</button>
+  </div>
+</div>
   </div>
 </main>
 </body>
