@@ -6,6 +6,7 @@ import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDt
 import { BusinessDto, BusinessDayTimeDto } from '../../Interfaces/Businises/BusinessDto';
 import { isPlatformBrowser } from '@angular/common';
 import { BusinessFilter } from '../../Interfaces/Businises/BusinessFilter';
+import { Timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-business-search',
@@ -44,6 +45,7 @@ export class BusinessSearchComponent implements OnInit {
   selectedBusiness: BusinessDto | null = null;
   uniqueDays: number[] = [];
   currentDayIndex = 0;
+  selectedTimes: {};
 
   constructor(
     private route: ActivatedRoute,
@@ -143,7 +145,7 @@ export class BusinessSearchComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.selectedBusiness = null;
-    this.selectedModalServices = [];
+    this.selectedTimes = {};
   }
 
   getDayName(day: number): string {

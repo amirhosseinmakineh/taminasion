@@ -413,12 +413,6 @@
         <span>{{ s.serviceName }}</span>
       </div>
     </div>
-    <hr />
-    <div *ngFor="let time of timesForCurrentDay" class="time-row">
-      <span>{{ time.from }} - {{ time.to }}</span>
-      <span *ngIf="time.isReserved" class="reserved">رزرو شده</span>
-      <button *ngIf="!time.isReserved" class="btn btn--primary" (click)="reserve(time)">رزرو</button>
-    </div>
   </div>
   <div style="text-align: center; margin-top:10px;">
     <button class="btn btn--ghost" (click)="closeModal()">بستن</button>
