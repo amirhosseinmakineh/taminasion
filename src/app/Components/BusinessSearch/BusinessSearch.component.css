@@ -182,8 +182,16 @@ color: #4A6DEC;
 .service-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.service-name {
+  flex: 1;
+}
+
+.service-price {
+  min-width: 80px;
 }
 
 .time-row .reserved {

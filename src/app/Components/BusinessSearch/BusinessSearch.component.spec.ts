@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
 import { BusinessSearchComponent } from './BusinessSearch.component';
+import { FormsModule } from '@angular/forms';
 
 describe('BusinessSearchComponent', () => {
   let component: BusinessSearchComponent;
@@ -11,7 +12,8 @@ describe('BusinessSearchComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [BusinessSearchComponent]
+      declarations: [BusinessSearchComponent],
+      imports: [FormsModule]
     }).compileComponents();
   }));
 
