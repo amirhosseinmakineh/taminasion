@@ -333,7 +333,7 @@
 <label class="check" *ngFor="let cat of categories">
   <input
     type="checkbox"
-    [value]="cat.id"
+    [value]="cat.categoryId"
     (change)="onCategoryChange(cat, $event)">
   {{ cat.name }}
 </label>
@@ -409,7 +409,7 @@
     <div class="services">
       <h3>انتخاب سرویس</h3>
       <div *ngFor="let s of availableServices" class="service-row">
-        <input type="checkbox" (change)="onModalServiceChange(s.serviceId, $event)">
+        <input type="checkbox" (change)="onServiceChange(s.serviceId, $event)">
         <span>{{ s.serviceName }}</span>
       </div>
     </div>

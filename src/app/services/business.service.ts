@@ -62,30 +62,28 @@ getAllBusineses(
 ): Observable<BusinessDto[]> {
   const url = `${this.BASE_URL}/Busineses`;
 
-  const paramsObject: { [param: string]: string | string[] } = {
-    neighberHoodId: neighberHoodId.toString(),
-    skip: (skip ?? 0).toString(),
-    take: (take ?? 6).toString()
-  };
+  let params = new HttpParams()
+    .set('neighberHoodId', String(neighberHoodId))
+    .set('take', String(take ?? 6))
+    .set('skip', String(skip ?? 0));
 
-  if (categoryId !== undefined) {
-    paramsObject['categoryId'] = categoryId.toString();
+  if (categoryId !== undefined && categoryId !== null) {
+    params = params.set('categoryId', String(categoryId));
   }
 
   if (serviceIds && serviceIds.length) {
-
     serviceIds.forEach(id => {
-      params = params.append('serviceIds', id.toString());
+      params = params.append('serviceIds', String(id)); // serviceIds=1&serviceIds=2...
     });
   }
-  if (maxAmount !== undefined) {
-    paramsObject['maxAmount'] = maxAmount.toString();
-  }
 
-  const params = new HttpParams({ fromObject: paramsObject });
+  if (maxAmount !== undefined && maxAmount !== null) {
+    params = params.set('maxAmount', String(maxAmount));
+  }
 
   return this.http.get<BusinessDto[]>(url, { params });
 }
+
 
 reserveServices(timeId: number, serviceIds: number[]): Observable<any> {
   const url = `${this.BASE_URL}/Reserve`;

@@ -15,154 +15,127 @@ import { BusinessFilter } from '../../Interfaces/Businises/BusinessFilter';
 })
 export class BusinessSearchComponent implements OnInit {
 
-  constructor(
-    private route: ActivatedRoute,
-    private service: BusinessService,
-    @Inject(PLATFORM_ID) private platformId: Object,
-  ) {}
-//Properties
+  // فیلتر اصلی
+  filter: BusinessFilter = {
+    neighberHoodId: 0,
+    categoryId: 0,
+    serviceIds: [],
+    take: 20,
+    skip: 0,
+  };
 
-  cityId = -1;
-  regionId = -1;
-  neighberHoodId = -1;
-categories : CategoryDto[] = [];
-selectedCategories: number[] = [];
-BusinessServiceDto : BusinessServiceDto[] = [];
-BusinessDto : BusinessDto[] = [];
-selectedServices: number[] = [];
-availableServices: BusinessServiceDto[] = [];
-selectedModalServices: number[] = [];
+  // دیتاها
+  categories: CategoryDto[] = [];
+  BusinessServiceDto: BusinessServiceDto[] = [];
+  BusinessDto: BusinessDto[] = [];
+
+  // انتخاب‌ها
+  selectedServices: number[] = [];
+  selectedModalServices: number[] = [];
+  availableServices: BusinessServiceDto[] = [];
+  selectedCategoryId = 0;
 
   // pagination
+  take = 20;
   skip = 0;
-  take = 6;
 
   // modal
   showModal = false;
   selectedBusiness: BusinessDto | null = null;
   uniqueDays: number[] = [];
   currentDayIndex = 0;
+
+  constructor(
+    private route: ActivatedRoute,
+    private service: BusinessService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {}
+
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.LoadCategories();
       this.LoadServices();
 
       this.route.queryParams.subscribe(params => {
-        this.neighberHoodId = +params['neighberHoodId'] || 0;  // + برای تبدیل به number
-        // اینجا میتونی API بزنی بر اساس neighborhoodId
-        this.LoadBusineses(this.neighberHoodId);
+        const hoodId = Number(params['neighberHoodId']) || 0;
+        this.filter.neighberHoodId = hoodId;   // 🔴 مقدار مستقیم توی فیلتر ست بشه
+        this.LoadBusinesses(this.filter);
       });
     }
   }
-  LoadCategories(){
-this.service.getAllCategories().subscribe({
-  next: (data)=>{
-    this.categories = data;
-  },
-  error : (err)=>{
-    throw new err;
-  }
-})
-}
 
-LoadServices(){
-  this.service.getAllServices().subscribe({
-    next : (data) => {
-      this.BusinessServiceDto = data
-    },
-    error : (err)=>{
-      throw new err
-    }
-  })
-}
-
-
-  LoadBusineses(neighberHoodId: number, categoryId?: number, serviceIds?: number[]): void {
-    const filter: BusinessFilter = {
-      neighberHoodId,
-      categoryId,
-      serviceIds,
-      take: this.take,
-      skip: this.skip,
-    };
-    this.service.getAllBusineses(neighberHoodId, categoryId, serviceIds, this.take, this.skip).subscribe({
-      next: (data) => {
-        this.BusinessDto = data;
-      },
-      error: (err) => {
-        console.error('خطا در دریافت داده‌ها:', err);
-      }
+  LoadCategories() {
+    this.service.getAllCategories().subscribe({
+      next: data => this.categories = data,
+      error: err => console.error(err)
     });
   }
 
-  // category filter
-  onCategoryChange(cat: CategoryDto, event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
-    if (checked) {
-      this.selectedCategories = [cat.id];
-    } else {
-      this.selectedCategories = [];
-    }
+  LoadServices() {
+    this.service.getAllServices().subscribe({
+      next: data => this.BusinessServiceDto = data,
+      error: err => console.error(err)
+    });
+  }
 
-    this.skip = 0;
-    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
+  LoadBusinesses(filter: BusinessFilter): void {
+    console.log('sending filter >>>', filter);
+
+    this.service.getAllBusineses(
+      filter.neighberHoodId,
+      filter.categoryId,
+      filter.serviceIds,
+      filter.take,
+      filter.skip
+    ).subscribe({
+      next: data => this.BusinessDto = data,
+      error: err => console.error('خطا در دریافت داده‌ها:', err)
+    });
+  }
+
+  onCategoryChange(cat: CategoryDto, event: Event) {
+    const checked = (event.target as HTMLInputElement)?.checked ?? false;
+    this.filter.categoryId = checked ? cat.categoryId : 0;
+    this.filter.skip = 0;
+    this.LoadBusinesses(this.filter);
   }
 
   onServiceChange(serviceId: number, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
     if (checked) {
-      this.selectedServices.push(serviceId);
+      this.filter.serviceIds.push(serviceId);
     } else {
-      this.selectedServices = this.selectedServices.filter(id => id !== serviceId);
+      this.filter.serviceIds = this.filter.serviceIds.filter(id => id !== serviceId);
     }
-    this.skip = 0;
-    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
+    this.filter.skip = 0;
+    this.LoadBusinesses(this.filter);
   }
 
-  onModalServiceChange(serviceId: number, event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
-    if (checked) {
-      this.selectedModalServices.push(serviceId);
-    } else {
-      this.selectedModalServices = this.selectedModalServices.filter(id => id !== serviceId);
-    }
-  }
-
-  // pagination handlers
+  // pagination
   nextPage() {
-    this.skip += this.take;
-    const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-    this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
+    this.filter.skip += this.filter.take;
+    this.LoadBusinesses(this.filter);
   }
 
   prevPage() {
-    if (this.skip >= this.take) {
-      this.skip -= this.take;
-      const categoryId = this.selectedCategories.length ? this.selectedCategories[0] : undefined;
-      this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
+    if (this.filter.skip >= this.filter.take) {
+      this.filter.skip -= this.filter.take;
+      this.LoadBusinesses(this.filter);
     }
   }
 
-  // star helpers
+  // stars
   getStars(rate: number): number[] {
     const filled = Math.round(rate);
-    return Array(5)
-      .fill(0)
-      .map((_, i) => (i < filled ? 1 : 0));
+    return Array(5).fill(0).map((_, i) => (i < filled ? 1 : 0));
   }
 
-  // modal handlers
+  // modal
   openModal(business: BusinessDto) {
     this.selectedBusiness = business;
-    this.uniqueDays = [
-      ...new Set(business.businessDayTimeDtos.map((d) => d.dayOfWeek)),
-    ];
+    this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
     this.currentDayIndex = 0;
-    this.availableServices = this.BusinessServiceDto.filter(
-      s => s.businessId === business.id
-    );
+    this.availableServices = this.BusinessServiceDto.filter(s => s.businessId === business.id);
     this.selectedModalServices = [];
     this.showModal = true;
   }
@@ -181,36 +154,22 @@ LoadServices(){
   get timesForCurrentDay(): BusinessDayTimeDto[] {
     if (!this.selectedBusiness) return [];
     const day = this.uniqueDays[this.currentDayIndex];
-    return this.selectedBusiness.businessDayTimeDtos.filter(
-      (t) => t.dayOfWeek === day
-    );
+    return this.selectedBusiness.businessDayTimeDtos.filter(t => t.dayOfWeek === day);
   }
 
   nextDay() {
-    if (this.currentDayIndex < this.uniqueDays.length - 1) {
-      this.currentDayIndex++;
-    }
+    if (this.currentDayIndex < this.uniqueDays.length - 1) this.currentDayIndex++;
   }
 
   prevDay() {
-    if (this.currentDayIndex > 0) {
-      this.currentDayIndex--;
-    }
+    if (this.currentDayIndex > 0) this.currentDayIndex--;
   }
 
   reserve(time: BusinessDayTimeDto) {
-    if (!this.selectedModalServices.length) {
-      return;
-    }
+    if (!this.selectedModalServices.length) return;
     this.service.reserveServices(time.businessOwnerTimeId, this.selectedModalServices).subscribe({
-      next: () => {
-        time.isReserved = true;
-      },
-      error: (err) => {
-        console.error('خطا در رزرو:', err);
-      }
+      next: () => time.isReserved = true,
+      error: err => console.error('خطا در رزرو:', err)
     });
   }
-
 }
-
