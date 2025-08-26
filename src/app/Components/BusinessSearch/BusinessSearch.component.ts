@@ -31,7 +31,7 @@ BusinessServiceDto : BusinessServiceDto[] = [];
 BusinessDto : BusinessDto[] = [];
 selectedServices: number[] = [];
 availableServices: BusinessServiceDto[] = [];
-selectedModalServices: number[] = [];
+selectedTimes: { [serviceId: number]: BusinessDayTimeDto | null } = {};
 
   // pagination
   skip = 0;
@@ -121,15 +121,6 @@ LoadServices(){
     this.LoadBusineses(this.neighberHoodId, categoryId, this.selectedServices);
   }
 
-  onModalServiceChange(serviceId: number, event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
-    if (checked) {
-      this.selectedModalServices.push(serviceId);
-    } else {
-      this.selectedModalServices = this.selectedModalServices.filter(id => id !== serviceId);
-    }
-  }
-
   // pagination handlers
   nextPage() {
     this.skip += this.take;
@@ -163,14 +154,14 @@ LoadServices(){
     this.availableServices = this.BusinessServiceDto.filter(
       s => s.businessId === business.id
     );
-    this.selectedModalServices = [];
+    this.selectedTimes = {};
     this.showModal = true;
   }
 
   closeModal() {
     this.showModal = false;
     this.selectedBusiness = null;
-    this.selectedModalServices = [];
+    this.selectedTimes = {};
   }
 
   getDayName(day: number): string {
@@ -198,11 +189,12 @@ LoadServices(){
     }
   }
 
-  reserve(time: BusinessDayTimeDto) {
-    if (!this.selectedModalServices.length) {
+  reserveService(service: BusinessServiceDto) {
+    const time = this.selectedTimes[service.serviceId];
+    if (!time) {
       return;
     }
-    this.service.reserveServices(time.businessOwnerTimeId, this.selectedModalServices).subscribe({
+    this.service.reserveServices(time.businessOwnerTimeId, [service.serviceId]).subscribe({
       next: () => {
         time.isReserved = true;
       },
