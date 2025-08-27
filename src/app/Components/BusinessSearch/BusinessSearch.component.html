@@ -409,8 +409,15 @@
     <div class="services">
       <h3>انتخاب سرویس</h3>
       <div *ngFor="let s of availableServices" class="service-row">
-        <input type="checkbox" (change)="onServiceChange(s.serviceId, $event)">
-        <span>{{ s.serviceName }}</span>
+        <span class="service-name">{{ s.serviceName }}</span>
+        <span class="service-price">{{ s.Amount }} تومان</span>
+        <select (change)="onTimeSelect(s.serviceId, $any($event.target).value)">
+          <option value="">انتخاب زمان</option>
+          <option *ngFor="let t of timesForCurrentDay" [value]="t.businessOwnerTimeId" [disabled]="t.isReserved">
+            {{ t.from }} - {{ t.to }}
+          </option>
+        </select>
+        <button class="btn btn--primary" (click)="reserve(s.serviceId)">رزرو نهایی</button>
       </div>
     </div>
   </div>

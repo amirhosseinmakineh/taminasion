@@ -32,7 +32,6 @@ export class BusinessSearchComponent implements OnInit {
 
   // انتخاب‌ها
   selectedServices: number[] = [];
-  selectedModalServices: number[] = [];
   availableServices: BusinessServiceDto[] = [];
   selectedCategoryId = 0;
 
@@ -45,7 +44,7 @@ export class BusinessSearchComponent implements OnInit {
   selectedBusiness: BusinessDto | null = null;
   uniqueDays: number[] = [];
   currentDayIndex = 0;
-  selectedTimes: {};
+  selectedTimes: { [serviceId: number]: number } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -138,7 +137,7 @@ export class BusinessSearchComponent implements OnInit {
     this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
     this.currentDayIndex = 0;
     this.availableServices = this.BusinessServiceDto.filter(s => s.businessId === business.id);
-    this.selectedModalServices = [];
+    this.selectedTimes = {};
     this.showModal = true;
   }
 
@@ -167,9 +166,16 @@ export class BusinessSearchComponent implements OnInit {
     if (this.currentDayIndex > 0) this.currentDayIndex--;
   }
 
-  reserve(time: BusinessDayTimeDto) {
-    if (!this.selectedModalServices.length) return;
-    this.service.reserveServices(time.businessOwnerTimeId, this.selectedModalServices).subscribe({
+  onTimeSelect(serviceId: number, timeId: string) {
+    this.selectedTimes[serviceId] = Number(timeId);
+  }
+
+  reserve(serviceId: number) {
+    const timeId = this.selectedTimes[serviceId];
+    if (!timeId) return;
+    const time = this.timesForCurrentDay.find(t => t.businessOwnerTimeId === timeId);
+    if (!time) return;
+    this.service.reserveServices(timeId, [serviceId]).subscribe({
       next: () => time.isReserved = true,
       error: err => console.error('خطا در رزرو:', err)
     });
