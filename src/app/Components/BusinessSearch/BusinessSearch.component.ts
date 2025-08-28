@@ -117,6 +117,15 @@ export class BusinessSearchComponent implements OnInit {
     this.filter.maxAmount = value;
     this.filter.skip = 0;
     this.LoadBusinesses(this.filter);
+    if (this.showModal && this.selectedBusiness) {
+      this.availableServices = this.BusinessServiceDto.filter(s => {
+        const matchesBusiness = s.businessId === this.selectedBusiness!.id;
+        const matchesService =
+          this.filter.serviceIds.length === 0 || this.filter.serviceIds.includes(s.serviceId);
+        const matchesPrice = s.amount <= this.filter.maxAmount;
+        return matchesBusiness && matchesService && matchesPrice;
+      });
+    }
   }
 
   onServiceChange(serviceId: number, event: Event) {
@@ -154,13 +163,13 @@ export class BusinessSearchComponent implements OnInit {
     this.selectedBusiness = business;
     this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
     this.currentDayIndex = 0;
-    if (this.filter.serviceIds.length > 0) {
-      this.availableServices = this.BusinessServiceDto.filter(
-        s => s.businessId === business.id && this.filter.serviceIds.includes(s.serviceId)
-      );
-    } else {
-      this.availableServices = this.BusinessServiceDto.filter(s => s.businessId === business.id);
-    }
+    this.availableServices = this.BusinessServiceDto.filter(s => {
+      const matchesBusiness = s.businessId === business.id;
+      const matchesService =
+        this.filter.serviceIds.length === 0 || this.filter.serviceIds.includes(s.serviceId);
+      const matchesPrice = s.amount <= this.filter.maxAmount;
+      return matchesBusiness && matchesService && matchesPrice;
+    });
     this.selectedTimes = {};
     this.showModal = true;
   }
