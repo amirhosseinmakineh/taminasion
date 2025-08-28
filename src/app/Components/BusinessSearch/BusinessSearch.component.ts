@@ -29,15 +29,12 @@ export class BusinessSearchComponent implements OnInit {
   categories: CategoryDto[] = [];
   BusinessServiceDto: BusinessServiceDto[] = [];
   BusinessDto: BusinessDto[] = [];
+  private allBusinesses: BusinessDto[] = [];
 
   // انتخاب‌ها
   selectedServices: number[] = [];
   availableServices: BusinessServiceDto[] = [];
   selectedCategoryId = 0;
-
-  // pagination
-  take = 20;
-  skip = 0;
 
   // modal
   showModal = false;
@@ -48,6 +45,12 @@ export class BusinessSearchComponent implements OnInit {
 
   maxServiceAmount = 0;
   minServiceAmount = 0;
+
+  // day filter
+  filterDay: number = new Date().getDay() + 1; // 1-7
+
+  // pagination helpers
+  hasMore = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,8 +69,8 @@ export class BusinessSearchComponent implements OnInit {
 
         this.service.getMaxServiceAmount().subscribe({
           next: amount => {
-            this.maxServiceAmount = amount;
-            this.filter.maxAmount = amount;
+            this.maxServiceAmount = amount ?? 0;
+            this.filter.maxAmount = this.maxServiceAmount;
             this.LoadBusinesses(this.filter);
           },
           error: err => console.error(err)
@@ -87,9 +90,10 @@ export class BusinessSearchComponent implements OnInit {
     this.service.getAllServices().subscribe({
       next: data => {
         this.BusinessServiceDto = data;
-        if (data.length) {
-          this.minServiceAmount = Math.min(...data.map(s => s.amount));
-        }
+        const amounts = data
+          .map(s => s.amount)
+          .filter((a): a is number => a != null);
+        this.minServiceAmount = amounts.length ? Math.min(...amounts) : 0;
       },
       error: err => console.error(err)
     });
@@ -106,7 +110,11 @@ export class BusinessSearchComponent implements OnInit {
       filter.skip,
       filter.maxAmount
     ).subscribe({
-      next: data => this.BusinessDto = data,
+      next: data => {
+        this.allBusinesses = data;
+        this.hasMore = data.length === filter.take;
+        this.applyDayFilter();
+      },
       error: err => console.error('خطا در دریافت داده‌ها:', err)
     });
   }
@@ -157,6 +165,24 @@ export class BusinessSearchComponent implements OnInit {
     }
   }
 
+  private applyDayFilter() {
+    this.BusinessDto = this.allBusinesses.filter(b =>
+      b.businessDayTimeDtos?.some(t => t.dayOfWeek === this.filterDay)
+    );
+  }
+
+  nextFilterDay() {
+    this.filterDay = (this.filterDay % 7) + 1;
+    this.filter.skip = 0;
+    this.applyDayFilter();
+  }
+
+  prevFilterDay() {
+    this.filterDay = ((this.filterDay + 5) % 7) + 1;
+    this.filter.skip = 0;
+    this.applyDayFilter();
+  }
+
   // stars
   getStars(rate: number): number[] {
     const filled = Math.round(rate);
@@ -177,7 +203,8 @@ export class BusinessSearchComponent implements OnInit {
   openModal(business: BusinessDto) {
     this.selectedBusiness = business;
     this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
-    this.currentDayIndex = 0;
+    const idx = this.uniqueDays.indexOf(this.filterDay);
+    this.currentDayIndex = idx !== -1 ? idx : 0;
     this.availableServices = this.BusinessServiceDto.filter(s => {
       const matchesBusiness = s.businessId === business.id;
       const matchesService =

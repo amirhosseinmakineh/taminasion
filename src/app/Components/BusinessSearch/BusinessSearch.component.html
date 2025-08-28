@@ -64,7 +64,7 @@
   }
 
   .tab.is-active {
-    background: #7C3AED;
+    background: #0F2FA1;
     color: #fff;
     font-weight: 600;
   }
@@ -126,7 +126,7 @@
   .check input {
     width: 18px;
     height: 18px;
-    accent-color: #7C3AED;
+    accent-color: #0F2FA1;
     cursor: pointer;
   }
 
@@ -247,14 +247,14 @@
   }
 
   .btn--primary {
-    background: #7C3AED;
+    background: #0F2FA1;
     color: #fff;
   }
 
   .btn--ghost {
     background: #fff;
-    color: #7C3AED;
-    border: 1px solid #7C3AED;
+    color: #0F2FA1;
+    border: 1px solid #0F2FA1;
   }
 
   .avatar {
@@ -292,11 +292,11 @@
       <div class="tab">جدیدترین</div>
     </div>
     <div class="date-chip">
-      <span>۱ روز بعد</span>
+      <button class="btn btn--ghost" (click)="prevFilterDay()">روز قبل</button>
       <span class="sep"></span>
-      <span>۱۴۰۴/۰۵/۰۴</span>
+      <span>{{ getDayName(filterDay) }}</span>
       <span class="sep"></span>
-      <span>هر روز</span>
+      <button class="btn btn--ghost" (click)="nextFilterDay()">روز بعد</button>
     </div>
   </div>
 
@@ -393,8 +393,8 @@
 </section>
 
 <div class="pagination">
-  <button class="btn btn--ghost" (click)="prevPage()" [disabled]="skip === 0">صفحه قبل</button>
-  <button class="btn btn--ghost" (click)="nextPage()">صفحه بعد</button>
+  <button class="btn btn--ghost" (click)="prevPage()" [disabled]="filter.skip === 0">صفحه قبل</button>
+  <button class="btn btn--ghost" (click)="nextPage()" [disabled]="!hasMore">صفحه بعد</button>
 </div>
 
 <!-- Modal -->
