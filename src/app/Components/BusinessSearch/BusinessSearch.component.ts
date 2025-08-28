@@ -6,7 +6,6 @@ import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDt
 import { BusinessDto, BusinessDayTimeDto } from '../../Interfaces/Businises/BusinessDto';
 import { isPlatformBrowser } from '@angular/common';
 import { BusinessFilter } from '../../Interfaces/Businises/BusinessFilter';
-import { Timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-business-search',
@@ -48,6 +47,7 @@ export class BusinessSearchComponent implements OnInit {
   selectedTimes: { [serviceId: number]: number } = {};
 
   maxServiceAmount = 0;
+  minServiceAmount = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -85,7 +85,12 @@ export class BusinessSearchComponent implements OnInit {
 
   LoadServices() {
     this.service.getAllServices().subscribe({
-      next: data => this.BusinessServiceDto = data,
+      next: data => {
+        this.BusinessServiceDto = data;
+        if (data.length) {
+          this.minServiceAmount = Math.min(...data.map(s => s.amount));
+        }
+      },
       error: err => console.error(err)
     });
   }
@@ -117,6 +122,15 @@ export class BusinessSearchComponent implements OnInit {
     this.filter.maxAmount = value;
     this.filter.skip = 0;
     this.LoadBusinesses(this.filter);
+    if (this.showModal && this.selectedBusiness) {
+      this.availableServices = this.BusinessServiceDto.filter(s => {
+        const matchesBusiness = s.businessId === this.selectedBusiness!.id;
+        const matchesService =
+          this.filter.serviceIds.length === 0 || this.filter.serviceIds.includes(s.serviceId);
+        const matchesPrice = s.amount <= this.filter.maxAmount;
+        return matchesBusiness && matchesService && matchesPrice;
+      });
+    }
   }
 
   onServiceChange(serviceId: number, event: Event) {
@@ -154,13 +168,13 @@ export class BusinessSearchComponent implements OnInit {
     this.selectedBusiness = business;
     this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
     this.currentDayIndex = 0;
-    if (this.filter.serviceIds.length > 0) {
-      this.availableServices = this.BusinessServiceDto.filter(
-        s => s.businessId === business.id && this.filter.serviceIds.includes(s.serviceId)
-      );
-    } else {
-      this.availableServices = this.BusinessServiceDto.filter(s => s.businessId === business.id);
-    }
+    this.availableServices = this.BusinessServiceDto.filter(s => {
+      const matchesBusiness = s.businessId === business.id;
+      const matchesService =
+        this.filter.serviceIds.length === 0 || this.filter.serviceIds.includes(s.serviceId);
+      const matchesPrice = s.amount <= this.filter.maxAmount;
+      return matchesBusiness && matchesService && matchesPrice;
+    });
     this.selectedTimes = {};
     this.showModal = true;
   }

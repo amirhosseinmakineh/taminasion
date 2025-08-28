@@ -1,0 +1,45 @@
+.profile-container {
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.banner {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.tabs button {
+  padding: 8px 12px;
+  border: 1px solid #E5E7EB;
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #7C3AED;
+  color: #fff;
+  border-color: #7C3AED;
+}
+
+.tab-content {
+  text-align: right;
+  margin-top: 12px;
+}
+
+.comment {
+  background: #F3F4F6;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}

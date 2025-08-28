@@ -247,14 +247,14 @@
   }
 
   .btn--primary {
-    background: #0F2FA1;
+    background: #7C3AED;
     color: #fff;
   }
 
   .btn--ghost {
     background: #fff;
-    color: #0F2FA1;
-    border: 1px solid #0F2FA1;
+    color: #7C3AED;
+    border: 1px solid #7C3AED;
   }
 
   .avatar {
@@ -320,10 +320,10 @@
 
   <!-- بازه قیمت -->
   <div class="sb-title">بازه قیمت</div>
-  <input type="range" min="0" [max]="maxServiceAmount" [(ngModel)]="filter.maxAmount" (change)="onPriceChange(filter.maxAmount)" style="width: 100%; accent-color: #0F2FA1;">
+  <input type="range" class="price-slider" [min]="minServiceAmount" [max]="maxServiceAmount" [(ngModel)]="filter.maxAmount" (input)="onPriceChange(filter.maxAmount)">
   <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
-    <input type="text" [value]="0" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
-    <input type="text" [value]="filter.maxAmount" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+    <input type="text" [value]="minServiceAmount | number:'1.0-0':'fa'" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+    <input type="text" [value]="filter.maxAmount | number:'1.0-0':'fa'" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
   </div>
 
   <hr style="margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;">
@@ -366,7 +366,7 @@
 
               <!-- توضیحات یا قیمت -->
               <div class="price">{{ business.description }}</div>
-              <div class="price">از {{ business.amount }} تومان</div>
+              <div class="price">از {{ business.amount | number:'1.0-0':'fa' }} تومان</div>
             </div>
           </div>
         </div>
@@ -410,7 +410,7 @@
       <h3>انتخاب سرویس</h3>
       <div *ngFor="let s of availableServices" class="service-row">
         <span class="service-name">{{ s.serviceName }}</span>
-        <span class="service-price">{{ s.amount }} تومان</span>
+          <span class="service-price">{{ s.amount | number:'1.0-0':'fa' }} تومان</span>
         <select (change)="onTimeSelect(s.serviceId, $any($event.target).value)">
           <option value="">انتخاب زمان</option>
           <option *ngFor="let t of timesForCurrentDay" [value]="t.businessOwnerTimeId" [disabled]="t.isReserved">
