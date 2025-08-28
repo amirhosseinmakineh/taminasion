@@ -163,6 +163,16 @@ export class BusinessSearchComponent implements OnInit {
     return Array(5).fill(0).map((_, i) => (i < filled ? 1 : 0));
   }
 
+  /**
+   * Format service price in Persian locale with "تومان" suffix.
+   * Falls back to a readable message if amount is missing.
+   */
+  formatPrice(amount?: number): string {
+    return amount != null
+      ? `${amount.toLocaleString('fa-IR')} تومان`
+      : 'قیمت ثبت نشده';
+  }
+
   // modal
   openModal(business: BusinessDto) {
     this.selectedBusiness = business;
