@@ -23,6 +23,7 @@ export class BusinessSearchComponent implements OnInit {
     serviceIds: [],
     take: 20,
     skip: 0,
+    maxAmount: 0,
   };
 
   // دیتاها
@@ -46,6 +47,8 @@ export class BusinessSearchComponent implements OnInit {
   currentDayIndex = 0;
   selectedTimes: { [serviceId: number]: number } = {};
 
+  maxServiceAmount = 0;
+
   constructor(
     private route: ActivatedRoute,
     private service: BusinessService,
@@ -60,7 +63,15 @@ export class BusinessSearchComponent implements OnInit {
       this.route.queryParams.subscribe(params => {
         const hoodId = Number(params['neighberHoodId']) || 0;
         this.filter.neighberHoodId = hoodId;   // 🔴 مقدار مستقیم توی فیلتر ست بشه
-        this.LoadBusinesses(this.filter);
+
+        this.service.getMaxServiceAmount().subscribe({
+          next: amount => {
+            this.maxServiceAmount = amount;
+            this.filter.maxAmount = amount;
+            this.LoadBusinesses(this.filter);
+          },
+          error: err => console.error(err)
+        });
       });
     }
   }
@@ -87,7 +98,8 @@ export class BusinessSearchComponent implements OnInit {
       filter.categoryId,
       filter.serviceIds,
       filter.take,
-      filter.skip
+      filter.skip,
+      filter.maxAmount
     ).subscribe({
       next: data => this.BusinessDto = data,
       error: err => console.error('خطا در دریافت داده‌ها:', err)
@@ -97,6 +109,12 @@ export class BusinessSearchComponent implements OnInit {
   onCategoryChange(cat: CategoryDto, event: Event) {
     const checked = (event.target as HTMLInputElement)?.checked ?? false;
     this.filter.categoryId = checked ? cat.categoryId : 0;
+    this.filter.skip = 0;
+    this.LoadBusinesses(this.filter);
+  }
+
+  onPriceChange(value: number) {
+    this.filter.maxAmount = value;
     this.filter.skip = 0;
     this.LoadBusinesses(this.filter);
   }

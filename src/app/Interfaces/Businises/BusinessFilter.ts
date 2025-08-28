@@ -4,4 +4,5 @@ export interface BusinessFilter {
   serviceIds: number[];
   take: number;
   skip: number;
+  maxAmount?: number;
 }
