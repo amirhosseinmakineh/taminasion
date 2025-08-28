@@ -48,9 +48,14 @@ getAllCategories(): Observable<CategoryDto[]>{
   return this.http.get<CategoryDto[]>(url);
 }
 
-getAllServices() : Observable<BusinessServiceDto[]>{
+  getAllServices() : Observable<BusinessServiceDto[]>{
 const url = `${this.BASE_URL}/GetBusinessService`;
 return this.http.get<BusinessServiceDto[]>(url);
+}
+
+getMaxServiceAmount(): Observable<number> {
+  const url = `${this.BASE_URL}/GetMaxServiceAmount`;
+  return this.http.get<number>(url);
 }
 getAllBusineses(
   neighberHoodId: number,

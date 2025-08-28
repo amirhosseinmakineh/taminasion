@@ -28,7 +28,7 @@
   body {
     margin: 0;
     font-family: "Vazirmatn", sans-serif;
-    background: #0F2FA1;
+    background: #fff;
     direction: rtl;
   }
 
@@ -247,14 +247,14 @@
   }
 
   .btn--primary {
-    background: #7C3AED;
+    background: #0F2FA1;
     color: #fff;
   }
 
   .btn--ghost {
     background: #fff;
-    color: #7C3AED;
-    border: 1px solid #E6DBFF;
+    color: #0F2FA1;
+    border: 1px solid #0F2FA1;
   }
 
   .avatar {
@@ -320,10 +320,10 @@
 
   <!-- بازه قیمت -->
   <div class="sb-title">بازه قیمت</div>
-  <input type="range" min="0" max="100" value="50" style="width: 100%; accent-color: #7C3AED;">
+  <input type="range" min="0" [max]="maxServiceAmount" [(ngModel)]="filter.maxAmount" (change)="onPriceChange(filter.maxAmount)" style="width: 100%; accent-color: #0F2FA1;">
   <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
-    <input type="text" value="۱۹۰,۰۰۰ تومان" style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
-    <input type="text" value="۷۰۰,۰۰۰ تومان" style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+    <input type="text" [value]="0" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+    <input type="text" [value]="filter.maxAmount" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
   </div>
 
   <hr style="margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;">
