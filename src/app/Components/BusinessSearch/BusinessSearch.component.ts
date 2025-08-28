@@ -136,7 +136,13 @@ export class BusinessSearchComponent implements OnInit {
     this.selectedBusiness = business;
     this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
     this.currentDayIndex = 0;
-    this.availableServices = this.BusinessServiceDto.filter(s => s.businessId === business.id);
+    if (this.filter.serviceIds.length > 0) {
+      this.availableServices = this.BusinessServiceDto.filter(
+        s => s.businessId === business.id && this.filter.serviceIds.includes(s.serviceId)
+      );
+    } else {
+      this.availableServices = this.BusinessServiceDto.filter(s => s.businessId === business.id);
+    }
     this.selectedTimes = {};
     this.showModal = true;
   }
