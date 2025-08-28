@@ -28,7 +28,7 @@
   body {
     margin: 0;
     font-family: "Vazirmatn", sans-serif;
-    background: #FBFBFD;
+    background: #0F2FA1;
     direction: rtl;
   }
 
@@ -410,7 +410,7 @@
       <h3>انتخاب سرویس</h3>
       <div *ngFor="let s of availableServices" class="service-row">
         <span class="service-name">{{ s.serviceName }}</span>
-        <span class="service-price">{{ s.Amount }} تومان</span>
+        <span class="service-price">{{ s.amount }} تومان</span>
         <select (change)="onTimeSelect(s.serviceId, $any($event.target).value)">
           <option value="">انتخاب زمان</option>
           <option *ngFor="let t of timesForCurrentDay" [value]="t.businessOwnerTimeId" [disabled]="t.isReserved">
