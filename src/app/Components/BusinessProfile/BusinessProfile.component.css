@@ -11,10 +11,35 @@
   margin-bottom: 16px;
 }
 
-.comments {
-  margin-top: 24px;
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.tabs button {
+  padding: 8px 12px;
+  border: 1px solid #E5E7EB;
   background: #fff;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #7C3AED;
+  color: #fff;
+  border-color: #7C3AED;
+}
+
+.tab-content {
+  text-align: right;
+  margin-top: 12px;
+}
+
+.comment {
+  background: #F3F4F6;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
 }

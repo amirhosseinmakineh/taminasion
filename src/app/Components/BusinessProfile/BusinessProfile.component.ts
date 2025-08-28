@@ -6,4 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./BusinessProfile.component.css'],
   standalone: false,
 })
-export class BusinessProfileComponent {}
+export class BusinessProfileComponent {
+  activeTab: 'experience' | 'certificates' | 'comments' = 'experience';
+
+  experiences: string[] = ['۵ سال سابقه کار در سالن الف'];
+  certificates: string[] = [];
+  comments: string[] = ['بسیار حرفه‌ای و خوش برخورد'];
+}

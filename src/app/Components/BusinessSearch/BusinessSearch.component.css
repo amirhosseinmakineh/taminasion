@@ -186,6 +186,12 @@ color: #4A6DEC;
   margin-bottom: 8px;
 }
 
+.price-slider {
+  width: 100%;
+  accent-color: #0F2FA1;
+  direction: ltr;
+}
+
 .service-name {
   flex: 1;
 }

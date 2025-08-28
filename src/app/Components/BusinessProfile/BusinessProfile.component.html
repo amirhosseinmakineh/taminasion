@@ -1,9 +1,31 @@
 <div class="profile-container">
   <img src="landingbackground.png" alt="profile" class="banner">
-  <h1>پروفایل کسب‌وکار</h1>
-  <p>اطلاعاتی موجود نیست</p>
-  <div class="comments">
-    <h2>نظرات</h2>
-    <p>نظری ثبت نشده است</p>
+  <h1>پروفایل آرایشگر</h1>
+
+  <div class="tabs">
+    <button [class.active]="activeTab==='experience'" (click)="activeTab='experience'">سوابق کاری</button>
+    <button [class.active]="activeTab==='certificates'" (click)="activeTab='certificates'">مدارک</button>
+    <button [class.active]="activeTab==='comments'" (click)="activeTab='comments'">نظرات</button>
+  </div>
+
+  <div *ngIf="activeTab==='experience'" class="tab-content">
+    <ng-container *ngIf="experiences.length; else noExp">
+      <div *ngFor="let e of experiences">{{ e }}</div>
+    </ng-container>
+    <ng-template #noExp><p>اطلاعاتی موجود نیست</p></ng-template>
+  </div>
+
+  <div *ngIf="activeTab==='certificates'" class="tab-content">
+    <ng-container *ngIf="certificates.length; else noCert">
+      <div *ngFor="let c of certificates">{{ c }}</div>
+    </ng-container>
+    <ng-template #noCert><p>اطلاعاتی موجود نیست</p></ng-template>
+  </div>
+
+  <div *ngIf="activeTab==='comments'" class="tab-content">
+    <ng-container *ngIf="comments.length; else noComment">
+      <div *ngFor="let cm of comments" class="comment">{{ cm }}</div>
+    </ng-container>
+    <ng-template #noComment><p>نظری ثبت نشده است</p></ng-template>
   </div>
 </div>
