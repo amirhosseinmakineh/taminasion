@@ -4,6 +4,12 @@ export interface BusinessDayTimeDto {
   fromTime: string;
   /** پایان بازه زمانی به صورت رشته ساعت */
   toTime: string;
+  /**
+   * فیلدهای جایگزین برای سازگاری با نسخه‌های قدیمی
+   * در صورت ارسال از سرور، مقادیر از این فیلدها خوانده می‌شوند
+   */
+  from?: string;
+  to?: string;
   isReserved: boolean;
   businessOwnerDayId: number;
   /** شناسه بازه زمانی؛ ممکن است در برخی روزها وجود نداشته باشد */
