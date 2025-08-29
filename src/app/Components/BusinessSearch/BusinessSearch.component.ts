@@ -202,7 +202,12 @@ export class BusinessSearchComponent implements OnInit {
   // modal
   openModal(business: BusinessDto) {
     this.selectedBusiness = business;
-    this.uniqueDays = [...new Set(business.businessDayTimeDtos.map(d => d.dayOfWeek))];
+    // فقط روزهایی که بازه زمانی معتبر دارند نمایش داده می‌شوند
+    this.uniqueDays = [...new Set(
+      business.businessDayTimeDtos
+        .filter(t => t.businessOwnerTimeId != null && (t.fromTime ?? t.from) && (t.toTime ?? t.to))
+        .map(d => d.dayOfWeek)
+    )];
     const idx = this.uniqueDays.indexOf(this.filterDay);
     this.currentDayIndex = idx !== -1 ? idx : 0;
     this.availableServices = this.BusinessServiceDto.filter(s => {
@@ -230,7 +235,12 @@ export class BusinessSearchComponent implements OnInit {
   get timesForCurrentDay(): BusinessDayTimeDto[] {
     if (!this.selectedBusiness) return [];
     const day = this.uniqueDays[this.currentDayIndex];
-    return this.selectedBusiness.businessDayTimeDtos.filter(t => t.dayOfWeek === day);
+    return this.selectedBusiness.businessDayTimeDtos.filter(t =>
+      t.dayOfWeek === day &&
+      t.businessOwnerTimeId != null &&
+      (t.fromTime ?? t.from) &&
+      (t.toTime ?? t.to)
+    );
   }
 
   nextDay() {
