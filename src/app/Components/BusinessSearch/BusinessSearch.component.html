@@ -417,7 +417,7 @@
             {{ t.from }} - {{ t.to }}
           </option>
         </select>
-        <button class="btn btn--primary" (click)="reserve(s.serviceId)">رزرو نهایی</button>
+        <button class="btn btn--primary" (click)="reserve(s.serviceId)" [disabled]="!selectedTimes[s.serviceId]">رزرو نهایی</button>
       </div>
     </div>
   </div>
