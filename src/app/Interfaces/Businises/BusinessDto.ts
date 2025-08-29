@@ -1,12 +1,9 @@
 export interface BusinessDayTimeDto {
   dayOfWeek: number;
   /** شروع بازه زمانی به صورت رشته ساعت */
-  fromTime?: string;
+  fromTime: string;
   /** پایان بازه زمانی به صورت رشته ساعت */
-  toTime?: string;
-  /** فیلدهای قدیمی که ممکن است از بک‌اند برگردند */
-  from?: string;
-  to?: string;
+  toTime: string;
   isReserved: boolean;
   businessOwnerDayId: number;
   /** شناسه بازه زمانی؛ ممکن است در برخی روزها وجود نداشته باشد */
