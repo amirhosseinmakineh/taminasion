@@ -6,7 +6,8 @@ export interface BusinessDayTimeDto {
   toTime: string;
   isReserved: boolean;
   businessOwnerDayId: number;
-  businessOwnerTimeId: number;
+  /** شناسه بازه زمانی؛ ممکن است در برخی روزها وجود نداشته باشد */
+  businessOwnerTimeId?: number | null;
 }
 
 export interface BusinessDto {
