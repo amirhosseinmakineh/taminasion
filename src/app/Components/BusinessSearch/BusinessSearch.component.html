@@ -414,7 +414,7 @@
         <select (change)="onTimeSelect(s.serviceId, $any($event.target).value)">
           <option value="">انتخاب زمان</option>
           <option *ngFor="let t of timesForCurrentDay" [value]="t.businessOwnerTimeId" [disabled]="t.isReserved">
-            {{ (t.fromTime || t.from) }} - {{ (t.toTime || t.to) }}
+            {{ t.fromTime }} - {{ t.toTime }}
           </option>
         </select>
         <button class="btn btn--primary" (click)="reserve(s.serviceId)" [disabled]="!selectedTimes[s.serviceId]">رزرو نهایی</button>
