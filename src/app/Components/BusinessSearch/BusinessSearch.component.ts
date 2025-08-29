@@ -234,11 +234,19 @@ export class BusinessSearchComponent implements OnInit {
   }
 
   nextDay() {
-    if (this.currentDayIndex < this.uniqueDays.length - 1) this.currentDayIndex++;
+    if (this.currentDayIndex < this.uniqueDays.length - 1) {
+      this.currentDayIndex++;
+      // reset previously selected times when switching days
+      this.selectedTimes = {};
+    }
   }
 
   prevDay() {
-    if (this.currentDayIndex > 0) this.currentDayIndex--;
+    if (this.currentDayIndex > 0) {
+      this.currentDayIndex--;
+      // clear selections so times re-load for the new day
+      this.selectedTimes = {};
+    }
   }
 
   onTimeSelect(serviceId: number, timeId: string) {
