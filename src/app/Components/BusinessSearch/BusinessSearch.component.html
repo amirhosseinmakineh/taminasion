@@ -320,10 +320,27 @@
 
   <!-- بازه قیمت -->
   <div class="sb-title">بازه قیمت</div>
-  <input type="range" class="price-slider" [min]="minServiceAmount" [max]="maxServiceAmount" [(ngModel)]="filter.maxAmount" (input)="onPriceChange(filter.maxAmount)">
+  <input
+    type="range"
+    class="price-slider"
+    [min]="minServiceAmount || 0"
+    [max]="maxServiceAmount || 0"
+    [(ngModel)]="filter.maxAmount"
+    (ngModelChange)="onPriceChange($event)"
+  >
   <div style="display: flex; justify-content: center; gap: 8px; margin-top: 10px;">
-    <input type="text" [value]="minServiceAmount | number:'1.0-0':'fa'" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
-    <input type="text" [value]="filter.maxAmount | number:'1.0-0':'fa'" readonly style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;">
+    <input
+      type="text"
+      [value]="(minServiceAmount || 0) | number:'1.0-0':'fa'"
+      readonly
+      style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;"
+    >
+    <input
+      type="text"
+      [value]="(filter.maxAmount || 0) | number:'1.0-0':'fa'"
+      readonly
+      style="text-align:center; padding:6px; border:1px solid #D1D5DB; border-radius:8px; font-size:12px; width: 110px;"
+    >
   </div>
 
   <hr style="margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;">

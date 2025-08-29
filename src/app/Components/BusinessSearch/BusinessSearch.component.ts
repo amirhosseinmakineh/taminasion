@@ -124,8 +124,8 @@ export class BusinessSearchComponent implements OnInit {
     this.LoadBusinesses(this.filter);
   }
 
-  onPriceChange(value: number) {
-    this.filter.maxAmount = value;
+  onPriceChange(value: number | string) {
+    this.filter.maxAmount = Number(value) || 0;
     this.filter.skip = 0;
     this.LoadBusinesses(this.filter);
     if (this.showModal && this.selectedBusiness) {
