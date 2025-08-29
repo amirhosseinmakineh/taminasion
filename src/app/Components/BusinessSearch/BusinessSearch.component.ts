@@ -90,10 +90,8 @@ export class BusinessSearchComponent implements OnInit {
     this.service.getAllServices().subscribe({
       next: data => {
         this.BusinessServiceDto = data;
-        const amounts = data
-          .map(s => s.amount)
-          .filter((a): a is number => a != null);
-        this.minServiceAmount = amounts.length ? Math.min(...amounts) : 0;
+        // Slider should always start from zero regardless of available service prices
+        this.minServiceAmount = 0;
       },
       error: err => console.error(err)
     });
