@@ -1,4 +1,4 @@
-import { BusinessNeighborhood } from './BusinessNeighberhood';
+import { BusinessNeighborhood } from './business-neighborhood.model';
 
 export interface BusinessRegion {
   id: number;

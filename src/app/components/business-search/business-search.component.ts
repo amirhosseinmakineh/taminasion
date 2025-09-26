@@ -1,16 +1,17 @@
-import { Component, Input, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BusinessService } from '../../services/business.service';
-import { CategoryDto } from '../../Interfaces/Businises/CategoryDto';
-import { BusinessServiceDto } from '../../Interfaces/Businises/BusinessServiceDto';
-import { BusinessDto, BusinessDayTimeDto } from '../../Interfaces/Businises/BusinessDto';
 import { isPlatformBrowser } from '@angular/common';
-import { BusinessFilter } from '../../Interfaces/Businises/BusinessFilter';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { BusinessFilter } from '../../models/business/business-filter.model';
+import { BusinessDto, BusinessDayTimeDto } from '../../models/business/business.model';
+import { BusinessServiceDto } from '../../models/business/business-service.dto';
+import { CategoryDto } from '../../models/business/category.dto';
+import { BusinessService } from '../../services/business.service';
 
 @Component({
   selector: 'app-business-search',
-  templateUrl: './BusinessSearch.component.html',
-  styleUrls: ['./BusinessSearch.component.css'],
+  templateUrl: './business-search.component.html',
+  styleUrls: ['./business-search.component.css'],
   standalone: false,
 })
 export class BusinessSearchComponent implements OnInit {
@@ -27,14 +28,12 @@ export class BusinessSearchComponent implements OnInit {
 
   // دیتاها
   categories: CategoryDto[] = [];
-  BusinessServiceDto: BusinessServiceDto[] = [];
-  BusinessDto: BusinessDto[] = [];
+  businessServices: BusinessServiceDto[] = [];
+  businesses: BusinessDto[] = [];
   private allBusinesses: BusinessDto[] = [];
 
   // انتخاب‌ها
-  selectedServices: number[] = [];
   availableServices: BusinessServiceDto[] = [];
-  selectedCategoryId = 0;
 
   // modal
   showModal = false;
@@ -55,13 +54,13 @@ export class BusinessSearchComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private service: BusinessService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
   ) {}
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.LoadCategories();
-      this.LoadServices();
+      this.loadCategories();
+      this.loadServices();
 
       this.route.queryParams.subscribe(params => {
         const hoodId = Number(params['neighberHoodId']) || 0;
@@ -71,7 +70,7 @@ export class BusinessSearchComponent implements OnInit {
           next: amount => {
             this.maxServiceAmount = amount ?? 0;
             this.filter.maxAmount = this.maxServiceAmount;
-            this.LoadBusinesses(this.filter);
+            this.loadBusinesses(this.filter);
           },
           error: err => console.error(err)
         });
@@ -79,17 +78,17 @@ export class BusinessSearchComponent implements OnInit {
     }
   }
 
-  LoadCategories() {
+  loadCategories(): void {
     this.service.getAllCategories().subscribe({
       next: data => this.categories = data,
       error: err => console.error(err)
     });
   }
 
-  LoadServices() {
+  loadServices(): void {
     this.service.getAllServices().subscribe({
       next: data => {
-        this.BusinessServiceDto = data;
+        this.businessServices = data;
         // Slider should always start from zero regardless of available service prices
         this.minServiceAmount = 0;
       },
@@ -97,10 +96,8 @@ export class BusinessSearchComponent implements OnInit {
     });
   }
 
-  LoadBusinesses(filter: BusinessFilter): void {
-    console.log('sending filter >>>', filter);
-
-    this.service.getAllBusineses(
+  loadBusinesses(filter: BusinessFilter): void {
+    this.service.getAllBusinesses(
       filter.neighberHoodId,
       filter.categoryId,
       filter.serviceIds,
@@ -121,15 +118,15 @@ export class BusinessSearchComponent implements OnInit {
     const checked = (event.target as HTMLInputElement)?.checked ?? false;
     this.filter.categoryId = checked ? cat.categoryId : 0;
     this.filter.skip = 0;
-    this.LoadBusinesses(this.filter);
+    this.loadBusinesses(this.filter);
   }
 
   onPriceChange(value: number | string) {
     this.filter.maxAmount = Number(value) || 0;
     this.filter.skip = 0;
-    this.LoadBusinesses(this.filter);
+    this.loadBusinesses(this.filter);
     if (this.showModal && this.selectedBusiness) {
-      this.availableServices = this.BusinessServiceDto.filter(s => {
+      this.availableServices = this.businessServices.filter(s => {
         const matchesBusiness = s.businessId === this.selectedBusiness!.id;
         const matchesService =
           this.filter.serviceIds.length === 0 || this.filter.serviceIds.includes(s.serviceId);
@@ -147,24 +144,24 @@ export class BusinessSearchComponent implements OnInit {
       this.filter.serviceIds = this.filter.serviceIds.filter(id => id !== serviceId);
     }
     this.filter.skip = 0;
-    this.LoadBusinesses(this.filter);
+    this.loadBusinesses(this.filter);
   }
 
   // pagination
   nextPage() {
     this.filter.skip += this.filter.take;
-    this.LoadBusinesses(this.filter);
+    this.loadBusinesses(this.filter);
   }
 
   prevPage() {
     if (this.filter.skip >= this.filter.take) {
       this.filter.skip -= this.filter.take;
-      this.LoadBusinesses(this.filter);
+      this.loadBusinesses(this.filter);
     }
   }
 
   private applyDayFilter() {
-    this.BusinessDto = this.allBusinesses.filter(b =>
+    this.businesses = this.allBusinesses.filter(b =>
       b.businessDayTimeDtos?.some(t => t.dayOfWeek === this.filterDay)
     );
   }
@@ -208,7 +205,7 @@ export class BusinessSearchComponent implements OnInit {
     )];
     const idx = this.uniqueDays.indexOf(this.filterDay);
     this.currentDayIndex = idx !== -1 ? idx : 0;
-    this.availableServices = this.BusinessServiceDto.filter(s => {
+    this.availableServices = this.businessServices.filter(s => {
       const matchesBusiness = s.businessId === business.id;
       const matchesService =
         this.filter.serviceIds.length === 0 || this.filter.serviceIds.includes(s.serviceId);

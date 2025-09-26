@@ -2,25 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { BusinessCity } from '../Interfaces/Businises/BusinessCity';
-import { BusinessRegion } from '../Interfaces/Businises/BusinessRegion';
-import { BusinessNeighborhood } from '../Interfaces/Businises/BusinessNeighberhood';
-import { CategoryDto } from '../Interfaces/Businises/CategoryDto';
-import { BusinessServiceDto } from '../Interfaces/Businises/BusinessServiceDto';
-import { BusinessDto } from '../Interfaces/Businises/BusinessDto';
-import { BusinessFilter } from '../Interfaces/Businises/BusinessFilter';
+import { BusinessCity } from '../models/business/business-city.model';
+import { BusinessDto } from '../models/business/business.model';
+import { BusinessNeighborhood } from '../models/business/business-neighborhood.model';
+import { BusinessRegion } from '../models/business/business-region.model';
+import { BusinessServiceDto } from '../models/business/business-service.dto';
+import { BusinessFilter } from '../models/business/business-filter.model';
+import { CategoryDto } from '../models/business/category.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusinessService {
-  private readonly BASE_URL = 'http://localhost:5107/api/Busines';
+  private readonly baseUrl = 'http://localhost:5107/api/Busines';
   private readonly categoryBaseUrl = 'http://localhost:5107/api/Category';
+
   constructor(private http: HttpClient) {}
 
   // گرفتن لیست شهرها (مستقل از فیلتر)
   getCities(): Observable<BusinessCity[]> {
-    return this.http.get<BusinessCity[]>(`${this.BASE_URL}/Cities`);
+    return this.http.get<BusinessCity[]>(`${this.baseUrl}/Cities`);
   }
 
   // فیلتر اول: با cityId → دریافت مناطق + کسب‌وکار
@@ -28,7 +29,7 @@ export class BusinessService {
     regions: BusinessRegion[];
     businesses: any[];
   }> {
-    return this.http.get<any>(`${this.BASE_URL}?businessCityId=${cityId}`);
+    return this.http.get<any>(`${this.baseUrl}?businessCityId=${cityId}`);
   }
 
   // فیلتر دوم: با regionId → دریافت محله‌ها + کسب‌وکار
@@ -36,66 +37,65 @@ export class BusinessService {
     neighborhoods: BusinessNeighborhood[];
     businesses: any[];
   }> {
-    return this.http.get<any>(`${this.BASE_URL}?regionId=${regionId}`);
+    return this.http.get<any>(`${this.baseUrl}?regionId=${regionId}`);
   }
+
   getNeighborhoodsAndBusinesses(cityId: number, regionId: number): Observable<any> {
-  const url = `${this.BASE_URL}?businessCityId=${cityId}&regionId=${regionId}`;
-  return this.http.get<any>(url);
-}
-
-getAllCategories(): Observable<CategoryDto[]>{
-  const url = `${this.categoryBaseUrl}`;
-  return this.http.get<CategoryDto[]>(url);
-}
-
-  getAllServices() : Observable<BusinessServiceDto[]>{
-const url = `${this.BASE_URL}/GetBusinessService`;
-return this.http.get<BusinessServiceDto[]>(url);
-}
-
-getMaxServiceAmount(): Observable<number> {
-  const url = `${this.BASE_URL}/GetMaxServiceAmount`;
-  return this.http.get<number>(url);
-}
-getAllBusineses(
-  neighberHoodId: number,
-  categoryId?: number,
-  serviceIds?: number[],
-  take: number = 6,
-  skip: number = 0,
-  maxAmount?: number
-): Observable<BusinessDto[]> {
-  const url = `${this.BASE_URL}/Busineses`;
-
-  let params = new HttpParams()
-    .set('neighberHoodId', String(neighberHoodId))
-    .set('take', String(take ?? 6))
-    .set('skip', String(skip ?? 0));
-
-  if (categoryId !== undefined && categoryId !== null) {
-    params = params.set('categoryId', String(categoryId));
+    const url = `${this.baseUrl}?businessCityId=${cityId}&regionId=${regionId}`;
+    return this.http.get<any>(url);
   }
 
-  if (serviceIds && serviceIds.length) {
-    serviceIds.forEach(id => {
-      params = params.append('serviceIds', String(id)); // serviceIds=1&serviceIds=2...
+  getAllCategories(): Observable<CategoryDto[]> {
+    return this.http.get<CategoryDto[]>(this.categoryBaseUrl);
+  }
+
+  getAllServices(): Observable<BusinessServiceDto[]> {
+    const url = `${this.baseUrl}/GetBusinessService`;
+    return this.http.get<BusinessServiceDto[]>(url);
+  }
+
+  getMaxServiceAmount(): Observable<number> {
+    const url = `${this.baseUrl}/GetMaxServiceAmount`;
+    return this.http.get<number>(url);
+  }
+
+  getAllBusinesses(
+    neighberHoodId: number,
+    categoryId?: number,
+    serviceIds?: number[],
+    take = 6,
+    skip = 0,
+    maxAmount?: number
+  ): Observable<BusinessDto[]> {
+    const url = `${this.baseUrl}/Busineses`;
+
+    let params = new HttpParams()
+      .set('neighberHoodId', String(neighberHoodId))
+      .set('take', String(take ?? 6))
+      .set('skip', String(skip ?? 0));
+
+    if (categoryId !== undefined && categoryId !== null) {
+      params = params.set('categoryId', String(categoryId));
+    }
+
+    if (serviceIds?.length) {
+      serviceIds.forEach(id => {
+        params = params.append('serviceIds', String(id));
+      });
+    }
+
+    if (maxAmount !== undefined && maxAmount !== null) {
+      params = params.set('maxAmount', String(maxAmount));
+    }
+
+    return this.http.get<BusinessDto[]>(url, { params });
+  }
+
+  reserveServices(timeId: number, serviceIds: number[]): Observable<any> {
+    const url = `${this.baseUrl}/Reserve`;
+    return this.http.post(url, {
+      businessOwnerTimeId: timeId,
+      serviceIds,
     });
   }
-
-  if (maxAmount !== undefined && maxAmount !== null) {
-    params = params.set('maxAmount', String(maxAmount));
-  }
-
-  return this.http.get<BusinessDto[]>(url, { params });
-}
-
-
-reserveServices(timeId: number, serviceIds: number[]): Observable<any> {
-  const url = `${this.BASE_URL}/Reserve`;
-  return this.http.post(url, {
-    businessOwnerTimeId: timeId,
-    serviceIds,
-  });
-}
-
 }

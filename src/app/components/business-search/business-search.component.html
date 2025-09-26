@@ -307,7 +307,7 @@
   <!-- نوع خدمات -->
 <div class="sb-title">نوع خدمات</div>
 
-<label class="check" *ngFor="let service of BusinessServiceDto">
+  <label class="check" *ngFor="let service of businessServices">
   <input
     type="checkbox"
     [value]="service.serviceId"
@@ -360,7 +360,7 @@
 
     <!-- کارت‌ها -->
 <section>
-  <article class="card" *ngFor="let business of BusinessDto">
+  <article class="card" *ngFor="let business of businesses">
     <div class="card__row">
       <div>
         <!-- تگ‌ها (اچیومنت‌ها) -->

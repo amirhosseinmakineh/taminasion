@@ -1,11 +1,8 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
-import { BusinessSearchComponent } from './BusinessSearch.component';
 import { FormsModule } from '@angular/forms';
 
+import { BusinessSearchComponent } from './business-search.component';
 describe('BusinessSearchComponent', () => {
   let component: BusinessSearchComponent;
   let fixture: ComponentFixture<BusinessSearchComponent>;

@@ -1,9 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
-import { MainPageComponent } from './MainPage.component';
+import { MainPageComponent } from './main-page.component';
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;

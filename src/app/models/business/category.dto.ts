@@ -1,4 +1,4 @@
 export interface CategoryDto {
-  categoryId: number;   // ✅
+  categoryId: number; // ✅
   name: string;
 }

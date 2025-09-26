@@ -1,6 +1,7 @@
-// src/app/Shared/Ui/pips/rate-stars.pipe.ts
+// src/app/shared/ui/pipes/rate-stars.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
-import { RateEnum } from '../../../../../Enums/RateEnum.enum'
+
+import { RateEnum } from '../../enums/rate.enum';
 
 @Pipe({ name: 'rateStars', standalone: true, pure: true })
 export class RateStarsPipe implements PipeTransform {
@@ -19,8 +20,8 @@ export class RateStarsPipe implements PipeTransform {
     const raw = (clamped / safeTop) * maxStars;
     const filled =
       round === 'floor' ? Math.floor(raw) :
-      round === 'ceil'  ? Math.ceil(raw)  :
-                          Math.round(raw); // پیش‌فرض: round
+      round === 'ceil' ? Math.ceil(raw) :
+      Math.round(raw); // پیش‌فرض: round
 
     return '★'.repeat(filled) + '☆'.repeat(maxStars - filled);
   }

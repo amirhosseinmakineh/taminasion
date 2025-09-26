@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { BusinessDetailsComponent } from './BusinessDetails.component';
+import { BusinessDetailsComponent } from './business-details.component';
 
 const routes: Routes = [{ path: '', component: BusinessDetailsComponent }];
 

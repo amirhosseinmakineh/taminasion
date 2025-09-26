@@ -1,4 +1,4 @@
 export interface BusinessCity {
-  id : bigint
-  name : string
+  id: number;
+  name: string;
 }
