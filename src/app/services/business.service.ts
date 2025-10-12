@@ -9,6 +9,7 @@ import { BusinessRegion } from '../models/business/business-region.model';
 import { BusinessServiceDto } from '../models/business/business-service.dto';
 import { BusinessFilter } from '../models/business/business-filter.model';
 import { CategoryDto } from '../models/business/category.dto';
+import { BusinessDetailDto } from '../models/business/business-detail.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +58,12 @@ export class BusinessService {
   getMaxServiceAmount(): Observable<number> {
     const url = `${this.baseUrl}/GetMaxServiceAmount`;
     return this.http.get<number>(url);
+  }
+
+  getBusinessDetail(businessId: number): Observable<BusinessDetailDto> {
+    const url = `${this.baseUrl}/BusinessDetail`;
+    const params = new HttpParams().set('businessId', String(businessId));
+    return this.http.get<BusinessDetailDto>(url, { params });
   }
 
   getAllBusinesses(

@@ -1,46 +1,104 @@
-<div class="details-container">
-  <div class="business-card">
-    <div class="business-banner"></div>
-    <div class="business-info">
-      <div class="business-logo"></div>
-      <div class="business-name-rating" dir="rtl">
-        <span class="business-rating">۴.۵★</span>
-        <h2 class="business-name">آرایشگاه نمونه</h2>
+<div class="details-container" dir="rtl">
+  <ng-container *ngIf="businessDetail as detail; else statusTemplate">
+    <div class="business-card">
+      <div
+        class="business-banner"
+        [class.has-image]="!!getImageUrl(detail.bannerName)"
+        [style.background-image]="getImageUrl(detail.bannerName) ? 'url(' + getImageUrl(detail.bannerName) + ')' : null"
+      ></div>
+      <div class="business-info">
+        <ng-container *ngIf="getImageUrl(detail.logo); else fallbackLogo">
+          <img class="business-logo" [src]="getImageUrl(detail.logo)!" [alt]="detail.name">
+        </ng-container>
+        <ng-template #fallbackLogo>
+          <div class="business-logo placeholder">{{ detail.name.charAt(0) || '?' }}</div>
+        </ng-template>
+        <div class="business-meta">
+          <h2 class="business-name">{{ detail.name }}</h2>
+          <div class="business-location" *ngIf="detail.cityName || detail.regionName || detail.neighberhoodName">
+            {{ detail.cityName }}<ng-container *ngIf="detail.regionName">، {{ detail.regionName }}</ng-container><ng-container *ngIf="detail.neighberhoodName">، {{ detail.neighberhoodName }}</ng-container>
+          </div>
+          <p class="business-description" *ngIf="detail.description">{{ detail.description }}</p>
+          <div class="achievement-chips" *ngIf="detail.achievementDtos?.length">
+            <span class="chip" *ngFor="let achievement of detail.achievementDtos; trackBy: trackByAchievement">{{ achievement.name }}</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <h1>جزئیات کسب‌وکار</h1>
+    <div class="tabs">
+      <button type="button" [class.active]="activeTab==='services'" (click)="setActiveTab('services')">سرویس‌ها</button>
+      <button type="button" [class.active]="activeTab==='schedule'" (click)="setActiveTab('schedule')">زمان‌های آزاد</button>
+      <button type="button" [class.active]="activeTab==='achievements'" (click)="setActiveTab('achievements')">افتخارات</button>
+      <button type="button" [class.active]="activeTab==='comments'" (click)="setActiveTab('comments')">نظرات</button>
+    </div>
 
-  <div class="tabs">
-    <button [class.active]="activeTab==='staff'" (click)="activeTab='staff'">پرسنل</button>
-    <button [class.active]="activeTab==='experience'" (click)="activeTab='experience'">سوابق کاری</button>
-    <button [class.active]="activeTab==='certificates'" (click)="activeTab='certificates'">مدارک</button>
-    <button [class.active]="activeTab==='comments'" (click)="activeTab='comments'">نظرات</button>
-  </div>
+    <section class="tab-content" *ngIf="activeTab==='services'">
+      <ng-container *ngIf="detail.businessServiceDtos?.length; else noServices">
+        <div class="service-row" *ngFor="let service of detail.businessServiceDtos; trackBy: trackByService">
+          <span class="service-name">{{ service.serviceName }}</span>
+          <span class="service-price">{{ formatPrice(service.amount) }}</span>
+        </div>
+      </ng-container>
+      <ng-template #noServices>
+        <p class="empty-message">سرویسی ثبت نشده است.</p>
+      </ng-template>
+    </section>
 
-  <div *ngIf="activeTab==='staff'" class="tab-content">
-    <div *ngFor="let s of staff">{{ s }}</div>
-  </div>
+    <section class="tab-content" *ngIf="activeTab==='schedule'">
+      <ng-container *ngIf="detail.businessOwnerDayDtos?.length; else noSchedule">
+        <div class="day-row" *ngFor="let day of detail.businessOwnerDayDtos; trackBy: trackByDay">
+          <div class="day-name">{{ getDayName(day.dayOfWeek) }}</div>
+          <div class="day-times">
+            <ng-container *ngIf="day.businessOwnerTimes?.length; else closedDay">
+              <span
+                class="time-chip"
+                *ngFor="let time of day.businessOwnerTimes; trackBy: trackByTime"
+                [class.reserved]="time.isReserved"
+              >
+                {{ formatTime(time.from) }} - {{ formatTime(time.to) }}
+              </span>
+            </ng-container>
+            <ng-template #closedDay>
+              <span class="empty-message">زمانی ثبت نشده است.</span>
+            </ng-template>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noSchedule>
+        <p class="empty-message">زمان‌بندی برای این کسب‌وکار موجود نیست.</p>
+      </ng-template>
+    </section>
 
-  <div *ngIf="activeTab==='experience'" class="tab-content">
-    <ng-container *ngIf="experiences.length; else noExp">
-      <div *ngFor="let e of experiences">{{ e }}</div>
-    </ng-container>
-    <ng-template #noExp><p>اطلاعاتی موجود نیست</p></ng-template>
-  </div>
+    <section class="tab-content" *ngIf="activeTab==='achievements'">
+      <ng-container *ngIf="detail.achievementDtos?.length; else noAchievements">
+        <ul class="achievement-list">
+          <li *ngFor="let achievement of detail.achievementDtos; trackBy: trackByAchievement">{{ achievement.name }}</li>
+        </ul>
+      </ng-container>
+      <ng-template #noAchievements>
+        <p class="empty-message">افتخاری ثبت نشده است.</p>
+      </ng-template>
+    </section>
 
-  <div *ngIf="activeTab==='certificates'" class="tab-content">
-    <ng-container *ngIf="certificates.length; else noCert">
-      <div *ngFor="let c of certificates">{{ c }}</div>
-    </ng-container>
-    <ng-template #noCert><p>اطلاعاتی موجود نیست</p></ng-template>
-  </div>
+    <section class="tab-content" *ngIf="activeTab==='comments'">
+      <ng-container *ngIf="detail.commentDtos?.length; else noComments">
+        <article class="comment" *ngFor="let comment of detail.commentDtos; trackBy: trackByComment">
+          <header class="comment-header">
+            <span class="comment-author">{{ comment.userFullName ?? 'کاربر' }}</span>
+            <span class="comment-date" *ngIf="formatCommentDate(comment.createdOn) as date">{{ date }}</span>
+          </header>
+          <p class="comment-text">{{ getCommentText(comment) }}</p>
+        </article>
+      </ng-container>
+      <ng-template #noComments>
+        <p class="empty-message">نظری برای این کسب‌وکار ثبت نشده است.</p>
+      </ng-template>
+    </section>
+  </ng-container>
 
-  <div *ngIf="activeTab==='comments'" class="tab-content">
-    <ng-container *ngIf="comments.length; else noComment">
-      <div *ngFor="let cm of comments" class="comment">{{ cm }}</div>
-    </ng-container>
-    <ng-template #noComment><p>نظری ثبت نشده است</p></ng-template>
-  </div>
+  <ng-template #statusTemplate>
+    <div class="status" *ngIf="isLoading">در حال بارگذاری اطلاعات...</div>
+    <div class="status error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+  </ng-template>
 </div>
