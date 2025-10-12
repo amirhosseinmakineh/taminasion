@@ -8,7 +8,7 @@ const routes: Routes = [
         .then(m => m.BusinessSearchModule)
     },
     {
-      path: 'business-details',
+      path: 'business-details/:id',
       loadChildren: () => import('./components/business-details/business-details.module')
         .then(m => m.BusinessDetailsModule)
     },
