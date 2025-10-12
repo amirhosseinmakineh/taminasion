@@ -1,6 +1,6 @@
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, finalize, map, switchMap } from 'rxjs';
+import { combineLatest, EMPTY, finalize, map, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
@@ -44,9 +44,9 @@ export class BusinessDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap
+    combineLatest([this.route.paramMap, this.route.queryParamMap])
       .pipe(
-        map(params => params.get('id')),
+        map(([params, queryParams]) => params.get('id') ?? queryParams.get('businessId')),
         switchMap(idParam => {
           const id = idParam ? Number(idParam) : NaN;
           if (Number.isNaN(id) || id <= 0) {

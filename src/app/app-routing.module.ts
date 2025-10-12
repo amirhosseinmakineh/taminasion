@@ -13,6 +13,11 @@ const routes: Routes = [
         .then(m => m.BusinessDetailsModule)
     },
     {
+      path: 'business-details',
+      loadChildren: () => import('./components/business-details/business-details.module')
+        .then(m => m.BusinessDetailsModule)
+    },
+    {
       path: 'business-profile',
       loadChildren: () => import('./components/business-profile/business-profile.module')
         .then(m => m.BusinessProfileModule)
