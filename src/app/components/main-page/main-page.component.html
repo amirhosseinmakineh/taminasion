@@ -1,75 +1,157 @@
+<app-layout-header></app-layout-header>
 
-<div class="container">
-  <div class="logo">
-    <h1>Timinasion</h1>
-  </div>
-  <div class="menu">
-    <ul>
-      <li>صاحبان کسب و کار</li>
-      <li>درباره ما</li>
-      <li>تماس با ما</li>
-    </ul>
-  </div>
-  <div class="login">
-    <button>ثبت نام</button>
-    <button>ورود</button>
-  </div>
-</div>
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd5e" alt="نمونه داشبورد تایمیناسیون" loading="lazy" />
+        <div class="hero-badge top">مدیریت نوبت‌ها</div>
+        <div class="hero-badge bottom">حسابداری خودکار</div>
+      </div>
+      <div class="hero-content">
+        <h1>
+          پلتفرم هوشمند رزرو نوبت<br />
+          <span class="highlight">تایمیناسیون</span>
+        </h1>
+        <p>ارتباط بین مشتری و آرایشگاه فقط با چند کلیک — بدون تلفن، بدون دردسر.</p>
+        <div class="hero-buttons">
+          <a class="btn primary" routerLink="/business-search">🔍 رزرو نوبت</a>
+          <a class="btn outline" routerLink="/business-register">🏪 ثبت آرایشگاه</a>
+        </div>
+        <div class="hero-location">
+          <app-location-selector buttonLabel="🔍 جستجو" alignment="vertical"></app-location-selector>
+        </div>
+        <div class="hero-social">
+          <div class="avatars" aria-hidden="true">
+            <img src="https://i.pravatar.cc/80?img=12" alt="" />
+            <img src="https://i.pravatar.cc/80?img=22" alt="" />
+            <img src="https://i.pravatar.cc/80?img=32" alt="" />
+            <img src="https://i.pravatar.cc/80?img=42" alt="" />
+          </div>
+          <span>بیش از ۲۵هزار نوبت موفق در یک سال گذشته</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div id="circle1"><img src="/Ellipse 14.png" alt=""></div>
-<div id="circle2"><img src="/Ellipse 15.png" alt=""></div>
-<div id="circle3"><img src="/Ellipse 16.png" alt=""></div>
-<div id="circle4"><img src="/Ellipse 17.png" alt=""></div>
-<div id="circle5"><img src="/Ellipse 18.png" alt=""></div>
+  <!-- Business Features -->
+  <section id="features-business" class="features">
+    <h2>ویژه صاحبان کسب‌وکار</h2>
+    <div class="feature-grid">
+      <article class="feature-card" *ngFor="let feature of businessFeatures">
+        <div class="icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </article>
+    </div>
+  </section>
 
-<div class="title">
-  <h1>رزرو آنلاین نوبت از هزاران آرایشگاه</h1>
-  <h4>با تایمیناسیون</h4>
-</div>
+  <!-- Customer Features -->
+  <section class="features">
+    <h2>امکانات برای مشتریان</h2>
+    <div class="feature-grid">
+      <article class="feature-card" *ngFor="let feature of customerFeatures">
+        <div class="icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </article>
+    </div>
+  </section>
 
-<div class="searchbusiness">
-  <div class="search">
+  <!-- Dashboard Preview -->
+  <section class="dashboard-preview">
+    <img src="https://images.unsplash.com/photo-1620812095594-4c66e8f44c4e" alt="پیش‌نمایش داشبورد تایمیناسیون" loading="lazy" />
+    <div class="text">
+      <h3>همه چیز زیر یک سقف</h3>
+      <ul>
+        <li>مدیریت نوبت‌ها و تقویم کاری</li>
+        <li>محاسبه درآمد و هزینه‌ها</li>
+        <li>گزارش‌های زنده و پیامک خودکار</li>
+        <li>داشبورد ساده و کاربردی</li>
+      </ul>
+    </div>
+  </section>
 
-<!-- انتخاب شهر -->
-<select [(ngModel)]="selectedCityId" (change)="onCityChange()">
-  <option value="-1" disabled selected>انتخاب شهر</option>
-  <option *ngFor="let city of cities" [value]="city.id">
-    {{ city.name }}
-  </option>
-</select>
+  <!-- Steps -->
+  <section class="steps">
+    <h2>فقط در ۳ مرحله</h2>
+    <div class="step-grid">
+      <article class="step-card" *ngFor="let step of steps">
+        <div class="icon">{{ step.icon }}</div>
+        <h4>{{ step.title }}</h4>
+        <p>{{ step.description }}</p>
+      </article>
+    </div>
+  </section>
 
-<!-- انتخاب منطقه -->
-<select [(ngModel)]="selectedRegionId" (change)="onRegionChange()" [disabled]="regions.length === 0">
-  <option value="-1" disabled selected>انتخاب منطقه</option>
-  <option *ngFor="let region of regions" [value]="region.id">
-    {{ region.regionName }}
-  </option>
-</select>
+  <!-- Stats -->
+  <section class="stats" #statsSection>
+    <div class="stat-grid">
+      <div *ngFor="let stat of stats; index as i">
+        <div class="stat">{{ formatNumber(currentStats[i]) }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+    </div>
+  </section>
 
-<!-- انتخاب محله (فقط نمایشی، چون در منطق پروژه گفته بودی با region لود میشه) -->
-<select [(ngModel)]="selectedNeighborhoodId" [disabled]="neighborhoods.length === 0">
-  <option value="-1" disabled selected>انتخاب محله</option>
-  <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">
-    {{ neighborhood.neighborhoodName }}
-  </option>
-</select>
+  <!-- Big CTA -->
+  <section class="big-cta">
+    <a class="btn primary" routerLink="/business-search">✨ پیدا کردن آرایشگاه و رزرو نوبت</a>
+  </section>
 
-   <input type="submit" (click)="goToSearchPage()" placeholder="جستجو">
-  </div>
-</div>
-  <div class="numberofcustomer">
-<div class="stats-container">
-    <div class="stat-item">
-    <span class="stat-number">۱۶۰۰۰+</span>
-    <span class="stat-label">تعداد نوبت روزانه</span>
-  </div>
-  <div class="stat-item">
-    <span class="stat-number">۸۰۰+</span>
-    <span class="stat-label">آرایشگاه مردانه</span>
-  </div>
-    <div class="stat-item">
-    <span class="stat-number">۸۰۰+</span>
-    <span class="stat-label">آرایشگاه زنانه</span>
-  </div>
-  </div>
-</div>
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <h2>سوالات متداول</h2>
+    <div class="faq-item" *ngFor="let item of faqs; index as i" [class.active]="item.isOpen" (click)="toggleFaq(i)">
+      <div class="faq-question">
+        <span>{{ item.question }}</span>
+        <span>{{ item.isOpen ? '−' : '+' }}</span>
+      </div>
+      <div class="faq-answer">{{ item.answer }}</div>
+    </div>
+  </section>
+
+  <!-- Why Us -->
+  <section class="why-us">
+    <h2>چرا تایمیناسیون؟</h2>
+    <div class="why-grid">
+      <article class="why-card" *ngFor="let item of whyUs">
+        <div class="icon">{{ item.icon }}</div>
+        <h4>{{ item.title }}</h4>
+        <p>{{ item.description }}</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <h2>نظرات کاربران</h2>
+    <article class="testimonial" *ngFor="let testimonial of testimonials">
+      <div class="name">{{ testimonial.name }}</div>
+      <div class="role">{{ testimonial.role }}</div>
+      <p>{{ testimonial.quote }}</p>
+    </article>
+  </section>
+
+  <!-- Blog -->
+  <section id="blog" class="blog">
+    <h2>بلاگ تایمیناسیون</h2>
+    <div class="blog-grid">
+      <article class="blog-card" *ngFor="let post of blogPosts">
+        <img [src]="post.image" [alt]="post.title" loading="lazy" />
+        <div class="content">
+          <h4>{{ post.title }}</h4>
+          <p>{{ post.summary }}</p>
+          <a [routerLink]="post.link">ادامه مطلب →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<!-- Floating -->
+<a class="whatsapp-btn" href="https://wa.me/09120000000" target="_blank" rel="noopener">💬</a>
+<button id="scrollTopBtn" [class.show]="showScrollTop" (click)="scrollToTop()">↑</button>
+
+<footer>© 2025 تایمیناسیون — همه حقوق محفوظ است.</footer>

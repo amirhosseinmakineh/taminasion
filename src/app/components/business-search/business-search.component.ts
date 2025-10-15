@@ -1,12 +1,14 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { BusinessFilter } from '../../models/business/business-filter.model';
 import { BusinessDto, BusinessDayTimeDto } from '../../models/business/business.model';
 import { BusinessServiceDto } from '../../models/business/business-service.dto';
 import { CategoryDto } from '../../models/business/category.dto';
 import { BusinessService } from '../../services/business.service';
+import { LocationSelection } from '../../shared/ui/location-selector/location-selector.component';
 
 @Component({
   selector: 'app-business-search',
@@ -14,7 +16,7 @@ import { BusinessService } from '../../services/business.service';
   styleUrls: ['./business-search.component.css'],
   standalone: false,
 })
-export class BusinessSearchComponent implements OnInit {
+export class BusinessSearchComponent implements OnInit, OnDestroy {
 
   // فیلتر اصلی
   filter: BusinessFilter = {
@@ -51,31 +53,53 @@ export class BusinessSearchComponent implements OnInit {
   // pagination helpers
   hasMore = false;
 
+  private readonly isBrowser: boolean;
+  private queryParamsSub?: Subscription;
+
   constructor(
-    private route: ActivatedRoute,
-    private service: BusinessService,
-    @Inject(PLATFORM_ID) private platformId: object,
-  ) {}
+    private readonly route: ActivatedRoute,
+    private readonly service: BusinessService,
+    private readonly router: Router,
+    @Inject(PLATFORM_ID) private readonly platformId: object,
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.loadCategories();
-      this.loadServices();
-
-      this.route.queryParams.subscribe(params => {
-        const hoodId = Number(params['neighberHoodId']) || 0;
-        this.filter.neighberHoodId = hoodId;   // 🔴 مقدار مستقیم توی فیلتر ست بشه
-
-        this.service.getMaxServiceAmount().subscribe({
-          next: amount => {
-            this.maxServiceAmount = amount ?? 0;
-            this.filter.maxAmount = this.maxServiceAmount;
-            this.loadBusinesses(this.filter);
-          },
-          error: err => console.error(err)
-        });
-      });
+    if (!this.isBrowser) {
+      return;
     }
+
+    this.loadCategories();
+    this.loadServices();
+
+    this.service.getMaxServiceAmount().subscribe({
+      next: amount => {
+        this.maxServiceAmount = amount ?? 0;
+        this.filter.maxAmount = this.maxServiceAmount;
+        this.subscribeToQueryParams();
+      },
+      error: err => {
+        console.error(err);
+        this.maxServiceAmount = 0;
+        this.filter.maxAmount = 0;
+        this.subscribeToQueryParams();
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.queryParamsSub?.unsubscribe();
+  }
+
+  private subscribeToQueryParams(): void {
+    this.queryParamsSub?.unsubscribe();
+    this.queryParamsSub = this.route.queryParams.subscribe(params => {
+      const hoodId = Number(params['neighberHoodId']) || 0;
+      this.filter.neighberHoodId = hoodId;
+      this.filter.skip = 0;
+      this.loadBusinesses(this.filter);
+    });
   }
 
   loadCategories(): void {
@@ -112,6 +136,21 @@ export class BusinessSearchComponent implements OnInit {
       },
       error: err => console.error('خطا در دریافت داده‌ها:', err)
     });
+  }
+
+  onLocationSearch(selection: LocationSelection): void {
+    const neighberHoodId = selection.neighborhoodId > 0 ? selection.neighborhoodId : 0;
+    this.filter.neighberHoodId = neighberHoodId;
+    this.filter.skip = 0;
+
+    if (this.isBrowser) {
+      this.router.navigate([], {
+        queryParams: { neighberHoodId },
+        queryParamsHandling: 'merge',
+      });
+    }
+
+    this.loadBusinesses(this.filter);
   }
 
   onCategoryChange(cat: CategoryDto, event: Event) {

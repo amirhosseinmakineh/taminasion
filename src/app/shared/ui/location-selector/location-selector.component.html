@@ -1,0 +1,31 @@
+<div class="location-selector" [ngClass]="alignment">
+  <div class="fields">
+    <label class="field">
+      <span class="label">شهر</span>
+      <select [(ngModel)]="selectedCityId" (change)="onCityChange()">
+        <option [ngValue]="-1" disabled>انتخاب شهر</option>
+        <option *ngFor="let city of cities" [ngValue]="city.id">{{ city.name }}</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span class="label">منطقه</span>
+      <select [(ngModel)]="selectedRegionId" (change)="onRegionChange()" [disabled]="regions.length === 0">
+        <option [ngValue]="-1" disabled>انتخاب منطقه</option>
+        <option *ngFor="let region of regions" [ngValue]="region.id">{{ region.regionName }}</option>
+      </select>
+    </label>
+
+    <label class="field" *ngIf="showNeighborhood">
+      <span class="label">محله</span>
+      <select [(ngModel)]="selectedNeighborhoodId" (change)="onNeighborhoodChange()" [disabled]="neighborhoods.length === 0">
+        <option [ngValue]="-1" disabled>انتخاب محله</option>
+        <option *ngFor="let neighborhood of neighborhoods" [ngValue]="neighborhood.id">
+          {{ neighborhood.neighborhoodName }}
+        </option>
+      </select>
+    </label>
+  </div>
+
+  <button type="button" class="search-btn" (click)="submit()">{{ buttonLabel }}</button>
+</div>
