@@ -1,0 +1,20 @@
+<header class="site-header" [class.scrolled]="isScrolled">
+  <div class="header-container">
+    <a routerLink="/" class="logo" (click)="closeMenu()">
+      <span class="logo-icon">💈</span>
+      <span class="logo-text">تایمیناسیون</span>
+    </a>
+    <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="باز و بسته کردن منو">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav [class.open]="isMenuOpen">
+      <a routerLink="/" (click)="closeMenu()">خانه</a>
+      <a routerLink="/" fragment="features-business" (click)="closeMenu()">کسب‌و‌کارها</a>
+      <a routerLink="/" fragment="faq" (click)="closeMenu()">سوالات</a>
+      <a routerLink="/" fragment="blog" (click)="closeMenu()">بلاگ</a>
+      <a routerLink="/business-register" class="cta" (click)="closeMenu()">ثبت آرایشگاه</a>
+    </nav>
+  </div>
+</header>
