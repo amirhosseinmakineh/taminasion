@@ -23,6 +23,11 @@ const routes: Routes = [
         .then(m => m.BusinessProfileModule)
     },
     {
+      path: 'business-owner-profile',
+      loadChildren: () => import('./components/business-owner-profile/business-owner-profile.module')
+        .then(m => m.BusinessOwnerProfileModule)
+    },
+    {
       path: 'businesssearch',
       redirectTo: 'business-search',
       pathMatch: 'full'
