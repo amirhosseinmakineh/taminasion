@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { UserProfileService } from '../../services/user-profile.service';
@@ -49,11 +50,18 @@ export class BusinessOwnerProfileComponent implements OnInit {
     'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80';
   private readonly imageBaseUrl = 'http://localhost:5107/Images';
 
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+    private readonly userProfileService: UserProfileService,
+    private readonly route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
+    const userId =
+      this.route.snapshot.paramMap.get('userId') ??
+      this.route.snapshot.queryParamMap.get('userId');
+
     this.userProfileService
-      .getBusinessOwnerProfile()
+      .getBusinessOwnerProfile(userId)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: response => {

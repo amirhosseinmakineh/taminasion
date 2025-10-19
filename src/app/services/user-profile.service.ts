@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { BusinessOwnerProfileResponse } from '../models/user/business-owner-profile.model';
@@ -12,8 +12,9 @@ export class UserProfileService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getBusinessOwnerProfile(): Observable<BusinessOwnerProfileResponse> {
+  getBusinessOwnerProfile(userId?: string | null): Observable<BusinessOwnerProfileResponse> {
     const url = `${this.baseUrl}/BusinessOwnerProfile`;
-    return this.http.get<BusinessOwnerProfileResponse>(url);
+    const params = userId ? new HttpParams().set('userId', userId) : undefined;
+    return this.http.get<BusinessOwnerProfileResponse>(url, { params });
   }
 }
