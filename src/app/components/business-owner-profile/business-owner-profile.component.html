@@ -1,55 +1,86 @@
 <div class="profile-wrapper" [class.dark]="isDarkMode">
   <div class="container">
-    <div class="card">
-      <div class="header">
-        <img class="header-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-GbnlHhJsMaYVoM3LbNPd5qBtXPtI8Rlkci8_HXIe7li1RKJCUGIuJOTXM2D2js9hG9UNXDdoRvPko4FgXI7DtVXQ4s71Q52mC0Mi10tHAhl_6lqsmnAmvFUmx-L8ZnkopMmNKTYnVJwHWuufiAWnFylRAS_RZAZ6yKb2NmmRu7_XzNYhMbKtlBAaWuzlWBX8TzZ9Jcnz6OII4Abn_7WUUw2PajT-6IIb0IEA0zmbYeYryo9F6Dfkg2_WI9J09_tYDYIRsweNFug" alt="header"/>
-        <div class="header-buttons">
-          <button type="button">پروفایل من</button>
-          <button type="button" (click)="toggleTheme()">
-            <span class="material-icons">{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</span>
-          </button>
-        </div>
-        <img class="profile-pic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPyUuYsYOMkIhpVqKvsPCBidPm6_zv_V7VE84iDZtBfDM61N0dY_xvA5-6sVOanDSMkCuCjfLriSGvl0rbjhNNnzDF228Dn-9s1zwc09K3acc6bG8T3mPdq7tVpD_-7rDAGahN8QBjWcJVALTTAyxVh1lVT9npg6fhYqqO7wKKn3vZz7nZm7pcWv5V4shKIqcaOkdaNujxueRN1QL4eoXOQVZPgyWo-hStFXLN-zWxHy7xLHm1Ar-vc1d8BUrbbu9zuraR5vWVbFY" alt="پروفایل"/>
-      </div>
-
-      <div class="content">
-        <div class="header-info">
-          <div>
-            <h1>آرش رضاوند</h1>
-            <p>آرایشگاه چهره طلایی</p>
+    <ng-container *ngIf="!loading; else loadingTpl">
+      <ng-container *ngIf="profile; else errorTpl">
+        <div class="card">
+          <div class="header">
+            <img class="header-img" [src]="bannerImage" alt="header" />
+            <div class="header-buttons">
+              <button type="button">پروفایل من</button>
+              <button type="button" (click)="toggleTheme()">
+                <span class="material-icons">{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</span>
+              </button>
+            </div>
+            <img class="profile-pic" [src]="profileImage" alt="پروفایل" />
           </div>
-          <div class="rating">
-            <span>۴/۳ (۳ نظر)</span>
-            <span class="material-icons">star</span>
-          </div>
-        </div>
 
-        <div class="tabs" role="tablist">
-          <button
-            *ngFor="let tab of tabs"
-            class="tab"
-            type="button"
-            role="tab"
-            [attr.aria-selected]="activeTab === tab.id"
-            [class.active]="activeTab === tab.id"
-            (click)="setActiveTab(tab.id)"
-          >
-            {{ tab.label }}
-          </button>
-        </div>
+          <div class="content">
+            <div class="header-info">
+              <div>
+                <h1>{{ profile.name }} {{ profile.family }}</h1>
+                <p>{{ profile.businessInfo?.businessName || 'کسب‌وکار نامشخص' }}</p>
+              </div>
+              <div class="rating">
+                <span>
+                  {{ profile.businessInfo?.userRate != null ? (profile.businessInfo?.userRate | number: '1.0-1') : 'امتیاز ثبت نشده' }}
+                  ({{ commentsCount }} نظر)
+                </span>
+                <span class="material-icons">star</span>
+              </div>
+            </div>
 
-        <div class="grid">
-          <div class="bio">
-            <p *ngFor="let paragraph of bioParagraphs">{{ paragraph }}</p>
-          </div>
-          <div class="tags">
-            <h3>دستاوردها</h3>
-            <div class="tag-list">
-              <span class="tag" *ngFor="let achievement of achievements">{{ achievement }}</span>
+            <div class="tabs" role="tablist">
+              <button
+                *ngFor="let tab of tabs; trackBy: trackByTab"
+                class="tab"
+                type="button"
+                role="tab"
+                [attr.aria-selected]="activeTab === tab.id"
+                [class.active]="activeTab === tab.id"
+                (click)="setActiveTab(tab.id)"
+              >
+                {{ tab.label }}
+              </button>
+            </div>
+
+            <div class="grid">
+              <div class="bio">
+                <ng-container *ngIf="bioParagraphs.length; else noBio">
+                  <p *ngFor="let paragraph of bioParagraphs; trackBy: trackByParagraph">{{ paragraph }}</p>
+                </ng-container>
+              </div>
+              <div class="tags">
+                <h3>دستاوردها</h3>
+                <ng-container *ngIf="achievements.length; else noAchievements">
+                  <div class="tag-list">
+                    <span class="tag" *ngFor="let achievement of achievements; trackBy: trackByAchievement">{{ achievement }}</span>
+                  </div>
+                </ng-container>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </ng-container>
+    </ng-container>
   </div>
 </div>
+
+<ng-template #loadingTpl>
+  <div class="card status-card">
+    <p>در حال بارگذاری...</p>
+  </div>
+</ng-template>
+
+<ng-template #errorTpl>
+  <div class="card status-card">
+    <p>{{ error || 'اطلاعات پروفایل یافت نشد.' }}</p>
+  </div>
+</ng-template>
+
+<ng-template #noBio>
+  <p>توضیحاتی برای معرفی ثبت نشده است.</p>
+</ng-template>
+
+<ng-template #noAchievements>
+  <p>دستاوردی ثبت نشده است.</p>
+</ng-template>
