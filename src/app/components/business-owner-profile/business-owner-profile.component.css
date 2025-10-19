@@ -198,6 +198,22 @@
   gap: 0.5rem;
 }
 
+.status-card {
+  align-items: center;
+  color: var(--text-secondary-light);
+  display: flex;
+  justify-content: center;
+  margin: 2rem auto;
+  max-width: 600px;
+  min-height: 160px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.profile-wrapper.dark .status-card {
+  color: var(--text-secondary-dark);
+}
+
 .tag {
   background: #eee;
   border-radius: 999px;
