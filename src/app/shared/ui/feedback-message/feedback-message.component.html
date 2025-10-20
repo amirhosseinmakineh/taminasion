@@ -1,0 +1,17 @@
+<div class="feedback" [ngClass]="type">
+  <div class="feedback__icon" aria-hidden="true">{{ icon }}</div>
+  <div class="feedback__content">
+    <ng-content></ng-content>
+    <p *ngIf="!message && !dismissible" class="sr-only">پیام سیستم</p>
+    <p *ngIf="message" class="feedback__message">{{ message }}</p>
+  </div>
+  <button
+    *ngIf="dismissible"
+    type="button"
+    class="feedback__close"
+    (click)="onClose()"
+    aria-label="بستن پیام"
+  >
+    ×
+  </button>
+</div>

@@ -1,0 +1,41 @@
+<section class="auth-section">
+  <div class="container">
+    <div class="image-section" aria-hidden="true"></div>
+    <div class="form-section">
+      <h2>ورود به حساب کاربری</h2>
+      <p>برای ادامه، ایمیل و رمز عبور خود را وارد کنید.</p>
+
+      <app-feedback-message
+        *ngIf="feedbackMessage"
+        [type]="feedbackType"
+        [message]="feedbackMessage"
+        (closed)="clearFeedback()"
+      ></app-feedback-message>
+
+      <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+        <div class="form-field" [class.invalid]="email?.invalid && email?.touched">
+          <label for="email">ایمیل</label>
+          <input id="email" type="email" formControlName="email" placeholder="example@email.com" required />
+          <span class="error" *ngIf="email?.hasError('required') && email?.touched">ایمیل الزامی است.</span>
+          <span class="error" *ngIf="email?.hasError('email') && email?.touched">ایمیل وارد شده معتبر نیست.</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="password?.invalid && password?.touched">
+          <label for="password">رمز عبور</label>
+          <input id="password" type="password" formControlName="password" placeholder="********" required />
+          <span class="error" *ngIf="password?.hasError('required') && password?.touched">رمز عبور الزامی است.</span>
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">ورود</span>
+          <span *ngIf="isSubmitting" class="loading">در حال ورود...</span>
+        </button>
+      </form>
+
+      <div class="footer-text">
+        حساب کاربری ندارید؟
+        <a routerLink="../register">ثبت‌نام کنید</a>
+      </div>
+    </div>
+  </div>
+</section>

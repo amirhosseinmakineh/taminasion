@@ -28,6 +28,11 @@ const routes: Routes = [
         .then(m => m.BusinessOwnerProfileModule)
     },
     {
+      path: 'auth',
+      loadChildren: () => import('./components/auth/auth.module')
+        .then(m => m.AuthModule)
+    },
+    {
       path: 'businesssearch',
       redirectTo: 'business-search',
       pathMatch: 'full'
