@@ -3,10 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { UserProfileService } from '../../services/user-profile.service';
-import {
-  BusinessOwnerAchievement,
-  BusinessOwnerProfile,
-} from '../../models/user/business-owner-profile.model';
+import { BusinessOwnerProfile } from '../../models/user/business-owner-profile.model';
 
 interface ProfileTab {
   id: string;
@@ -26,23 +23,9 @@ export class BusinessOwnerProfileComponent implements OnInit {
   error?: string;
   profile?: BusinessOwnerProfile;
 
-  tabs: ProfileTab[] = [
-    { id: 'about', label: 'درباره من' },
-    { id: 'experience', label: 'سابقه کاری' },
-    { id: 'certificates', label: 'مدارک و افتخارات' },
-    { id: 'booking', label: 'نوبت‌دهی' },
-    { id: 'salon-info', label: 'اطلاعات سالن' },
-    { id: 'reviews', label: 'نظرات' },
-  ];
+  tabs: ProfileTab[] = [];
 
   bioParagraphs: string[] = [];
-  achievements: string[] = [];
-
-  readonly defaultBioParagraphs: string[] = [
-    'من یک آرایشگر حرفه‌ای با بیش از ۷ سال تجربه در زمینه رنگ، کوتاهی و احیای مو هستم. تمرکزم روی خلق استایلیه که به شخصیت و ظاهر شما بخوره، نه صرفا پیروی از مد.',
-    'به روز بودن در تکنیک‌ها، استفاده از مواد باکیفیت و وقت‌شناسی جزو اصول کاری منه. یه آرایش خوب فقط ظاهر رو تغییر نمیده — اعتماد به نفس می‌سازه.',
-    'اگه دنبال یه تجربه دل‌نشین، دقیق و حرفه‌ای هستید، خوشحال می‌شم کنارتون باشم. ✨',
-  ];
 
   readonly defaultBanner =
     'https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=1350&q=80';
@@ -74,7 +57,6 @@ export class BusinessOwnerProfileComponent implements OnInit {
 
           this.profile = response.data;
           this.bioParagraphs = this.extractBioParagraphs(response.data.aboutMe);
-          this.achievements = this.extractAchievements(response.data.achievements);
           this.setupTabs();
         },
         error: () => {
@@ -113,47 +95,37 @@ export class BusinessOwnerProfileComponent implements OnInit {
     const nameLabel = this.profile?.name?.trim()
       ? `درباره ${this.profile.name}`
       : 'درباره من';
-    const workHistoryLabel = this.profile?.workHistory?.trim()
-      ? 'سوابق کاری'
-      : 'سوابق کاری (ثبت نشده)';
     const businessNameLabel = this.profile?.businessInfo?.businessName?.trim()
       ? `اطلاعات ${this.profile.businessInfo.businessName}`
       : 'اطلاعات سالن';
-    const achievementsCount = this.profile?.achievements?.length ?? 0;
+    const tabs: ProfileTab[] = [{ id: 'about', label: nameLabel }];
 
-    this.tabs = [
-      { id: 'about', label: nameLabel },
-      { id: 'experience', label: workHistoryLabel },
-      { id: 'certificates', label: `افتخارات (${achievementsCount})` },
-      { id: 'booking', label: `نوبت‌دهی (${this.takingTurnsCount})` },
-      { id: 'salon-info', label: businessNameLabel },
-      { id: 'reviews', label: `نظرات (${this.commentsCount})` },
-    ];
+    if (this.takingTurnsCount > 0) {
+      tabs.push({ id: 'booking', label: `نوبت‌دهی (${this.takingTurnsCount})` });
+    }
+
+    if (this.profile?.businessInfo) {
+      tabs.push({ id: 'salon-info', label: businessNameLabel });
+    }
+
+    tabs.push({ id: 'reviews', label: `نظرات (${this.commentsCount})` });
+
+    this.tabs = tabs;
+
+    if (!tabs.some(tab => tab.id === this.activeTab)) {
+      this.activeTab = tabs[0]?.id ?? '';
+    }
   }
 
   private extractBioParagraphs(aboutMe: string | null): string[] {
-    if (aboutMe) {
-      const paragraphs = aboutMe
-        .split(/\r?\n/)
-        .map(paragraph => paragraph.trim())
-        .filter(Boolean);
-      if (paragraphs.length) {
-        return paragraphs;
-      }
-    }
-    return [...this.defaultBioParagraphs];
-  }
-
-  private extractAchievements(
-    achievements: BusinessOwnerAchievement[] | null | undefined,
-  ): string[] {
-    if (!achievements?.length) {
+    if (!aboutMe) {
       return [];
     }
 
-    return achievements
-      .map(achievement => achievement.name?.trim())
-      .filter((name): name is string => !!name);
+    return aboutMe
+      .split(/\r?\n/)
+      .map(paragraph => paragraph.trim())
+      .filter(Boolean);
   }
 
   trackByTab(_: number, tab: ProfileTab): string {
@@ -162,10 +134,6 @@ export class BusinessOwnerProfileComponent implements OnInit {
 
   trackByParagraph(index: number): number {
     return index;
-  }
-
-  trackByAchievement(index: number, achievement: string): string {
-    return `${achievement}-${index}`;
   }
 
   private buildImageUrl(imagePath: string | null | undefined): string | null {
