@@ -181,23 +181,6 @@
   margin-top: 2rem;
 }
 
-@media (min-width: 768px) {
-  .grid {
-    grid-template-columns: 2fr 1fr;
-  }
-}
-
-.tags h3 {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
 .status-card {
   align-items: center;
   color: var(--text-secondary-light);
@@ -212,19 +195,6 @@
 
 .profile-wrapper.dark .status-card {
   color: var(--text-secondary-dark);
-}
-
-.tag {
-  background: #eee;
-  border-radius: 999px;
-  color: #333;
-  font-size: 0.75rem;
-  padding: 0.25rem 0.75rem;
-}
-
-.profile-wrapper.dark .tag {
-  background: #333;
-  color: #eee;
 }
 
 .material-icons {

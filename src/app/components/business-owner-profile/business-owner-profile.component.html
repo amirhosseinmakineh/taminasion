@@ -49,14 +49,6 @@
                   <p *ngFor="let paragraph of bioParagraphs; trackBy: trackByParagraph">{{ paragraph }}</p>
                 </ng-container>
               </div>
-              <div class="tags">
-                <h3>دستاوردها</h3>
-                <ng-container *ngIf="achievements.length; else noAchievements">
-                  <div class="tag-list">
-                    <span class="tag" *ngFor="let achievement of achievements; trackBy: trackByAchievement">{{ achievement }}</span>
-                  </div>
-                </ng-container>
-              </div>
             </div>
           </div>
         </div>
@@ -79,8 +71,4 @@
 
 <ng-template #noBio>
   <p>توضیحاتی برای معرفی ثبت نشده است.</p>
-</ng-template>
-
-<ng-template #noAchievements>
-  <p>دستاوردی ثبت نشده است.</p>
 </ng-template>
