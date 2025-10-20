@@ -4,11 +4,6 @@
       <span class="logo-icon">💈</span>
       <span class="logo-text">تایمیناسیون</span>
     </a>
-    <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="باز و بسته کردن منو">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
     <nav [class.open]="isMenuOpen">
       <a routerLink="/" (click)="closeMenu()">خانه</a>
       <a routerLink="/" fragment="features-business" (click)="closeMenu()">کسب‌و‌کارها</a>
@@ -16,5 +11,21 @@
       <a routerLink="/" fragment="blog" (click)="closeMenu()">بلاگ</a>
       <a routerLink="/business-register" class="cta" (click)="closeMenu()">ثبت آرایشگاه</a>
     </nav>
+    <div class="header-actions">
+      <button
+        class="theme-toggle"
+        type="button"
+        (click)="toggleDarkMode()"
+        [attr.aria-label]="isDarkMode ? 'غیرفعال کردن حالت شب' : 'فعال کردن حالت شب'"
+        [attr.aria-pressed]="isDarkMode"
+      >
+        <span aria-hidden="true">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+      </button>
+      <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="باز و بسته کردن منو">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </div>
 </header>
