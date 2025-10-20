@@ -33,8 +33,8 @@ export class AuthService {
     );
   }
 
-  login(payload: LoginRequest): Observable<AuthResponse<AuthUserDto>> {
+  login(payload: LoginRequest): Observable<AuthResponse<unknown>> {
     const url = `${this.baseUrl}/login`;
-    return this.http.post<AuthResponse<AuthUserDto>>(url, payload);
+    return this.http.post<AuthResponse<unknown>>(url, payload);
   }
 }
