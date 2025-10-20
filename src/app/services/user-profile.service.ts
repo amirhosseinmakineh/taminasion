@@ -12,9 +12,9 @@ export class UserProfileService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getBusinessOwnerProfile(userId?: string | null): Observable<BusinessOwnerProfileResponse> {
+  getBusinessOwnerProfile(id?: string | null): Observable<BusinessOwnerProfileResponse> {
     const url = `${this.baseUrl}/BusinessOwnerProfile`;
-    const params = userId ? new HttpParams().set('userId', userId) : undefined;
+    const params = id ? new HttpParams().set('id', id) : undefined;
     return this.http.get<BusinessOwnerProfileResponse>(url, { params });
   }
 }
