@@ -56,12 +56,14 @@ export class BusinessOwnerProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const userId =
+    const businessOwnerId =
+      this.route.snapshot.paramMap.get('id') ??
+      this.route.snapshot.queryParamMap.get('id') ??
       this.route.snapshot.paramMap.get('userId') ??
       this.route.snapshot.queryParamMap.get('userId');
 
     this.userProfileService
-      .getBusinessOwnerProfile(userId)
+      .getBusinessOwnerProfile(businessOwnerId)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: response => {
