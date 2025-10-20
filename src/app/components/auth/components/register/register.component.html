@@ -1,0 +1,56 @@
+<section class="auth-section">
+  <div class="container">
+    <div class="image-section" aria-hidden="true"></div>
+    <div class="form-section">
+      <h2>ثبت‌نام در تایمیناسیون</h2>
+      <p>به خانواده تایمیناسیون خوش آمدید 👋</p>
+
+      <app-feedback-message
+        *ngIf="feedbackMessage"
+        [type]="feedbackType"
+        [message]="feedbackMessage"
+        (closed)="clearFeedback()"
+      ></app-feedback-message>
+
+      <form [formGroup]="registerForm" (ngSubmit)="submit()" novalidate>
+        <div class="form-field" [class.invalid]="name?.invalid && name?.touched">
+          <label for="name">نام و نام خانوادگی</label>
+          <input id="name" type="text" formControlName="name" placeholder="مثلاً علی رضایی" required />
+          <span class="error" *ngIf="name?.hasError('required') && name?.touched">وارد کردن نام الزامی است.</span>
+          <span class="error" *ngIf="name?.hasError('minlength') && name?.touched">نام باید حداقل ۳ کاراکتر باشد.</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="phone?.invalid && phone?.touched">
+          <label for="phone">شماره تلفن</label>
+          <input id="phone" type="tel" formControlName="phone" placeholder="09123456789" required />
+          <span class="error" *ngIf="phone?.hasError('required') && phone?.touched">شماره تلفن الزامی است.</span>
+          <span class="error" *ngIf="phone?.hasError('pattern') && phone?.touched">شماره تلفن معتبر نیست.</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="email?.invalid && email?.touched">
+          <label for="email">ایمیل</label>
+          <input id="email" type="email" formControlName="email" placeholder="example@email.com" required />
+          <span class="error" *ngIf="email?.hasError('required') && email?.touched">ایمیل الزامی است.</span>
+          <span class="error" *ngIf="email?.hasError('email') && email?.touched">ایمیل وارد شده معتبر نیست.</span>
+        </div>
+
+        <div class="form-field" [class.invalid]="password?.invalid && password?.touched">
+          <label for="password">رمز عبور</label>
+          <input id="password" type="password" formControlName="password" placeholder="********" required />
+          <span class="error" *ngIf="password?.hasError('required') && password?.touched">رمز عبور الزامی است.</span>
+          <span class="error" *ngIf="password?.hasError('minlength') && password?.touched">رمز عبور باید حداقل ۶ کاراکتر باشد.</span>
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">ثبت‌نام</span>
+          <span *ngIf="isSubmitting" class="loading">در حال ارسال...</span>
+        </button>
+      </form>
+
+      <div class="footer-text">
+        حساب کاربری دارید؟
+        <a routerLink="../login">وارد شوید</a>
+      </div>
+    </div>
+  </div>
+</section>
