@@ -197,6 +197,33 @@
   color: var(--text-secondary-dark);
 }
 
+body.dark-theme .profile-wrapper {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+body.dark-theme .profile-wrapper .card {
+  background: var(--surface);
+  box-shadow: 0 4px 24px var(--shadow-color);
+}
+
+body.dark-theme .profile-wrapper .profile-pic {
+  border-color: var(--surface);
+}
+
+body.dark-theme .profile-wrapper .tabs {
+  border-bottom-color: var(--border);
+}
+
+body.dark-theme .profile-wrapper .tab {
+  color: var(--muted);
+}
+
+body.dark-theme .profile-wrapper .bio,
+body.dark-theme .profile-wrapper .status-card {
+  color: var(--muted);
+}
+
 .material-icons {
   font-size: 1.2rem;
 }

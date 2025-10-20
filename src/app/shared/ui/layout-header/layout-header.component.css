@@ -1,14 +1,14 @@
 .site-header {
   backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--header-bg);
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .site-header.scrolled {
-  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 24px var(--header-shadow);
 }
 
 .header-container {
@@ -20,6 +20,7 @@
   padding: 1rem;
   position: relative;
   width: 100%;
+  gap: 1rem;
 }
 
 nav {
@@ -27,14 +28,15 @@ nav {
   display: flex;
   gap: 1rem;
   font-weight: 500;
-  margin-left: auto;
+  flex: 1;
+  justify-content: center;
 }
 
 .header-actions {
   align-items: center;
   display: flex;
   gap: 0.75rem;
-  margin-left: 1rem;
+  margin-inline-start: 1rem;
 }
 
 .logo {
@@ -115,11 +117,12 @@ nav a.cta {
   }
 
   nav {
-    margin-left: 0;
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--surface);
     border-radius: 1rem;
-    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 16px 32px var(--shadow-color);
     flex-direction: column;
+    flex: none;
+    justify-content: flex-start;
     left: 1rem;
     padding: 1rem 1.5rem;
     position: absolute;
@@ -141,18 +144,9 @@ nav a.cta {
   }
 
   .header-actions {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 }
-
-body.dark-theme .site-header {
-  background: rgba(15, 23, 42, 0.92);
-}
-
-body.dark-theme .site-header.scrolled {
-  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.4);
-}
-
 body.dark-theme nav a:hover,
 body.dark-theme nav a:focus {
   color: #38bdf8;
@@ -164,9 +158,8 @@ body.dark-theme nav .cta {
 
 @media (max-width: 768px) {
   body.dark-theme nav {
-    margin-left: 0;
-    background: rgba(15, 23, 42, 0.98);
-    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.36);
+    background: var(--surface);
+    box-shadow: 0 16px 32px var(--shadow-color);
   }
 }
 

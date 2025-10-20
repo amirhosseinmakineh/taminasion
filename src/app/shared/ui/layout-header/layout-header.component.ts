@@ -56,11 +56,13 @@ export class LayoutHeaderComponent implements OnInit {
 
   private applyThemeClass(): void {
     const body = this.document?.body;
+    const root = this.document?.documentElement;
 
-    if (!body) {
+    if (!body || !root) {
       return;
     }
 
     body.classList.toggle('dark-theme', this.isDarkMode);
+    root.setAttribute('data-theme', this.isDarkMode ? 'dark' : 'light');
   }
 }

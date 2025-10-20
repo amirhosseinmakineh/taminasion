@@ -7,6 +7,7 @@
   margin: 24px auto;
   max-width: 1152px;
   padding: 0 16px 48px;
+  background: var(--bg);
 }
 
 .location-bar {
@@ -25,10 +26,10 @@
 }
 
 .tabset {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  box-shadow: 0 6px 20px var(--shadow-color);
   display: flex;
   gap: 6px;
   padding: 6px;
@@ -36,7 +37,7 @@
 
 .tab {
   border-radius: 999px;
-  color: #374151;
+  color: var(--muted);
   cursor: pointer;
   font-size: 13px;
   padding: 8px 14px;
@@ -50,10 +51,10 @@
 
 .date-chip {
   align-items: center;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  box-shadow: 0 6px 20px var(--shadow-color);
   display: flex;
   font-size: 12px;
   gap: 8px;
@@ -62,7 +63,7 @@
 }
 
 .date-chip .sep {
-  background: #e5e7eb;
+  background: var(--border);
   height: 16px;
   width: 1px;
 }
@@ -74,10 +75,10 @@
 }
 
 .sidebar {
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  box-shadow: 0 6px 20px var(--shadow-color);
   height: max-content;
   padding: 16px;
   position: sticky;
@@ -85,7 +86,7 @@
 }
 
 .sb-title {
-  color: #1f2937;
+  color: var(--text);
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 10px;
@@ -93,7 +94,7 @@
 
 .check {
   align-items: center;
-  color: #374151;
+  color: var(--text);
   display: flex;
   gap: 8px;
   font-size: 13px;
@@ -109,7 +110,7 @@
 
 .sidebar-divider {
   border: none;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border);
   margin: 16px 0;
 }
 
@@ -127,8 +128,8 @@
 }
 
 .price-input {
-  background: #fff;
-  border: 1px solid #d1d5db;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 12px;
   padding: 6px;
@@ -143,10 +144,10 @@
 }
 
 .card {
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+  box-shadow: 0 6px 20px var(--shadow-color);
   padding: 16px 18px;
 }
 
@@ -165,17 +166,17 @@
 }
 
 .tag {
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  color: #374151;
+  color: var(--text);
   font-size: 11px;
   line-height: 1;
   padding: 4px 10px;
 }
 
 .title {
-  color: #111827;
+  color: var(--text);
   font-size: 16px;
   font-weight: 700;
   margin: 4px 0 10px;
@@ -186,7 +187,7 @@
   display: flex;
   gap: 14px;
   font-size: 12px;
-  color: #4b5563;
+  color: var(--muted);
 }
 
 .meta__item {
@@ -205,13 +206,13 @@
 }
 
 .meta__rate--muted {
-  background: #f3f4f6;
-  border-color: #e5e7eb;
-  color: #6b7280;
+  background: var(--surface-alt);
+  border-color: var(--border);
+  color: var(--muted);
 }
 
 .avatar {
-  border: 2px solid #fff;
+  border: 2px solid var(--surface);
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   height: 48px;
@@ -220,13 +221,13 @@
 }
 
 .price {
-  color: #4b5563;
+  color: var(--muted);
   font-size: 13px;
   margin-top: 4px;
 }
 
 .price strong {
-  color: #111827;
+  color: var(--text);
   font-weight: 700;
 }
 
@@ -258,9 +259,9 @@
 }
 
 .btn--ghost {
-  background: #fff;
-  border: 1px solid #0f2fa1;
-  color: #0f2fa1;
+  background: var(--surface);
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 
 .star {
@@ -290,7 +291,8 @@
 }
 
 .modal {
-  background: #fff;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   left: 50%;
   max-height: 90vh;
@@ -302,6 +304,7 @@
   transform: translate(-50%, -50%);
   width: calc(100% - 32px);
   z-index: 11;
+  box-shadow: 0 20px 60px var(--shadow-color);
 }
 
 .modal-header {
@@ -338,7 +341,8 @@
 }
 
 .service-row select {
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border);
+  background: var(--surface);
   border-radius: 8px;
   padding: 6px 10px;
 }

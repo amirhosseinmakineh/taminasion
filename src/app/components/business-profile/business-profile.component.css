@@ -2,6 +2,8 @@
   max-width: 800px;
   margin: 20px auto;
   text-align: center;
+  background: var(--bg);
+  color: var(--text);
 }
 
 .banner {
@@ -20,8 +22,8 @@
 
 .tabs button {
   padding: 8px 12px;
-  border: 1px solid #E5E7EB;
-  background: #fff;
+  border: 1px solid var(--border);
+  background: var(--surface);
   border-radius: 8px;
   cursor: pointer;
 }
@@ -38,7 +40,7 @@
 }
 
 .comment {
-  background: #F3F4F6;
+  background: var(--surface-alt);
   padding: 8px;
   border-radius: 6px;
   margin-bottom: 6px;
