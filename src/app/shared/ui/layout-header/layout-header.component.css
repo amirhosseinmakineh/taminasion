@@ -14,11 +14,27 @@
 .header-container {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: 0 auto;
   max-width: 1200px;
   padding: 1rem;
   position: relative;
+  width: 100%;
+}
+
+nav {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.header-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-left: 1rem;
 }
 
 .logo {
@@ -32,13 +48,6 @@
 
 .logo-icon {
   font-size: 1.5rem;
-}
-
-nav {
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-  font-weight: 500;
 }
 
 nav a {
@@ -61,6 +70,27 @@ nav a.cta {
   opacity: 1;
 }
 
+.theme-toggle {
+  align-items: center;
+  background: rgba(59, 130, 246, 0.12);
+  border: none;
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.25rem;
+  justify-content: center;
+  transition: background 0.3s ease, color 0.3s ease;
+  width: 2.25rem;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus {
+  background: rgba(59, 130, 246, 0.18);
+  outline: none;
+}
+
 .menu-toggle {
   background: transparent;
   border: none;
@@ -80,7 +110,12 @@ nav a.cta {
 }
 
 @media (max-width: 768px) {
+  .header-container {
+    gap: 0.5rem;
+  }
+
   nav {
+    margin-left: 0;
     background: rgba(255, 255, 255, 0.98);
     border-radius: 1rem;
     box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
@@ -104,4 +139,43 @@ nav a.cta {
   .menu-toggle {
     display: flex;
   }
+
+  .header-actions {
+    margin-left: 0;
+  }
+}
+
+body.dark-theme .site-header {
+  background: rgba(15, 23, 42, 0.92);
+}
+
+body.dark-theme .site-header.scrolled {
+  box-shadow: 0 6px 24px rgba(15, 23, 42, 0.4);
+}
+
+body.dark-theme nav a:hover,
+body.dark-theme nav a:focus {
+  color: #38bdf8;
+}
+
+body.dark-theme nav .cta {
+  color: #0f172a;
+}
+
+@media (max-width: 768px) {
+  body.dark-theme nav {
+    margin-left: 0;
+    background: rgba(15, 23, 42, 0.98);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.36);
+  }
+}
+
+body.dark-theme .theme-toggle {
+  background: rgba(148, 163, 184, 0.16);
+  color: #f8fafc;
+}
+
+body.dark-theme .theme-toggle:hover,
+body.dark-theme .theme-toggle:focus {
+  background: rgba(148, 163, 184, 0.24);
 }
