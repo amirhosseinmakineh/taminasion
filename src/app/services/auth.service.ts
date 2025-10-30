@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   login(payload: LoginRequest): Observable<AuthResponse<unknown>> {
-    const url = `${this.baseUrl}/login`;
+    const url = `${this.baseUrl}/Login`;
     return this.http.post<AuthResponse<unknown>>(url, payload);
   }
 }
