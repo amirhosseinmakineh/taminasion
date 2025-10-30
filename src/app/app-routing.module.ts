@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { AuthRoutingModule } from './components/auth/auth-routing.module';
 const routes: Routes = [
     {
       path: 'business-search',
@@ -27,11 +27,13 @@ const routes: Routes = [
       loadChildren: () => import('./components/business-owner-profile/business-owner-profile.module')
         .then(m => m.BusinessOwnerProfileModule)
     },
-    {
-      path: 'auth',
-      loadChildren: () => import('./components/auth/auth.module')
-        .then(m => m.AuthModule)
-    },
+{
+  path: 'auth',
+  loadChildren: () => import('./components/auth/auth.module')
+    .then(m => m.AuthModule)
+},
+
+
     {
       path: 'businesssearch',
       redirectTo: 'business-search',

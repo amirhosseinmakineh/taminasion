@@ -33,8 +33,9 @@ export class AuthService {
     );
   }
 
-  login(payload: LoginRequest): Observable<AuthResponse<unknown>> {
-    const url = `${this.baseUrl}/Login`;
-    return this.http.post<AuthResponse<unknown>>(url, payload);
-  }
+login(payload: LoginRequest): Observable<AuthResponse<{ token: string; user: any }>> {
+  const url = `${this.baseUrl}/login`; // lowercase و تمیز
+  return this.http.post<AuthResponse<{ token: string; user: any }>>(url, payload);
+}
+
 }
