@@ -1,0 +1,144 @@
+.dashboard {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  display: grid;
+  gap: 2rem;
+  color: var(--text);
+}
+
+.dashboard__header {
+  text-align: center;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.dashboard__header h1 {
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.5rem);
+  margin: 0;
+}
+
+.dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--surface, #fff);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 1rem;
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.status {
+  background: rgba(148, 163, 184, 0.12);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  color: inherit;
+}
+
+.status--error {
+  background: rgba(248, 113, 113, 0.18);
+  color: #b91c1c;
+}
+
+.profile-summary {
+  display: grid;
+  gap: 0.75rem;
+  text-align: right;
+}
+
+.profile-summary div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.profile-summary span {
+  color: var(--muted);
+}
+
+.profile-summary p {
+  margin: 0;
+}
+
+.reservation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.reservation-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  background: rgba(148, 163, 184, 0.12);
+  padding: 1rem;
+  border-radius: 1rem;
+  align-items: center;
+}
+
+.reservation-list h3 {
+  margin: 0 0 0.5rem;
+}
+
+.reservation-list p {
+  margin: 0.25rem 0;
+}
+
+.reservation-list__actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: inherit;
+}
+
+.btn--outline:hover,
+.btn--outline:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.2);
+}
+
+p.success {
+  color: #15803d;
+}
+
+p.error {
+  color: #b91c1c;
+}
+
+@media (max-width: 640px) {
+  .dashboard {
+    padding: 1rem;
+  }
+
+  .reservation-list li {
+    grid-template-columns: 1fr;
+  }
+
+  .reservation-list__actions {
+    justify-content: flex-start;
+  }
+}

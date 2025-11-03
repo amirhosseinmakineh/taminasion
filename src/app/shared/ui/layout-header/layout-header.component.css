@@ -80,6 +80,18 @@ nav a.auth-link {
   transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
+nav .auth-link.logout {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  color: inherit;
+  padding: 0.45rem 1rem;
+}
+
 nav a.auth-link:hover,
 nav a.auth-link:focus {
   background: rgba(59, 130, 246, 0.12);

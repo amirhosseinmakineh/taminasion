@@ -1,17 +1,13 @@
 <app-layout-header></app-layout-header>
 
 <div class="business-details-page">
-  <div class="state" *ngIf="isLoading">
-    در حال بارگذاری اطلاعات...
-  </div>
+  <div class="state" *ngIf="isLoading" i18n>در حال بارگذاری اطلاعات...</div>
 
-  <div class="state error" *ngIf="!isLoading && errorMessage">
-    {{ errorMessage }}
-  </div>
+  <div class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
 
   <ng-container *ngIf="!isLoading && !errorMessage && businessDetail as detail">
     <div class="cover">
-      <img [src]="getBannerUrl(detail.bannerName)" [alt]="'کاور ' + detail.name" />
+      <img [src]="getBannerUrl(detail.bannerName)" [alt]="('کاور ' + detail.name)" />
       <div class="logo-box">
         <ng-container *ngIf="getLogoUrl(detail.logo) as logoUrl; else logoInitial">
           <img [src]="logoUrl" [alt]="detail.name" />
@@ -32,38 +28,41 @@
             </p>
           </div>
           <div class="rating" *ngIf="averageRating !== null || ratingCount > 0">
-            <span class="star">★</span>
-            <span class="score">{{ averageRating !== null ? (averageRating | number:'1.1-1') : 'بدون امتیاز' }}</span>
-            <span class="votes">({{ ratingCount | number:'1.0-0' }})</span>
+            <span class="star" aria-hidden="true">★</span>
+            <span class="score">
+              <ng-container *ngIf="averageRating !== null; else noRating">
+                {{ averageRating | number: '1.1-1' }}
+              </ng-container>
+              <ng-template #noRating><span i18n>بدون امتیاز</span></ng-template>
+            </span>
+            <span class="votes">({{ ratingCount | number: '1.0-0' }})</span>
           </div>
         </div>
 
         <div class="tabs" role="tablist">
-          <button type="button" [class.active]="activeTab === 'about'" (click)="setActiveTab('about')">
+          <button type="button" [class.active]="activeTab === 'about'" (click)="setActiveTab('about')" i18n>
             درباره ما
           </button>
-          <button type="button" [class.active]="activeTab === 'staff'" (click)="setActiveTab('staff')">
+          <button type="button" [class.active]="activeTab === 'staff'" (click)="setActiveTab('staff')" i18n>
             پرسنل
           </button>
-          <button type="button" [class.active]="activeTab === 'info'" (click)="setActiveTab('info')">
+          <button type="button" [class.active]="activeTab === 'info'" (click)="setActiveTab('info')" i18n>
             اطلاعات سالن
           </button>
-          <button type="button" [class.active]="activeTab === 'reviews'" (click)="setActiveTab('reviews')">
+          <button type="button" [class.active]="activeTab === 'reviews'" (click)="setActiveTab('reviews')" i18n>
             نظرات
           </button>
         </div>
 
         <div class="tab-content" [class.active]="activeTab === 'about'">
           <div>
-            <p *ngIf="detail.description; else noDescription">
-              {{ detail.description }}
-            </p>
+            <p *ngIf="detail.description; else noDescription">{{ detail.description }}</p>
             <ng-template #noDescription>
-              <p>توضیحی برای این سالن ثبت نشده است.</p>
+              <p i18n>توضیحی برای این سالن ثبت نشده است.</p>
             </ng-template>
           </div>
           <div class="achievements" *ngIf="detail.achievementDtos?.length; else noAchievements">
-            <h3>دستاوردها</h3>
+            <h3 i18n>دستاوردها</h3>
             <div class="tags">
               <span
                 class="tag"
@@ -76,23 +75,21 @@
           </div>
           <ng-template #noAchievements>
             <div class="achievements empty">
-              <h3>دستاوردها</h3>
-              <p>دستاوردی برای این سالن ثبت نشده است.</p>
+              <h3 i18n>دستاوردها</h3>
+              <p i18n>دستاوردی برای این سالن ثبت نشده است.</p>
             </div>
           </ng-template>
         </div>
 
         <div class="tab-content" [class.active]="activeTab === 'staff'">
           <div>
-            <p>
-              برنامه‌های فعال این سالن در {{ detail.businessOwnerDayDtos.length | number:'1.0-0' }} روز هفته ثبت شده است.
+            <p i18n>
+              برنامه‌های فعال این سالن در {{ detail.businessOwnerDayDtos.length | number: '1.0-0' }} روز هفته ثبت شده است.
             </p>
-            <p *ngIf="detail.businessOwnerDayDtos.length === 0">
-              هنوز برنامه‌ای برای این سالن ثبت نشده است.
-            </p>
+            <p *ngIf="detail.businessOwnerDayDtos.length === 0" i18n>هنوز برنامه‌ای برای این سالن ثبت نشده است.</p>
           </div>
           <div class="services" *ngIf="detail.businessServiceDtos?.length">
-            <h3>خدمات ارائه شده</h3>
+            <h3 i18n>خدمات ارائه شده</h3>
             <ul>
               <li *ngFor="let service of detail.businessServiceDtos; trackBy: trackByService">
                 <span>{{ service.serviceName }}</span>
@@ -104,10 +101,8 @@
 
         <div class="tab-content" [class.active]="activeTab === 'info'">
           <div>
-            <p>📍 آدرس: {{ detail.cityName }}، {{ detail.regionName }}، {{ detail.neighberhoodName }}</p>
-            <p *ngIf="hasWorkingHours(detail.businessOwnerDayDtos); else noSchedule">
-              🕒 ساعت کاری:
-            </p>
+            <p i18n>📍 آدرس: {{ detail.cityName }}، {{ detail.regionName }}، {{ detail.neighberhoodName }}</p>
+            <p *ngIf="hasWorkingHours(detail.businessOwnerDayDtos); else noSchedule" i18n>🕒 ساعت کاری:</p>
             <ul class="schedule" *ngIf="hasWorkingHours(detail.businessOwnerDayDtos)">
               <li *ngFor="let day of detail.businessOwnerDayDtos; trackBy: trackByDay">
                 <span>{{ getDayName(day.dayOfWeek) }}</span>
@@ -115,7 +110,7 @@
               </li>
             </ul>
             <ng-template #noSchedule>
-              <p>🕒 ساعت کاری ثبت نشده است.</p>
+              <p i18n>🕒 ساعت کاری ثبت نشده است.</p>
             </ng-template>
           </div>
         </div>
@@ -123,13 +118,48 @@
         <div class="tab-content" [class.active]="activeTab === 'reviews'">
           <div *ngIf="detail.commentDtos?.length; else noComments">
             <div class="review" *ngFor="let comment of detail.commentDtos; trackBy: trackByComment">
-              <p class="review-author">{{ comment.userFullName || 'مشتری' }}</p>
+              <p class="review-author">
+                {{ comment.userFullName }}
+                <ng-container *ngIf="!comment.userFullName">
+                  <span i18n>مشتری</span>
+                </ng-container>
+              </p>
               <p class="review-text">{{ getCommentText(comment) }}</p>
             </div>
           </div>
           <ng-template #noComments>
-            <p>هنوز نظری برای این سالن ثبت نشده است.</p>
+            <p i18n>هنوز نظری برای این سالن ثبت نشده است.</p>
           </ng-template>
+
+          <form class="review-form" [formGroup]="reviewForm" (ngSubmit)="submitReview()" novalidate>
+            <h3 i18n>ثبت نظر و امتیاز</h3>
+            <label for="reviewRate" i18n>امتیاز شما</label>
+            <select id="reviewRate" formControlName="rate">
+              <option *ngFor="let rate of [5,4,3,2,1]" [ngValue]="rate">{{ rate }}</option>
+            </select>
+            <label for="reviewComment" i18n>متن نظر</label>
+            <textarea
+              id="reviewComment"
+              formControlName="comment"
+              rows="3"
+              placeholder="نظر خود را درباره کیفیت خدمات بنویسید"
+              i18n-placeholder
+            ></textarea>
+            <div
+              class="form-feedback"
+              *ngIf="
+                reviewForm.invalid &&
+                (reviewForm.get('comment')?.touched || reviewForm.get('rate')?.touched)
+              "
+              i18n
+            >
+              لطفاً هر دو فیلد امتیاز و متن نظر را تکمیل کنید.
+            </div>
+            <button class="btn btn--primary" type="submit" [disabled]="isSubmittingReview" i18n>ارسال نظر</button>
+            <p *ngIf="reviewFeedback" [class.success]="reviewFeedbackType==='success'" [class.error]="reviewFeedbackType==='error'">
+              {{ reviewFeedback }}
+            </p>
+          </form>
         </div>
       </div>
     </div>

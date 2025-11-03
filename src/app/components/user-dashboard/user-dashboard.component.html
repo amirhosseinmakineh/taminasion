@@ -1,0 +1,85 @@
+<app-layout-header></app-layout-header>
+
+<section class="dashboard">
+  <header class="dashboard__header">
+    <h1 i18n>داشبورد کاربر</h1>
+    <p i18n>در اینجا می‌توانید اطلاعات حساب خود را مرور و رزروها را مدیریت کنید.</p>
+  </header>
+
+  <div class="dashboard__grid">
+    <article class="card">
+      <h2 i18n>اطلاعات حساب</h2>
+      <ng-container *ngIf="isProfileLoading; else profileState">
+        <p class="status" i18n>در حال بارگذاری اطلاعات حساب...</p>
+      </ng-container>
+      <ng-template #profileState>
+        <p *ngIf="profileError" class="status status--error">{{ profileError }}</p>
+        <div *ngIf="!profileError && profile" class="profile-summary">
+          <div>
+            <span i18n>نام:</span>
+            <strong>{{ profile.name }} {{ profile.family }}</strong>
+          </div>
+          <div *ngIf="profile.phoneNumber">
+            <span i18n>شماره تماس:</span>
+            <strong>{{ profile.phoneNumber }}</strong>
+          </div>
+          <div *ngIf="profile.businessInfo?.businessName">
+            <span i18n>نام سالن:</span>
+            <strong>{{ profile.businessInfo?.businessName }}</strong>
+          </div>
+          <div *ngIf="profile.aboutMe">
+            <span i18n>درباره من:</span>
+            <p>{{ profile.aboutMe }}</p>
+          </div>
+        </div>
+        <p *ngIf="!profileError && !profile" class="status" i18n>اطلاعات حساب شما هنوز تکمیل نشده است.</p>
+      </ng-template>
+    </article>
+
+    <article class="card">
+      <h2 i18n>رزروهای من</h2>
+      <ng-container *ngIf="isReservationsLoading; else reservationsState">
+        <p class="status" i18n>در حال دریافت اطلاعات رزرو...</p>
+      </ng-container>
+      <ng-template #reservationsState>
+        <p *ngIf="reservationError" class="status status--error">{{ reservationError }}</p>
+        <div *ngIf="!reservationError && reservations.length; else noReservations">
+          <ul class="reservation-list">
+            <li *ngFor="let reservation of reservations; trackBy: trackByReservation">
+              <div class="reservation-list__info">
+                <h3>{{ reservation.businessName }}</h3>
+                <p>
+                  <span i18n>خدمت:</span>
+                  {{ reservation.serviceName }}
+                </p>
+                <p>
+                  <span i18n>تاریخ:</span>
+                  {{ reservation.reservationDate | date:'medium' }}
+                </p>
+                <p>
+                  <span i18n>وضعیت:</span>
+                  {{ reservation.status }}
+                </p>
+                <p *ngIf="reservation.amount != null">
+                  <span i18n>مبلغ:</span>
+                  {{ reservation.amount | number:'1.0-0' }}
+                </p>
+              </div>
+              <div class="reservation-list__actions">
+                <button type="button" class="btn btn--outline" (click)="cancelReservation(reservation)" i18n>
+                  لغو رزرو
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <ng-template #noReservations>
+          <p class="status" i18n>هنوز رزروی ثبت نکرده‌اید.</p>
+        </ng-template>
+        <p *ngIf="cancelFeedback" [class.success]="cancelFeedbackType==='success'" [class.error]="cancelFeedbackType==='error'">
+          {{ cancelFeedback }}
+        </p>
+      </ng-template>
+    </article>
+  </div>
+</section>

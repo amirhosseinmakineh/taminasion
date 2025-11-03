@@ -11,6 +11,7 @@ export interface BusinessOwnerProfile {
   aboutMe: string | null;
   name: string | null;
   family: string | null;
+  phoneNumber?: string | null;
   banner: string | null;
   workHistory: string | null;
   takingTurns: BusinessOwnerTurn[] | null;

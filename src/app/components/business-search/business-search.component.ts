@@ -8,6 +8,7 @@ import { BusinessDto, BusinessDayTimeDto } from '../../models/business/business.
 import { BusinessServiceDto } from '../../models/business/business-service.dto';
 import { CategoryDto } from '../../models/business/category.dto';
 import { BusinessService } from '../../services/business.service';
+import { AuthService } from '../../services/auth.service';
 import { LocationSelection } from '../../shared/ui/location-selector/location-selector.component';
 
 @Component({
@@ -60,6 +61,7 @@ export class BusinessSearchComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly service: BusinessService,
     private readonly router: Router,
+    private readonly authService: AuthService,
     @Inject(PLATFORM_ID) private readonly platformId: object,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -298,6 +300,15 @@ export class BusinessSearchComponent implements OnInit, OnDestroy {
   }
 
   reserve(serviceId: number) {
+    if (!this.authService.isAuthenticated()) {
+      void this.router.navigate(['/auth/login'], {
+        state: {
+          infoMessage: $localize`برای رزرو ابتدا وارد حساب کاربری خود شوید.`,
+        },
+      });
+      return;
+    }
+
     const timeId = this.selectedTimes[serviceId];
     if (!timeId) return;
     const time = this.timesForCurrentDay.find(t => t.businessOwnerTimeId === timeId);

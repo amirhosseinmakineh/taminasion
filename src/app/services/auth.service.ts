@@ -1,18 +1,24 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 
 import { AuthResponse, AuthUserDto } from '../models/auth/auth-response.model';
 import { LoginRequest } from '../models/auth/login-request.model';
 import { RegisterRequest } from '../models/auth/register-request.model';
 import { ForgotPasswordRequest } from '../models/auth/forgot-password-request.model';
 import { ChangePasswordRequest } from '../models/auth/change-password-request.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly baseUrl = 'http://localhost:5107/api/User';
+  private readonly apiBaseUrl = environment.apiBaseUrl;
+  private readonly baseUrl = `${this.apiBaseUrl}/User`;
+  private readonly tokenStorageKey = 'authToken';
+  private readonly authStatusSubject = new BehaviorSubject<boolean>(this.hasStoredToken());
+
+  readonly authStatus$ = this.authStatusSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {}
 
@@ -31,13 +37,20 @@ export class AuthService {
           ...response.data,
           phoneNumber: payload.phone,
         },
-      }))
+      })),
     );
   }
 
   login(payload: LoginRequest): Observable<AuthResponse<{ token: string; user: any }>> {
     const url = `${this.baseUrl}/login`; // lowercase و تمیز
-    return this.http.post<AuthResponse<{ token: string; user: any }>>(url, payload);
+    return this.http.post<AuthResponse<{ token: string; user: any }>>(url, payload).pipe(
+      tap(response => {
+        const token = this.extractToken(response.data);
+        if (response.isSuccess && token) {
+          this.storeToken(token);
+        }
+      }),
+    );
   }
 
   forgotPassword(payload: ForgotPasswordRequest): Observable<AuthResponse<unknown>> {
@@ -57,4 +70,63 @@ export class AuthService {
     return this.http.post<AuthResponse<string>>(url, null, { params });
   }
 
+  getToken(): string | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return window.localStorage.getItem(this.tokenStorageKey);
+  }
+
+  storeToken(token: string): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(this.tokenStorageKey, token);
+    this.authStatusSubject.next(true);
+  }
+
+  clearStoredToken(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.removeItem(this.tokenStorageKey);
+    this.authStatusSubject.next(false);
+  }
+
+  logout(): void {
+    this.clearStoredToken();
+  }
+
+  isAuthenticated(): boolean {
+    return this.hasStoredToken();
+  }
+
+  private hasStoredToken(): boolean {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    return !!window.localStorage.getItem(this.tokenStorageKey);
+  }
+
+  private extractToken(data: unknown): string | null {
+    if (!data) {
+      return null;
+    }
+
+    if (typeof data === 'string') {
+      return data;
+    }
+
+    if (typeof data === 'object') {
+      const record = data as Record<string, unknown>;
+      const possibleToken =
+        record['token'] ?? record['accessToken'] ?? record['jwtToken'] ?? record['bearerToken'];
+
+      if (typeof possibleToken === 'string') {
+        return possibleToken;
+      }
+    }
+
+    return null;
+  }
 }

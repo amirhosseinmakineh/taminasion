@@ -1,5 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-layout-header',
@@ -7,12 +12,19 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
   styleUrls: ['./layout-header.component.css'],
   standalone: false,
 })
-export class LayoutHeaderComponent implements OnInit {
+export class LayoutHeaderComponent implements OnInit, OnDestroy {
   isMenuOpen = false;
   isScrolled = false;
   isDarkMode = false;
+  isAuthenticated = false;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+  ) {}
 
   ngOnInit(): void {
     if (typeof window === 'undefined') {
@@ -27,6 +39,16 @@ export class LayoutHeaderComponent implements OnInit {
     }
 
     this.applyThemeClass();
+
+    this.isAuthenticated = this.authService.isAuthenticated();
+    this.authService.authStatus$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(status => (this.isAuthenticated = status));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   @HostListener('window:scroll')
@@ -52,6 +74,22 @@ export class LayoutHeaderComponent implements OnInit {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
     }
+  }
+
+  get themeToggleLabel(): string {
+    return this.isDarkMode
+      ? $localize`غیرفعال کردن حالت شب`
+      : $localize`فعال کردن حالت شب`;
+  }
+
+  async logout(): Promise<void> {
+    this.authService.logout();
+    this.closeMenu();
+    await this.router.navigate(['/auth/login'], {
+      state: {
+        infoMessage: $localize`با موفقیت از حساب کاربری خود خارج شدید.`,
+      },
+    });
   }
 
   private applyThemeClass(): void {
