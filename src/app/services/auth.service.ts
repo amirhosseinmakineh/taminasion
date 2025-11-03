@@ -52,7 +52,7 @@ export class AuthService {
 
   changePassword(token: string, payload: ChangePasswordRequest): Observable<AuthResponse<string>> {
     const url = `${this.baseUrl}/ChangePassword/${token}`;
-    const params = new HttpParams().set('newPassword', payload.newPassword);
+    const params = new HttpParams().set('password', payload.newPassword);
 
     return this.http.post<AuthResponse<string>>(url, null, { params });
   }
