@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { finalize, take } from 'rxjs';
 
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
@@ -118,16 +118,26 @@ export class ResetPasswordComponent implements OnInit {
         next: (response: AuthResponse<string>) => {
           if (response.isSuccess) {
             this.feedbackType = 'success';
-            this.feedbackMessage = response.message || 'رمز عبور شما با موفقیت تغییر کرد.';
+            const message = response.message || 'رمز عبور شما با موفقیت تغییر کرد.';
+            this.feedbackMessage = `${message} در حال انتقال به صفحه اصلی...`;
             this.resetPasswordForm.disable();
+            this.scheduleRedirect(['/']);
           } else {
             this.feedbackType = 'error';
-            this.feedbackMessage = response.message || 'تغییر رمز عبور با مشکل مواجه شد.';
+            const message = response.message || 'تغییر رمز عبور با مشکل مواجه شد.';
+            this.feedbackMessage = `${message} در حال انتقال به صفحه بازیابی رمز عبور...`;
+            this.scheduleRedirect(['/auth/forgot-password'], {
+              state: { errorMessage: message },
+            });
           }
         },
         error: () => {
           this.feedbackType = 'error';
-          this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
+          const message = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
+          this.feedbackMessage = `${message} در حال انتقال به صفحه بازیابی رمز عبور...`;
+          this.scheduleRedirect(['/auth/forgot-password'], {
+            state: { errorMessage: message },
+          });
         },
       });
   }
@@ -167,6 +177,12 @@ export class ResetPasswordComponent implements OnInit {
     this.feedbackMessage = `${message} در حال انتقال به صفحه ورود...`;
     this.resetPasswordForm.disable();
 
+    this.scheduleRedirect(['/auth/login'], {
+      state: { errorMessage: message },
+    });
+  }
+
+  private scheduleRedirect(commands: string[], extras?: NavigationExtras): void {
     if (this.redirectScheduled) {
       return;
     }
@@ -174,9 +190,7 @@ export class ResetPasswordComponent implements OnInit {
     this.redirectScheduled = true;
 
     setTimeout(() => {
-      void this.router.navigate(['/auth/login'], {
-        state: { errorMessage: message },
-      });
+      void this.router.navigate(commands, extras);
     }, this.redirectDelayMs);
   }
 }

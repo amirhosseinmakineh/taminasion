@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
@@ -12,9 +13,10 @@ import { AuthService } from '../../../../services/auth.service';
   styleUrls: ['./forgot-password.component.css'],
   standalone: false,
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   protected readonly forgotPasswordForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -23,6 +25,16 @@ export class ForgotPasswordComponent {
   feedbackMessage = '';
   feedbackType: 'success' | 'error' | 'info' = 'info';
   isSubmitting = false;
+
+  ngOnInit(): void {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { errorMessage?: string } | undefined;
+
+    if (state?.errorMessage) {
+      this.feedbackType = 'error';
+      this.feedbackMessage = state.errorMessage;
+    }
+  }
 
   get email() {
     return this.forgotPasswordForm.get('email');
