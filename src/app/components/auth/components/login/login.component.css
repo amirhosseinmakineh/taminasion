@@ -119,6 +119,22 @@ button:disabled {
   align-items: center;
 }
 
+.helper-link {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.helper-link a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.helper-link a:hover {
+  text-decoration: underline;
+}
+
 .footer-text {
   margin-top: 1.5rem;
   text-align: center;

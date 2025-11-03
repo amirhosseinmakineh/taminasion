@@ -72,6 +72,32 @@ nav a.cta {
   opacity: 1;
 }
 
+nav a.auth-link {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 0.45rem 1rem;
+  opacity: 1;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+nav a.auth-link:hover,
+nav a.auth-link:focus {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.24);
+}
+
+nav a.auth-link.signup {
+  background: rgba(59, 130, 246, 0.16);
+  border-color: transparent;
+  font-weight: 700;
+}
+
+nav a.auth-link.signup:hover,
+nav a.auth-link.signup:focus {
+  background: rgba(59, 130, 246, 0.24);
+  color: var(--primary);
+}
+
 .theme-toggle {
   align-items: center;
   background: rgba(59, 130, 246, 0.12);
@@ -154,6 +180,21 @@ body.dark-theme nav a:focus {
 
 body.dark-theme nav .cta {
   color: #0f172a;
+}
+
+body.dark-theme nav a.auth-link {
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+body.dark-theme nav a.auth-link.signup {
+  background: rgba(148, 163, 184, 0.2);
+  color: #f8fafc;
+}
+
+body.dark-theme nav a.auth-link.signup:hover,
+body.dark-theme nav a.auth-link.signup:focus {
+  background: rgba(148, 163, 184, 0.3);
+  color: #38bdf8;
 }
 
 @media (max-width: 768px) {
