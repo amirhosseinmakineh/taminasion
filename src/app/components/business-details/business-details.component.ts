@@ -1,5 +1,6 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 import { combineLatest, EMPTY, finalize, map, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -11,7 +12,9 @@ import {
   BusinessOwnerTimeDto,
 } from '../../models/business/business-detail.dto';
 import { BusinessServiceDto } from '../../models/business/business-service.dto';
-import { BusinessService } from '../../services/business.service';
+import { BusinessService, BusinessReviewRequest } from '../../services/business.service';
+import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-business-details',
@@ -26,6 +29,18 @@ export class BusinessDetailsComponent implements OnInit {
   errorMessage = '';
   averageRating: number | null = null;
   ratingCount = 0;
+  reviewFeedback = '';
+  reviewFeedbackType: 'success' | 'error' | '' = '';
+  isSubmittingReview = false;
+
+  private readonly formBuilder = inject(FormBuilder);
+
+  readonly reviewForm = this.formBuilder.nonNullable.group({
+    comment: ['', [Validators.required, Validators.maxLength(500)]],
+    rate: [5, [Validators.required]],
+  });
+
+  private readonly imageBaseUrl = environment.imageBaseUrl;
 
   private readonly dayNames: Record<number, string> = {
     1: 'یکشنبه',
@@ -41,6 +56,7 @@ export class BusinessDetailsComponent implements OnInit {
     private readonly businessService: BusinessService,
     private readonly route: ActivatedRoute,
     private readonly destroyRef: DestroyRef,
+    private readonly authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +66,7 @@ export class BusinessDetailsComponent implements OnInit {
         switchMap(idParam => {
           const id = idParam ? Number(idParam) : NaN;
           if (Number.isNaN(id) || id <= 0) {
-            this.errorMessage = 'شناسه کسب‌وکار معتبر نیست.';
+            this.errorMessage = $localize`شناسه کسب‌وکار معتبر نیست.`;
             return EMPTY;
           }
           this.isLoading = true;
@@ -70,7 +86,7 @@ export class BusinessDetailsComponent implements OnInit {
           this.activeTab = 'about';
         },
         error: () => {
-          this.errorMessage = 'امکان دریافت اطلاعات کسب‌وکار وجود ندارد.';
+          this.errorMessage = $localize`امکان دریافت اطلاعات کسب‌وکار وجود ندارد.`;
         },
       });
   }
@@ -95,14 +111,14 @@ export class BusinessDetailsComponent implements OnInit {
     if (!logo) {
       return null;
     }
-    return `http://localhost:5107/Images/${logo}`;
+    return `${this.imageBaseUrl}/${logo}`;
   }
 
   getBannerUrl(banner?: string | null): string {
     if (!banner) {
       return 'https://images.unsplash.com/photo-1603252109303-2751441dd157?auto=format&fit=crop&w=1350&q=80';
     }
-    return `http://localhost:5107/Images/${banner}`;
+    return `${this.imageBaseUrl}/${banner}`;
   }
 
   getWorkingHours(day: BusinessOwnerDayDto): string {
@@ -155,6 +171,58 @@ export class BusinessDetailsComponent implements OnInit {
 
   trackByComment(index: number, comment: BusinessCommentDto): string {
     return `${comment.userId ?? 'user'}-${comment.id ?? index}`;
+  }
+
+  submitReview(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.reviewFeedback = $localize`برای ارسال نظر باید ابتدا وارد شوید.`;
+      this.reviewFeedbackType = 'error';
+      return;
+    }
+
+    if (this.reviewForm.invalid || !this.businessDetail) {
+      this.reviewForm.markAllAsTouched();
+      return;
+    }
+
+    const payload: BusinessReviewRequest = {
+      businessId: this.businessDetail.businessId,
+      comment: this.reviewForm.getRawValue().comment.trim(),
+      rate: Number(this.reviewForm.getRawValue().rate),
+    };
+
+    this.isSubmittingReview = true;
+    this.reviewFeedback = '';
+    this.reviewFeedbackType = '';
+
+    this.businessService
+      .submitReview(payload)
+      .pipe(finalize(() => (this.isSubmittingReview = false)))
+      .subscribe({
+        next: () => {
+          this.reviewFeedback = $localize`نظر شما با موفقیت ثبت شد.`;
+          this.reviewFeedbackType = 'success';
+          const newComment: BusinessCommentDto = {
+            comment: payload.comment,
+            rate: payload.rate,
+            userId: 'me',
+          };
+          if (this.businessDetail) {
+            if (this.businessDetail.commentDtos) {
+              this.businessDetail.commentDtos.unshift(newComment);
+            } else {
+              this.businessDetail.commentDtos = [newComment];
+            }
+            this.ratingCount = this.businessDetail.commentDtos.length;
+            this.averageRating = this.calculateAverageRating(this.businessDetail.commentDtos);
+          }
+          this.reviewForm.reset({ comment: '', rate: 5 });
+        },
+        error: () => {
+          this.reviewFeedback = $localize`ثبت نظر با خطا مواجه شد. لطفاً دوباره تلاش کنید.`;
+          this.reviewFeedbackType = 'error';
+        },
+      });
   }
 
   private calculateAverageRating(comments: BusinessCommentDto[]): number | null {

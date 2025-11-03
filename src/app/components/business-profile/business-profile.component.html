@@ -1,33 +1,132 @@
 <app-layout-header></app-layout-header>
 
 <div class="profile-container">
-  <img src="landingbackground.png" alt="profile" class="banner">
-  <h1>پروفایل آرایشگر</h1>
+  <ng-container *ngIf="isLoading; else profileContent">
+    <p class="status" i18n>در حال بارگذاری اطلاعات...</p>
+  </ng-container>
 
-  <div class="tabs">
-    <button [class.active]="activeTab==='experience'" (click)="activeTab='experience'">سوابق کاری</button>
-    <button [class.active]="activeTab==='certificates'" (click)="activeTab='certificates'">مدارک</button>
-    <button [class.active]="activeTab==='comments'" (click)="activeTab='comments'">نظرات</button>
-  </div>
-
-  <div *ngIf="activeTab==='experience'" class="tab-content">
-    <ng-container *ngIf="experiences.length; else noExp">
-      <div *ngFor="let e of experiences">{{ e }}</div>
+  <ng-template #profileContent>
+    <ng-container *ngIf="errorMessage; else profileDetails">
+      <p class="status status--error">{{ errorMessage }}</p>
     </ng-container>
-    <ng-template #noExp><p>اطلاعاتی موجود نیست</p></ng-template>
-  </div>
 
-  <div *ngIf="activeTab==='certificates'" class="tab-content">
-    <ng-container *ngIf="certificates.length; else noCert">
-      <div *ngFor="let c of certificates">{{ c }}</div>
-    </ng-container>
-    <ng-template #noCert><p>اطلاعاتی موجود نیست</p></ng-template>
-  </div>
+    <ng-template #profileDetails>
+      <h1 class="profile-title" i18n>پروفایل کسب‌وکار</h1>
 
-  <div *ngIf="activeTab==='comments'" class="tab-content">
-    <ng-container *ngIf="comments.length; else noComment">
-      <div *ngFor="let cm of comments" class="comment">{{ cm }}</div>
-    </ng-container>
-    <ng-template #noComment><p>نظری ثبت نشده است</p></ng-template>
-  </div>
+      <div class="tabs" role="tablist">
+        <button
+          type="button"
+          [class.active]="activeTab==='experience'"
+          (click)="activeTab='experience'"
+          role="tab"
+          i18n
+        >سوابق کاری</button>
+        <button
+          type="button"
+          [class.active]="activeTab==='certificates'"
+          (click)="activeTab='certificates'"
+          role="tab"
+          i18n
+        >گواهی‌نامه‌ها</button>
+        <button
+          type="button"
+          [class.active]="activeTab==='comments'"
+          (click)="activeTab='comments'"
+          role="tab"
+          i18n
+        >نظرات</button>
+      </div>
+
+      <section *ngIf="activeTab==='experience'" class="tab-content" aria-live="polite">
+        <div class="tab-section">
+          <h2 i18n>سوابق حرفه‌ای</h2>
+          <p *ngIf="profile?.workHistory; else noHistory">{{ profile?.workHistory }}</p>
+          <ng-template #noHistory>
+            <p class="status" i18n>هنوز سابقه‌ای ثبت نشده است.</p>
+          </ng-template>
+        </div>
+
+        <form [formGroup]="workHistoryForm" (ngSubmit)="submitWorkHistory()" novalidate class="form-card">
+          <h3 i18n>به‌روزرسانی سوابق</h3>
+          <label for="workHistory" i18n>توضیح سوابق</label>
+          <textarea
+            id="workHistory"
+            formControlName="workHistory"
+            rows="4"
+            placeholder="نمونه: بیش از ۵ سال تجربه در سالن‌های تخصصی"
+            i18n-placeholder
+          ></textarea>
+          <div class="form-feedback" *ngIf="workHistoryForm.get('workHistory')?.invalid && workHistoryForm.get('workHistory')?.touched">
+            <p i18n>لطفاً توضیحی معتبر وارد کنید.</p>
+          </div>
+          <button type="submit" class="btn btn--primary" i18n>ذخیره سوابق</button>
+          <p *ngIf="workHistoryFeedback" [class.success]="workHistoryFeedbackType==='success'" [class.error]="workHistoryFeedbackType==='error'">
+            {{ workHistoryFeedback }}
+          </p>
+        </form>
+      </section>
+
+      <section *ngIf="activeTab==='certificates'" class="tab-content" aria-live="polite">
+        <div class="tab-section">
+          <h2 i18n>گواهی‌نامه‌ها</h2>
+          <ul *ngIf="profile?.achievements?.length; else noCertificates" class="data-list">
+            <li *ngFor="let achievement of profile?.achievements; trackBy: trackByAchievement">{{ achievement.name }}</li>
+          </ul>
+          <ng-template #noCertificates>
+            <p class="status" i18n>گواهی‌نامه‌ای ثبت نشده است.</p>
+          </ng-template>
+        </div>
+
+        <form [formGroup]="achievementForm" (ngSubmit)="addAchievement()" novalidate class="form-card">
+          <h3 i18n>افزودن گواهی‌نامه</h3>
+          <label for="certificateName" i18n>عنوان گواهی‌نامه</label>
+          <input
+            id="certificateName"
+            type="text"
+            formControlName="name"
+            placeholder="نمونه: مدرک کوتاهی مو از سازمان فنی و حرفه‌ای"
+            i18n-placeholder
+          />
+          <div class="form-feedback" *ngIf="achievementForm.get('name')?.invalid && achievementForm.get('name')?.touched">
+            <p i18n>عنوان معتبر وارد کنید.</p>
+          </div>
+          <button type="submit" class="btn btn--primary" i18n>ثبت گواهی‌نامه</button>
+          <p *ngIf="achievementFeedback" [class.success]="achievementFeedbackType==='success'" [class.error]="achievementFeedbackType==='error'">
+            {{ achievementFeedback }}
+          </p>
+        </form>
+      </section>
+
+      <section *ngIf="activeTab==='comments'" class="tab-content" aria-live="polite">
+        <div class="tab-section">
+          <h2 i18n>نظرات کاربران</h2>
+          <ul *ngIf="profile?.comments?.length; else noComments" class="data-list">
+            <li *ngFor="let comment of profile?.comments; trackBy: trackByComment">{{ comment.comment || comment.text }}</li>
+          </ul>
+          <ng-template #noComments>
+            <p class="status" i18n>نظری ثبت نشده است.</p>
+          </ng-template>
+        </div>
+
+        <form [formGroup]="commentForm" (ngSubmit)="addComment()" novalidate class="form-card">
+          <h3 i18n>ثبت نظر جدید</h3>
+          <label for="commentText" i18n>متن نظر</label>
+          <textarea
+            id="commentText"
+            formControlName="comment"
+            rows="3"
+            placeholder="نظر خود را درباره خدمات بنویسید"
+            i18n-placeholder
+          ></textarea>
+          <div class="form-feedback" *ngIf="commentForm.get('comment')?.invalid && commentForm.get('comment')?.touched">
+            <p i18n>متن نظر باید حداقل چند کاراکتر داشته باشد.</p>
+          </div>
+          <button type="submit" class="btn btn--primary" i18n>ارسال نظر</button>
+          <p *ngIf="commentFeedback" [class.success]="commentFeedbackType==='success'" [class.error]="commentFeedbackType==='error'">
+            {{ commentFeedback }}
+          </p>
+        </form>
+      </section>
+    </ng-template>
+  </ng-template>
 </div>

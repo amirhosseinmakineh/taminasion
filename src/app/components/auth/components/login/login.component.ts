@@ -17,7 +17,6 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly tokenStorageKey = 'authToken';
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -64,22 +63,18 @@ export class LoginComponent {
       .subscribe({
         next: (response: AuthResponse<unknown>) => {
           if (response.isSuccess) {
-            const token = this.extractToken(response.data);
-            if (token) {
-              this.saveToken(token);
-            }
-
             this.feedbackType = 'success';
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
             this.loginForm.reset();
+            void this.router.navigate(['/user-dashboard']);
           } else {
-            this.clearStoredToken();
+            this.authService.clearStoredToken();
             this.feedbackType = 'error';
             this.feedbackMessage = response.message || 'در فرآیند ورود مشکلی پیش آمد.';
           }
         },
         error: () => {
-          this.clearStoredToken();
+          this.authService.clearStoredToken();
           this.feedbackType = 'error';
           this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
         },
@@ -88,44 +83,6 @@ export class LoginComponent {
 
   clearFeedback(): void {
     this.feedbackMessage = '';
-  }
-
-  private extractToken(data: unknown): string | null {
-    if (!data) {
-      return null;
-    }
-
-    if (typeof data === 'string') {
-      return data;
-    }
-
-    if (typeof data === 'object') {
-      const record = data as Record<string, unknown>;
-      const possibleToken =
-        record['token'] ?? record['accessToken'] ?? record['jwtToken'] ?? record['bearerToken'];
-
-      if (typeof possibleToken === 'string') {
-        return possibleToken;
-      }
-    }
-
-    return null;
-  }
-
-  private saveToken(token: string): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    window.localStorage.setItem(this.tokenStorageKey, token);
-  }
-
-  private clearStoredToken(): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    window.localStorage.removeItem(this.tokenStorageKey);
   }
 
   private consumeNavigationState(): { errorMessage?: string; infoMessage?: string } | null {

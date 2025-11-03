@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="fa" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="3759731038894709206" datatype="html">
+        <source>در حال بارگذاری اطلاعات...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">4,6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8943092271531584953" datatype="html">
+        <source>بدون امتیاز</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6737703434009600275" datatype="html">
+        <source> درباره ما </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1290454247071743813" datatype="html">
+        <source> پرسنل </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8597641721062341563" datatype="html">
+        <source> اطلاعات سالن </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8028933952763975239" datatype="html">
+        <source> نظرات </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1806580793599962209" datatype="html">
+        <source>توضیحی برای این سالن ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5543991526648644219" datatype="html">
+        <source>دستاوردها</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">78,79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5411573393554141951" datatype="html">
+        <source>دستاوردی برای این سالن ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">79,80</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2631493125279245288" datatype="html">
+        <source> برنامه‌های فعال این سالن در <x id="INTERPOLATION" equiv-text="{{ detail.businessOwnerDayDtos.length | number: &apos;1.0-0&apos; }}"/> روز هفته ثبت شده است. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">87,89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8777825835822810259" datatype="html">
+        <source>هنوز برنامه‌ای برای این سالن ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">89,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2747867895380625069" datatype="html">
+        <source>خدمات ارائه شده</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">92,93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2132329623185849921" datatype="html">
+        <source>📍 آدرس: <x id="INTERPOLATION" equiv-text="{{ detail.cityName }}"/>، <x id="INTERPOLATION_1" equiv-text="{{ detail.regionName }}"/>، <x id="INTERPOLATION_2" equiv-text="{{ detail.neighberhoodName }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">104,105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2691267000794911518" datatype="html">
+        <source>🕒 ساعت کاری:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">105,106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2505387805241170371" datatype="html">
+        <source>🕒 ساعت کاری ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">113,114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2564721193517264547" datatype="html">
+        <source>مشتری</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">124,125</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1864111686596330585" datatype="html">
+        <source>هنوز نظری برای این سالن ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">131,132</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4604338005717375700" datatype="html">
+        <source>ثبت نظر و امتیاز</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">135,136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="531772258927129764" datatype="html">
+        <source>امتیاز شما</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">136,137</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3219060279944694443" datatype="html">
+        <source>متن نظر</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">140,141</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">113,114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3356907916778602858" datatype="html">
+        <source>نظر خود را درباره کیفیت خدمات بنویسید</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">145,146</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4358064190358512504" datatype="html">
+        <source> لطفاً هر دو فیلد امتیاز و متن نظر را تکمیل کنید. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6460775999569564082" datatype="html">
+        <source>ارسال نظر</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.html</context>
+          <context context-type="linenumber">158,159</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">124,125</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4087331913598748229" datatype="html">
+        <source>شناسه کسب‌وکار معتبر نیست.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.ts</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6496823670041813842" datatype="html">
+        <source>امکان دریافت اطلاعات کسب‌وکار وجود ندارد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8403776592352652872" datatype="html">
+        <source>برای ارسال نظر باید ابتدا وارد شوید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.ts</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4289439651832934132" datatype="html">
+        <source>نظر شما با موفقیت ثبت شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.ts</context>
+          <context context-type="linenumber">203</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2085149439085093394" datatype="html">
+        <source>ثبت نظر با خطا مواجه شد. لطفاً دوباره تلاش کنید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-details/business-details.component.ts</context>
+          <context context-type="linenumber">222</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8322104618435963450" datatype="html">
+        <source>پروفایل کسب‌وکار</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="80674035649228712" datatype="html">
+        <source>سوابق کاری</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5081942956154011483" datatype="html">
+        <source>گواهی‌نامه‌ها</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3087064191938360876" datatype="html">
+        <source>نظرات</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5803005889610669284" datatype="html">
+        <source>سوابق حرفه‌ای</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8073063230671739733" datatype="html">
+        <source>هنوز سابقه‌ای ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6214509918184205231" datatype="html">
+        <source>به‌روزرسانی سوابق</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1621927796643244930" datatype="html">
+        <source>توضیح سوابق</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4806933621512536914" datatype="html">
+        <source>نمونه: بیش از ۵ سال تجربه در سالن‌های تخصصی</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">56,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4237522824625524537" datatype="html">
+        <source>لطفاً توضیحی معتبر وارد کنید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">60,61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3569097797927381179" datatype="html">
+        <source>ذخیره سوابق</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2608999738885445676" datatype="html">
+        <source>گواهی‌نامه‌ای ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">76,77</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3271795689754709706" datatype="html">
+        <source>افزودن گواهی‌نامه</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">81,82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8719270590548503829" datatype="html">
+        <source>عنوان گواهی‌نامه</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">82,83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4491905107595387971" datatype="html">
+        <source>نمونه: مدرک کوتاهی مو از سازمان فنی و حرفه‌ای</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">87,88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8884226850094304934" datatype="html">
+        <source>عنوان معتبر وارد کنید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">91,92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1103905023854678083" datatype="html">
+        <source>ثبت گواهی‌نامه</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">93,94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7782976690237538774" datatype="html">
+        <source>نظرات کاربران</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">102,103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1418750911374416644" datatype="html">
+        <source>نظری ثبت نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">107,108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3267163158517899530" datatype="html">
+        <source>ثبت نظر جدید</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">112,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1961566560593927472" datatype="html">
+        <source>نظر خود را درباره خدمات بنویسید</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">118,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4558368814564384876" datatype="html">
+        <source>متن نظر باید حداقل چند کاراکتر داشته باشد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.html</context>
+          <context context-type="linenumber">122,123</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5004328515575310838" datatype="html">
+        <source>امکان دریافت اطلاعات پروفایل وجود ندارد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7079620386640729219" datatype="html">
+        <source>دریافت اطلاعات پروفایل با خطا مواجه شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6466439186005448378" datatype="html">
+        <source>متن سوابق نمی‌تواند خالی باشد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4472984371996580012" datatype="html">
+        <source>سوابق کاری با موفقیت به‌روزرسانی شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7477655230226179215" datatype="html">
+        <source>به‌روزرسانی سوابق با خطا مواجه شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">103</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5083074374022515884" datatype="html">
+        <source>عنوان گواهی‌نامه نمی‌تواند خالی باشد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4604179556154304617" datatype="html">
+        <source>گواهی‌نامه جدید با موفقیت ثبت شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7824310250458012201" datatype="html">
+        <source>ثبت گواهی‌نامه با خطا مواجه شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">138</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6025894058976208134" datatype="html">
+        <source>متن نظر نمی‌تواند خالی باشد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">152</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6861135737160979721" datatype="html">
+        <source>نظر جدید با موفقیت ذخیره شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">168</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5780626819279500930" datatype="html">
+        <source>ذخیره نظر با خطا مواجه شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-profile/business-profile.component.ts</context>
+          <context context-type="linenumber">173</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="17271262154175289" datatype="html">
+        <source>برای رزرو ابتدا وارد حساب کاربری خود شوید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/business-search/business-search.component.ts</context>
+          <context context-type="linenumber">306</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1143075941883611863" datatype="html">
+        <source>داشبورد کاربر</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1439310182784402602" datatype="html">
+        <source>در اینجا می‌توانید اطلاعات حساب خود را مرور و رزروها را مدیریت کنید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">6,7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6620297345118111292" datatype="html">
+        <source>اطلاعات حساب</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5816499285689512313" datatype="html">
+        <source>در حال بارگذاری اطلاعات حساب...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">13,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2256492465058142819" datatype="html">
+        <source>نام:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6179130646933692128" datatype="html">
+        <source>شماره تماس:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6210505254842994561" datatype="html">
+        <source>نام سالن:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7016593491780998041" datatype="html">
+        <source>درباره من:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5128671716353462664" datatype="html">
+        <source>اطلاعات حساب شما هنوز تکمیل نشده است.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4232470562380861668" datatype="html">
+        <source>رزروهای من</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4625481780840538898" datatype="html">
+        <source>در حال دریافت اطلاعات رزرو...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5407961834748587095" datatype="html">
+        <source>خدمت:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">52,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6045034986200677533" datatype="html">
+        <source>تاریخ:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">56,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2112744119857641278" datatype="html">
+        <source>وضعیت:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">60,61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1179234907474848874" datatype="html">
+        <source>مبلغ:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">64,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6758989326116741696" datatype="html">
+        <source> لغو رزرو </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5461322201702439554" datatype="html">
+        <source>هنوز رزروی ثبت نکرده‌اید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6784362344525382239" datatype="html">
+        <source>امکان دریافت اطلاعات حساب وجود ندارد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3830001214505180299" datatype="html">
+        <source>دریافت اطلاعات حساب با خطا مواجه شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5058677387942908451" datatype="html">
+        <source>امکان دریافت رزروها وجود ندارد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2544704719380683365" datatype="html">
+        <source>دریافت رزروها با خطا مواجه شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="403996820577341898" datatype="html">
+        <source>رزرو با موفقیت لغو شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8988528645983569788" datatype="html">
+        <source>لغو رزرو با خطا روبه‌رو شد.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/user-dashboard/user-dashboard.component.ts</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="791479257586339779" datatype="html">
+        <source>نشست شما منقضی شده است. لطفاً دوباره وارد شوید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/interceptors/auth.interceptor.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8299301603456511104" datatype="html">
+        <source>برای دسترسی به این بخش ابتدا وارد حساب کاربری خود شوید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/guards/auth.guard.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5250630665139779893" datatype="html">
+        <source>تایمیناسیون</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">5,6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="412776133946714928" datatype="html">
+        <source>خانه</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6969866195499870135" datatype="html">
+        <source>کسب‌و‌کارها</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">9,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7683634172699092718" datatype="html">
+        <source>سوالات</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7000353462914591192" datatype="html">
+        <source>بلاگ</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6932745797959899418" datatype="html">
+        <source>ثبت آرایشگاه</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4851286710180059419" datatype="html">
+        <source>ورود</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5371888149010771821" datatype="html">
+        <source>عضویت</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">15,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8424397805396615390" datatype="html">
+        <source>داشبورد من</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">18,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2735473191893981679" datatype="html">
+        <source>خروج</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.html</context>
+          <context context-type="linenumber">19,20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1648619025077453874" datatype="html">
+        <source>غیرفعال کردن حالت شب</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3639132157307647021" datatype="html">
+        <source>فعال کردن حالت شب</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2959348480280443885" datatype="html">
+        <source>با موفقیت از حساب کاربری خود خارج شدید.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/ui/layout-header/layout-header.component.ts</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

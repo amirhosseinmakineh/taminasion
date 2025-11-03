@@ -10,13 +10,21 @@ import { BusinessServiceDto } from '../models/business/business-service.dto';
 import { BusinessFilter } from '../models/business/business-filter.model';
 import { CategoryDto } from '../models/business/category.dto';
 import { BusinessDetailDto } from '../models/business/business-detail.dto';
+import { environment } from '../../environments/environment';
+
+export interface BusinessReviewRequest {
+  businessId: number;
+  comment: string;
+  rate: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusinessService {
-  private readonly baseUrl = 'http://localhost:5107/api/Busines';
-  private readonly categoryBaseUrl = 'http://localhost:5107/api/Category';
+  private readonly apiBaseUrl = environment.apiBaseUrl;
+  private readonly baseUrl = `${this.apiBaseUrl}/Busines`;
+  private readonly categoryBaseUrl = `${this.apiBaseUrl}/Category`;
 
   constructor(private http: HttpClient) {}
 
@@ -104,5 +112,10 @@ export class BusinessService {
       businessOwnerTimeId: timeId,
       serviceIds,
     });
+  }
+
+  submitReview(payload: BusinessReviewRequest): Observable<unknown> {
+    const url = `${this.baseUrl}/Review`;
+    return this.http.post(url, payload);
   }
 }

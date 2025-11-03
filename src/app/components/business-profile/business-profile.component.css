@@ -1,47 +1,148 @@
 .profile-container {
-  max-width: 800px;
-  margin: 20px auto;
-  text-align: center;
-  background: var(--bg);
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  display: grid;
+  gap: 2rem;
   color: var(--text);
 }
 
-.banner {
-  width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 16px;
+.profile-title {
+  font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .tabs {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin: 16px 0;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .tabs button {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 8px;
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--border, rgba(148, 163, 184, 0.4));
+  background: var(--surface, rgba(148, 163, 184, 0.12));
+  color: inherit;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .tabs button.active {
-  background: #7C3AED;
+  background: linear-gradient(90deg, var(--primary, #6366f1), var(--secondary, #ec4899));
   color: #fff;
-  border-color: #7C3AED;
+  border-color: transparent;
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.25);
 }
 
 .tab-content {
+  display: grid;
+  gap: 1.5rem;
   text-align: right;
-  margin-top: 12px;
 }
 
-.comment {
-  background: var(--surface-alt);
-  padding: 8px;
-  border-radius: 6px;
-  margin-bottom: 6px;
+.tab-section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.status {
+  background: rgba(148, 163, 184, 0.12);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  color: inherit;
+}
+
+.status--error {
+  background: rgba(248, 113, 113, 0.18);
+  color: #b91c1c;
+}
+
+.form-card {
+  background: var(--surface, #fff);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: grid;
+  gap: 0.75rem;
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+}
+
+.form-card label {
+  font-weight: 600;
+}
+
+.form-card textarea,
+.form-card input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  background: rgba(248, 250, 252, 0.9);
+  color: inherit;
+}
+
+.form-card textarea:focus,
+.form-card input:focus {
+  outline: 2px solid rgba(99, 102, 241, 0.35);
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn--primary {
+  background: linear-gradient(90deg, var(--primary, #6366f1), var(--secondary, #ec4899));
+  color: #fff;
+  box-shadow: 0 16px 30px rgba(99, 102, 241, 0.25);
+}
+
+.btn--primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  box-shadow: none;
+}
+
+.form-feedback p,
+.form-card p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.form-card p.success {
+  color: #15803d;
+}
+
+.form-card p.error {
+  color: #b91c1c;
+}
+
+.data-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.data-list li {
+  background: rgba(148, 163, 184, 0.12);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .form-card {
+    padding: 1rem;
+  }
 }

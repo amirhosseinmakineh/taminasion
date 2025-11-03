@@ -1,27 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ResetPasswordRedirectComponent } from './components/auth/reset-password-redirect/reset-password-redirect.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
     path: 'business-search',
     loadChildren: () =>
       import('./components/business-search/business-search.module').then(m => m.BusinessSearchModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'business-details/:id',
     loadChildren: () =>
       import('./components/business-details/business-details.module').then(m => m.BusinessDetailsModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'business-details',
     loadChildren: () =>
       import('./components/business-details/business-details.module').then(m => m.BusinessDetailsModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'business-profile',
     loadChildren: () =>
       import('./components/business-profile/business-profile.module').then(m => m.BusinessProfileModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'business-owner-profile',
@@ -29,6 +34,13 @@ const routes: Routes = [
       import('./components/business-owner-profile/business-owner-profile.module').then(
         m => m.BusinessOwnerProfileModule
       ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user-dashboard',
+    loadChildren: () =>
+      import('./components/user-dashboard/user-dashboard.module').then(m => m.UserDashboardModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'auth',
