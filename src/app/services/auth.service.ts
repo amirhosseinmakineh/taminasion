@@ -54,7 +54,7 @@ export class AuthService {
     const url = `${this.baseUrl}/ChangePassword/${token}`;
     const params = new HttpParams().set('newPassword', payload.newPassword);
 
-    return this.http.post<AuthResponse<string>>(url, payload, { params });
+    return this.http.post<AuthResponse<string>>(url, null, { params });
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -15,6 +16,7 @@ import { LoginRequest } from '../../../../models/auth/login-request.model';
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly tokenStorageKey = 'authToken';
 
   protected readonly loginForm = this.fb.nonNullable.group({
@@ -25,6 +27,18 @@ export class LoginComponent {
   feedbackMessage = '';
   feedbackType: 'success' | 'error' | 'info' = 'info';
   isSubmitting = false;
+
+  constructor() {
+    const navigationState = this.consumeNavigationState();
+
+    if (navigationState?.errorMessage) {
+      this.feedbackType = 'error';
+      this.feedbackMessage = navigationState.errorMessage;
+    } else if (navigationState?.infoMessage) {
+      this.feedbackType = 'info';
+      this.feedbackMessage = navigationState.infoMessage;
+    }
+  }
 
   get email() {
     return this.loginForm.get('email');
@@ -112,5 +126,25 @@ export class LoginComponent {
     }
 
     window.localStorage.removeItem(this.tokenStorageKey);
+  }
+
+  private consumeNavigationState(): { errorMessage?: string; infoMessage?: string } | null {
+    const navigation = this.router.getCurrentNavigation();
+    const stateFromNavigation = (navigation?.extras?.state as
+      | { errorMessage?: string; infoMessage?: string }
+      | undefined) ?? null;
+
+    let state = stateFromNavigation;
+
+    if (!state && typeof window !== 'undefined') {
+      state = (window.history.state as { errorMessage?: string; infoMessage?: string } | null) ?? null;
+    }
+
+    if (state && typeof window !== 'undefined' && typeof window.history?.replaceState === 'function') {
+      const { errorMessage, infoMessage, ...rest } = state;
+      window.history.replaceState(rest, typeof document !== 'undefined' ? document.title : '');
+    }
+
+    return state;
   }
 }

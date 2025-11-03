@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, take } from 'rxjs';
 
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
@@ -17,6 +17,7 @@ export class ResetPasswordComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   private readonly passwordsMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
     const passwordControl = group.get('password');
@@ -59,6 +60,8 @@ export class ResetPasswordComponent implements OnInit {
   isCheckingToken = true;
   token: string | null = null;
   tokenIsValid = false;
+  private redirectScheduled = false;
+  private readonly redirectDelayMs = 1500;
 
   constructor() {
     this.resetPasswordForm.disable();
@@ -161,7 +164,19 @@ export class ResetPasswordComponent implements OnInit {
     this.tokenIsValid = false;
     this.isCheckingToken = false;
     this.feedbackType = 'error';
-    this.feedbackMessage = message;
+    this.feedbackMessage = `${message} در حال انتقال به صفحه ورود...`;
     this.resetPasswordForm.disable();
+
+    if (this.redirectScheduled) {
+      return;
+    }
+
+    this.redirectScheduled = true;
+
+    setTimeout(() => {
+      void this.router.navigate(['/auth/login'], {
+        state: { errorMessage: message },
+      });
+    }, this.redirectDelayMs);
   }
 }
