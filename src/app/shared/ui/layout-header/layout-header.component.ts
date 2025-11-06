@@ -19,6 +19,7 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
   isAuthenticated = false;
 
   private readonly destroy$ = new Subject<void>();
+  private readonly themeStorageKey = 'theme';
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -31,11 +32,15 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const storedPreference = window.localStorage.getItem('theme');
-    if (storedPreference) {
+    const storedPreference = window.localStorage.getItem(this.themeStorageKey);
+    if (storedPreference === 'dark' || storedPreference === 'light') {
       this.isDarkMode = storedPreference === 'dark';
     } else {
       this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      window.localStorage.setItem(
+        this.themeStorageKey,
+        this.isDarkMode ? 'dark' : 'light',
+      );
     }
 
     this.applyThemeClass();
@@ -72,7 +77,10 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.applyThemeClass();
 
     if (typeof window !== 'undefined') {
-      window.localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
+      window.localStorage.setItem(
+        this.themeStorageKey,
+        this.isDarkMode ? 'dark' : 'light',
+      );
     }
   }
 
@@ -100,7 +108,14 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    body.classList.toggle('dark-theme', this.isDarkMode);
-    root.setAttribute('data-theme', this.isDarkMode ? 'dark' : 'light');
+    const theme = this.isDarkMode ? 'dark' : 'light';
+
+    body.classList.remove('dark-theme', 'light-theme');
+
+    const themeClass = `${theme}-theme`;
+    body.classList.add(themeClass);
+
+    root.setAttribute('data-theme', theme);
+    body.setAttribute('data-theme', theme);
   }
 }
