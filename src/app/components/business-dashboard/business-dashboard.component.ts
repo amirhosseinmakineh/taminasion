@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LayoutHeaderModule } from "../../shared/ui/layout-header/layout-header.module";
 
 type UserStatus = 'active' | 'pending' | 'blocked';
 
@@ -18,6 +19,7 @@ interface ManagedUser {
   selector: 'app-business-dashboard',
   templateUrl: './business-dashboard.component.html',
   styleUrls: ['./business-dashboard.component.css'],
+  imports: [LayoutHeaderModule],
 })
 export class BusinessDashboardComponent {
   readonly managedUsers: ManagedUser[] = [
@@ -61,44 +63,52 @@ export class BusinessDashboardComponent {
 
   filter: UserFilter = 'all';
 
+  // Map for statuses, can easily be expanded
+  private statusLabels: Record<UserStatus, string> = {
+    active: 'فعال',
+    pending: 'منتظر تایید',
+    blocked: 'مسدود',
+  };
+
+  // Get the total number of users
   get totalUsers(): number {
     return this.managedUsers.length;
   }
 
+  // Get the number of active users
   get activeUsers(): number {
-    return this.managedUsers.filter(user => user.status === 'active').length;
+    return this.getUserCountByStatus('active');
   }
 
+  // Get the number of pending users
   get pendingUsers(): number {
-    return this.managedUsers.filter(user => user.status === 'pending').length;
+    return this.getUserCountByStatus('pending');
   }
 
+  // Get the number of blocked users
   get blockedUsers(): number {
-    return this.managedUsers.filter(user => user.status === 'blocked').length;
+    return this.getUserCountByStatus('blocked');
   }
 
+  // Filter users by the selected filter
   get filteredUsers(): ManagedUser[] {
-    if (this.filter === 'all') {
-      return this.managedUsers;
-    }
-
-    return this.managedUsers.filter(user => user.status === this.filter);
+    return this.filter === 'all'
+      ? this.managedUsers
+      : this.managedUsers.filter(user => user.status === this.filter);
   }
 
+  // Method to change the filter status
   setFilter(filter: UserFilter): void {
     this.filter = filter;
   }
 
+  // Helper function to get status label
   getStatusLabel(status: UserStatus): string {
-    switch (status) {
-      case 'active':
-        return 'فعال';
-      case 'pending':
-        return 'منتظر تایید';
-      case 'blocked':
-        return 'مسدود';
-      default:
-        return status;
-    }
+    return this.statusLabels[status] || status;
+  }
+
+  // Helper function to get user count by status
+  private getUserCountByStatus(status: UserStatus): number {
+    return this.managedUsers.filter(user => user.status === status).length;
   }
 }
