@@ -8,7 +8,12 @@
 
   <div class="dashboard__grid">
     <article class="card">
-      <h2 i18n>اطلاعات حساب</h2>
+      <div class="card__header">
+        <div>
+          <h2 i18n>اطلاعات حساب</h2>
+          <p i18n>جزئیات حساب کاربری شما در یک نگاه.</p>
+        </div>
+      </div>
       <ng-container *ngIf="isProfileLoading; else profileState">
         <p class="status" i18n>در حال بارگذاری اطلاعات حساب...</p>
       </ng-container>
@@ -37,7 +42,12 @@
     </article>
 
     <article class="card">
-      <h2 i18n>رزروهای من</h2>
+      <div class="card__header">
+        <div>
+          <h2 i18n>رزروهای من</h2>
+          <p i18n>آخرین رزروها و وضعیت آن‌ها در دسترس شماست.</p>
+        </div>
+      </div>
       <ng-container *ngIf="isReservationsLoading; else reservationsState">
         <p class="status" i18n>در حال دریافت اطلاعات رزرو...</p>
       </ng-container>

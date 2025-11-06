@@ -1,0 +1,101 @@
+<app-layout-header></app-layout-header>
+
+<section class="dashboard">
+  <header class="dashboard__header">
+    <h1 i18n>داشبورد کسب‌وکار</h1>
+    <p i18n>بر تمام مشتریان سالن خود نظارت داشته باشید و وضعیت رزروهای آینده را یکجا ببینید.</p>
+    <div class="metric-grid" aria-label="خلاصه وضعیت کاربران" i18n-aria-label>
+      <div class="metric">
+        <span i18n>کل کاربران</span>
+        <strong>{{ totalUsers }}</strong>
+      </div>
+      <div class="metric">
+        <span i18n>کاربران فعال</span>
+        <strong>{{ activeUsers }}</strong>
+      </div>
+      <div class="metric">
+        <span i18n>در انتظار تایید</span>
+        <strong>{{ pendingUsers }}</strong>
+      </div>
+      <div class="metric">
+        <span i18n>کاربران مسدود</span>
+        <strong>{{ blockedUsers }}</strong>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard__grid">
+    <article class="card card--wide" aria-labelledby="user-management-title">
+      <div class="card__header">
+        <div>
+          <h2 id="user-management-title" i18n>مدیریت کاربران</h2>
+          <p i18n>کاربران سالن را به سرعت فیلتر کنید و وضعیت آخرین رزرو آنها را بررسی نمایید.</p>
+        </div>
+        <div class="chip-set" role="tablist" aria-label="فیلتر کاربران" i18n-aria-label>
+          <button type="button" class="chip" [class.active]="filter === 'all'" (click)="setFilter('all')" i18n>
+            همه
+          </button>
+          <button type="button" class="chip" [class.active]="filter === 'active'" (click)="setFilter('active')" i18n>
+            فعال
+          </button>
+          <button type="button" class="chip" [class.active]="filter === 'pending'" (click)="setFilter('pending')" i18n>
+            منتظر تایید
+          </button>
+          <button type="button" class="chip" [class.active]="filter === 'blocked'" (click)="setFilter('blocked')" i18n>
+            مسدود
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="filteredUsers.length; else emptyUsers" class="user-list" role="list">
+        <article *ngFor="let user of filteredUsers" class="user-card" role="listitem">
+          <div class="user-card__header">
+            <h3>{{ user.name }}</h3>
+            <span class="tag" [class.tag--positive]="user.status === 'active'" [class.tag--warning]="user.status === 'pending'"
+              [class.tag--danger]="user.status === 'blocked'">
+              {{ getStatusLabel(user.status) }}
+            </span>
+          </div>
+          <div class="user-card__body">
+            <p>
+              <span i18n>شماره تماس:</span>
+              {{ user.phone }}
+            </p>
+            <p>
+              <span i18n>آخرین رزرو:</span>
+              {{ user.lastReservation }}
+            </p>
+            <p>
+              <span i18n>مراجعه‌های پیش‌رو:</span>
+              {{ user.upcomingVisits }}
+            </p>
+          </div>
+          <div class="card__tags" *ngIf="user.tags.length">
+            <span class="tag" *ngFor="let tag of user.tags">{{ tag }}</span>
+          </div>
+          <div class="user-card__actions">
+            <button type="button" class="btn btn--outline" i18n>نمایش پروفایل</button>
+            <button type="button" class="btn btn--primary" i18n>ثبت رزرو جدید</button>
+          </div>
+        </article>
+      </div>
+
+      <ng-template #emptyUsers>
+        <p class="empty-state" i18n>هیچ کاربری با این فیلتر یافت نشد.</p>
+      </ng-template>
+    </article>
+
+    <article class="card card--narrow">
+      <div class="card__header">
+        <div>
+          <h2 i18n>گام بعدی شما</h2>
+          <p i18n>ابزارهای بیشتری به زودی برای مدیریت بهتر سالن اضافه می‌شود.</p>
+        </div>
+      </div>
+      <div class="status status--accent" i18n>
+        برای ایجاد نقش‌های جدید، مدیریت خدمات و گزارش‌های مالی، بخش‌های بیشتری به زودی اینجا ظاهر خواهند شد.
+      </div>
+      <button type="button" class="btn btn--outline" i18n>درخواست قابلیت جدید</button>
+    </article>
+  </div>
+</section>

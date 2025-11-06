@@ -1,6 +1,6 @@
 .hero {
   background: var(--hero-bg);
-  padding: 4rem 1rem 5rem;
+  padding: clamp(3rem, 6vw, 5rem) 1rem clamp(4rem, 7vw, 6rem);
 }
 
 main {
@@ -11,15 +11,16 @@ main {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: clamp(1.5rem, 4vw, 3rem);
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: var(--container-max);
+  padding-inline: clamp(0.5rem, 3vw, 1.5rem);
 }
 
 .hero-image {
   flex: 1;
   max-width: 500px;
-  min-width: 280px;
+  min-width: min(320px, 100%);
   position: relative;
 }
 
@@ -52,13 +53,13 @@ main {
 
 .hero-content {
   flex: 1;
-  min-width: 280px;
+  min-width: min(320px, 100%);
 }
 
 .hero-content h1 {
-  font-size: 2.5rem;
+  font-size: clamp(2rem, 3vw + 1.5rem, 3rem);
   font-weight: 800;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .highlight {
@@ -109,8 +110,8 @@ main {
 }
 
 .hero-location {
-  margin-top: 2rem;
-  max-width: 500px;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  max-width: 520px;
 }
 
 .hero-location app-location-selector {
@@ -120,6 +121,7 @@ main {
 .hero-social {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1.5rem;
 }
@@ -146,14 +148,14 @@ section h2 {
 
 .features {
   margin: 0 auto;
-  max-width: 1200px;
-  padding: 3rem 1rem;
+  max-width: var(--container-max);
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .feature-grid {
   display: grid;
-  gap: 1.25rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .feature-card {
@@ -190,23 +192,23 @@ section h2 {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: clamp(1.5rem, 5vw, 3rem);
   margin: 0 auto;
-  max-width: 1100px;
-  padding: 3rem 1rem;
+  max-width: calc(var(--container-max) - 1rem);
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .dashboard-preview img {
-  border-radius: 1rem;
+  border-radius: var(--radius-lg);
   box-shadow: 0 6px 24px var(--shadow-color);
   flex: 1;
   max-width: 550px;
-  min-width: 280px;
+  min-width: min(320px, 100%);
 }
 
 .dashboard-preview .text {
   flex: 1;
-  min-width: 260px;
+  min-width: min(280px, 100%);
 }
 
 .dashboard-preview h3 {
@@ -227,15 +229,15 @@ section h2 {
 
 .steps {
   background: var(--bg);
-  padding: 3rem 1rem;
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .step-grid {
   display: grid;
-  gap: 1.25rem;
+  gap: clamp(1rem, 2vw, 1.5rem);
   margin: 0 auto;
-  max-width: 1000px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  max-width: var(--container-max);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .step-card {
@@ -263,15 +265,15 @@ section h2 {
 
 .stats {
   background: var(--surface);
-  padding: 3rem 1rem;
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
   text-align: center;
 }
 
 .stat-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: clamp(1.25rem, 3vw, 2rem);
   margin: 0 auto;
-  max-width: 1000px;
+  max-width: var(--container-max);
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
@@ -288,7 +290,7 @@ section h2 {
 }
 
 .big-cta {
-  padding: 2rem 1rem 3rem;
+  padding: clamp(2rem, 6vw, 3rem) 1rem clamp(2.5rem, 7vw, 3.5rem);
   text-align: center;
 }
 
@@ -299,8 +301,8 @@ section h2 {
 
 .faq {
   margin: 0 auto;
-  max-width: 800px;
-  padding: 3rem 1rem;
+  max-width: min(820px, 92vw);
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .faq-item {
@@ -337,15 +339,15 @@ section h2 {
 
 .why-us {
   background: var(--bg);
-  padding: 3rem 1rem;
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .why-grid {
   display: grid;
-  gap: 1.25rem;
+  gap: clamp(1rem, 2vw, 1.5rem);
   margin: 0 auto;
-  max-width: 1000px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  max-width: var(--container-max);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .why-card {
@@ -363,8 +365,8 @@ section h2 {
 
 .testimonials {
   margin: 0 auto;
-  max-width: 1000px;
-  padding: 3rem 1rem;
+  max-width: min(960px, 94vw);
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .testimonial {
@@ -388,15 +390,15 @@ section h2 {
 
 .blog {
   background: var(--bg);
-  padding: 3rem 1rem;
+  padding: clamp(2.5rem, 6vw, 3.5rem) 1rem;
 }
 
 .blog-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: clamp(1.25rem, 3vw, 2rem);
   margin: 0 auto;
-  max-width: 1100px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  max-width: calc(var(--container-max) + 40px);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .blog-card {
@@ -443,11 +445,11 @@ section h2 {
   color: #fff;
   display: flex;
   font-size: 26px;
-  height: 50px;
+  height: 52px;
   justify-content: center;
   left: 20px;
   position: fixed;
-  width: 50px;
+  width: 52px;
   z-index: 900;
 }
 
@@ -483,20 +485,157 @@ footer {
   text-align: center;
 }
 
-@media (max-width: 900px) {
-  .hero-content h1 {
-    font-size: 2.1rem;
+@media (max-width: 1024px) {
+  .hero {
+    padding-block: 3.5rem;
+  }
+
+  .hero-container {
+    gap: 2rem;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-buttons,
+  .hero-social {
+    justify-content: center;
+  }
+
+  .dashboard-preview {
+    gap: 2rem;
   }
 }
 
-@media (max-width: 768px) {
-  .hero-container,
-  .dashboard-preview {
+@media (max-width: 900px) {
+  .dashboard-preview,
+  .hero-container {
     flex-direction: column;
     text-align: center;
   }
 
+  .hero-content {
+    max-width: 560px;
+  }
+
+  .hero-image {
+    order: -1;
+  }
+
+  .hero-location {
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding-inline: 0.5rem;
+  }
+
+  .hero-badge {
+    font-size: 0.85rem;
+  }
+
+  .feature-card,
+  .step-card,
+  .testimonial,
+  .blog-card,
+  .faq-item {
+    border-radius: var(--radius-md);
+  }
+
+  .blog-card img {
+    height: 200px;
+  }
+
+  .whatsapp-btn {
+    left: 16px;
+    bottom: 16px;
+  }
+
+  #scrollTopBtn {
+    left: 76px;
+    bottom: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-block: 3rem;
+  }
+
+  .hero-content p {
+    font-size: 0.95rem;
+  }
+
+  .hero-badge.top {
+    right: 0.75rem;
+    top: 0.75rem;
+  }
+
+  .hero-badge.bottom {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  .hero-buttons .btn,
+  .big-cta .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .feature-grid,
+  .step-grid,
+  .why-grid,
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-preview img {
+    max-width: 100%;
+  }
+
+  .dashboard-preview .text {
+    text-align: center;
+  }
+
   .hero-social {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatars {
     justify-content: center;
+  }
+
+  footer {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero {
+    padding-block: 2.75rem;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.9rem;
+  }
+
+  .whatsapp-btn {
+    height: 48px;
+    width: 48px;
+  }
+
+  #scrollTopBtn {
+    left: 72px;
+    height: 42px;
+    width: 42px;
   }
 }
