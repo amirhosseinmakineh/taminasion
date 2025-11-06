@@ -66,7 +66,7 @@ export class LoginComponent {
             this.feedbackType = 'success';
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
             this.loginForm.reset();
-            void this.router.navigate(['/user-dashboard']);
+            void this.router.navigate(['/admin-dashboard']);
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';

@@ -1,13 +1,412 @@
-<app-layout-header></app-layout-header>>
+<div class="admin-dashboard" [class.sidebar-open]="isSidebarOpen">
+  <div class="app">
+    <aside class="sidebar" aria-label="منوی اصلی">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">
+            <span class="material-symbols-outlined">data_thresholding</span>
+          </div>
+          <div>
+            <div class="logo-text-title">تایمیناسیون</div>
+            <div class="logo-text-sub">پنل مدیریت</div>
+          </div>
+        </div>
+        <button type="button" class="sidebar-close-btn" (click)="closeSidebar()" aria-label="بستن منو">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
 
-<section class="dashboard">
-  <header class="dashboard__header">
-    <h1 i18n>داشبورد مدیریت</h1>
-    <p class="dashboard__subtitle" i18n>به زودی ابزارهای مدیریتی جامع در این بخش در دسترس خواهند بود.</p>
-    <p i18n>تمام گزارش‌ها و تنظیمات اصلی سامانه از اینجا مدیریت می‌شود.</p>
-  </header>
+      <nav class="sidebar-nav">
+        <button type="button" class="nav-item" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')">
+          <span class="material-symbols-outlined icon">dashboard</span>
+          <span>نمای کلی</span>
+        </button>
+        <button type="button" class="nav-item" [class.active]="activeTab === 'customers'" (click)="setActiveTab('customers')">
+          <span class="material-symbols-outlined icon">group</span>
+          <span>مدیریت مشتری‌ها</span>
+        </button>
+        <button type="button" class="nav-item" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
+          <span class="material-symbols-outlined icon">bar_chart</span>
+          <span>گزارش‌ها</span>
+        </button>
+        <button type="button" class="nav-item" disabled>
+          <span class="material-symbols-outlined icon">settings</span>
+          <span>تنظیمات</span>
+        </button>
+      </nav>
 
-  <div class="empty-state" i18n>
-    داشبورد مدیریت در دست توسعه است. به زودی می‌توانید گزارش‌ها، نقش‌ها و دسترسی‌ها را در اینجا مشاهده کنید.
+      <div class="sidebar-footer">
+        <div class="user-row">
+          <div class="user-info">
+            <div class="avatar">آ</div>
+            <div>
+              <div class="user-name">امیرحسین</div>
+              <div class="user-role">مدیر سالن</div>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-logout">
+          <span class="material-symbols-outlined" aria-hidden="true">logout</span>
+          خروج از حساب
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" (click)="closeSidebar()" aria-hidden="true"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" class="menu-toggle" (click)="toggleSidebar()" aria-label="باز کردن منو">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <div class="topbar-title">
+            <h1>داشبورد تایمیناسیون</h1>
+            <p>خلاصه عملکرد سالن نوبت‌دهی شما در یک نگاه.</p>
+          </div>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="search-box">
+            <input type="text" placeholder="جستجوی مشتری، رزرو یا گزارش..." />
+            <span class="material-symbols-outlined">search</span>
+          </div>
+          <button type="button" class="icon-button" title="اعلان‌ها">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="badge"></span>
+          </button>
+          <button type="button" class="primary-btn">
+            <span class="material-symbols-outlined">add_circle</span>
+            <span>نوبت جدید</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="tabs">
+          <div class="tab-buttons">
+            <button type="button" class="tab-button" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')">
+              Overview
+            </button>
+            <button type="button" class="tab-button" [class.active]="activeTab === 'customers'" (click)="setActiveTab('customers')">
+              مدیریت مشتری‌ها
+            </button>
+            <button type="button" class="tab-button" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')">
+              Reports
+            </button>
+          </div>
+        </div>
+
+        <section id="tab-overview" class="tab-section" [class.active]="activeTab === 'overview'">
+          <div class="card-grid">
+            <div class="card">
+              <div class="card-header">
+                <p class="card-title">مجموع پرداخت‌های این ماه</p>
+                <div class="card-icon">
+                  <span class="material-symbols-outlined">paid</span>
+                </div>
+              </div>
+              <div class="card-value">
+                ۱۲,۵۰۰,۰۰۰
+                <span class="unit">تومان</span>
+              </div>
+              <div class="card-sub">
+                <span>+۵.۴٪</span>
+                <span class="trend-up">رشد نسبت به ماه قبل</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 75%"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <p class="card-title">مشتریان جدید</p>
+                <div class="card-icon">
+                  <span class="material-symbols-outlined">group_add</span>
+                </div>
+              </div>
+              <div class="card-value">
+                ۸۶۲
+                <span class="unit">نفر</span>
+              </div>
+              <div class="card-sub">
+                <span>+۱۲.۱٪</span>
+                <span class="trend-up">ورودی از اینستاگرام</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar green" style="width: 60%"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <p class="card-title">نوبت‌های امروز</p>
+                <div class="card-icon">
+                  <span class="material-symbols-outlined">event_available</span>
+                </div>
+              </div>
+              <div class="card-value">۳۴</div>
+              <div class="card-sub">
+                <span>-۲.۵٪</span>
+                <span class="trend-down">لغوها بیشتر شده</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar orange" style="width: 50%"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <p class="card-title">نرخ تبدیل رزرو آنلاین</p>
+                <div class="card-icon">
+                  <span class="material-symbols-outlined">trending_up</span>
+                </div>
+              </div>
+              <div class="card-value">۲۴.۸٪</div>
+              <div class="card-sub">
+                <span>+۱.۲٪</span>
+                <span class="trend-up">نسبت به هفته قبل</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar blue" style="width: 65%"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row-grid">
+            <div class="chart-wrapper">
+              <div class="chart-header">
+                <div>
+                  <div class="chart-title">روند درآمد ماهانه</div>
+                  <p class="chart-description">۱۲ ماه گذشته بر اساس پرداخت‌های ثبت‌شده</p>
+                </div>
+              </div>
+              <div class="chart-container">
+                <svg class="line-chart" viewBox="0 0 400 220" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="rgba(37, 99, 235, 0.35)" />
+                      <stop offset="100%" stop-color="rgba(37, 99, 235, 0)" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    class="line-chart-area"
+                    d="M0,180 L40,172 L80,150 L120,136 L160,142 L200,130 L240,116 L280,104 L320,90 L360,96 L400,82 L400,220 L0,220 Z"
+                    fill="url(#revenueGradient)"
+                  ></path>
+                  <polyline
+                    class="line-chart-stroke"
+                    points="0,180 40,172 80,150 120,136 160,142 200,130 240,116 280,104 320,90 360,96 400,82"
+                  ></polyline>
+                </svg>
+              </div>
+            </div>
+
+            <div class="chart-wrapper">
+              <div class="chart-header">
+                <div>
+                  <div class="chart-title">منبع رزروها</div>
+                  <p class="chart-description">تقسیم‌بندی کانال‌های ورودی مشتری</p>
+                </div>
+              </div>
+              <div class="chart-container-small">
+                <div class="doughnut-chart"></div>
+              </div>
+              <div class="doughnut-legend">
+                <div><span class="dot instagram"></span>اینستاگرام</div>
+                <div><span class="dot phone"></span>تماس تلفنی</div>
+                <div><span class="dot web"></span>وب‌سایت</div>
+                <div><span class="dot walkin"></span>حضوری</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-card">
+            <div class="table-header">
+              <div>
+                <div class="table-title">آخرین رزروها</div>
+                <div class="table-subtitle">آخرین نوبت‌ها و وضعیت پرداخت</div>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>کد رزرو</th>
+                    <th>مشتری</th>
+                    <th>تاریخ</th>
+                    <th>خدمت</th>
+                    <th>مبلغ (تومان)</th>
+                    <th>وضعیت</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="code">#TIM-9842</td>
+                    <td>مریم احمدی</td>
+                    <td>۱۴۰۴/۰۸/۱۵</td>
+                    <td>کراتین مو</td>
+                    <td>۱,۲۵۰,۰۰۰</td>
+                    <td><span class="badge badge-success">انجام شد</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">#TIM-9835</td>
+                    <td>الهام شریفی</td>
+                    <td>۱۴۰۴/۰۸/۱۵</td>
+                    <td>رنگ و لایت</td>
+                    <td>۱,۸۰۰,۰۰۰</td>
+                    <td><span class="badge badge-pending">در انتظار</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">#TIM-9829</td>
+                    <td>سارا محمدی</td>
+                    <td>۱۴۰۴/۰۸/۱۴</td>
+                    <td>کوتاهی و براشینگ</td>
+                    <td>۴۵۰,۰۰۰</td>
+                    <td><span class="badge badge-danger">لغو توسط مشتری</span></td>
+                  </tr>
+                  <tr>
+                    <td class="code">#TIM-9821</td>
+                    <td>نگین توکلی</td>
+                    <td>۱۴۰۴/۰۸/۱۴</td>
+                    <td>اکستنشن مژه</td>
+                    <td>۹۸۰,۰۰۰</td>
+                    <td><span class="badge badge-danger">عدم حضور</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-customers" class="tab-section" [class.active]="activeTab === 'customers'">
+          <h2 class="section-title">مدیریت مشتری‌ها</h2>
+          <p class="section-subtitle">افزودن، ویرایش و حذف مشتری‌ها – همه چیز بدون رفرش صفحه و به صورت مودال.</p>
+
+          <div class="customer-actions">
+            <div class="customer-search">
+              <input
+                type="text"
+                placeholder="جستجوی نام یا شماره..."
+                [value]="searchTerm"
+                (input)="onSearch($any($event.target).value)"
+              />
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <button type="button" class="primary-btn" (click)="openCustomerModal()">
+              <span class="material-symbols-outlined">person_add</span>
+              مشتری جدید
+            </button>
+          </div>
+
+          <div class="table-card">
+            <div class="table-header">
+              <span>لیست مشتری‌ها</span>
+              <button type="button" class="btn-link" *ngIf="searchTerm" (click)="clearSearch()">حذف فیلتر</button>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>نام</th>
+                    <th>شماره تماس</th>
+                    <th>یادداشت</th>
+                    <th>تاریخ ثبت</th>
+                    <th>عملیات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngIf="filteredCustomers.length; else emptyCustomers">
+                    <tr *ngFor="let customer of filteredCustomers">
+                      <td>{{ customer.name }}</td>
+                      <td>{{ customer.phone }}</td>
+                      <td>{{ customer.note || '-' }}</td>
+                      <td>{{ customer.createdAt }}</td>
+                      <td>
+                        <button type="button" class="btn-small" (click)="openCustomerModal(customer)">
+                          <span class="material-symbols-outlined">edit</span>
+                          ویرایش
+                        </button>
+                        <button type="button" class="btn-small danger" (click)="confirmDelete(customer.id)">
+                          <span class="material-symbols-outlined">delete</span>
+                          حذف
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+              <ng-template #emptyCustomers>
+                <tr>
+                  <td colspan="5" class="empty-table">مشتری‌ای یافت نشد.</td>
+                </tr>
+              </ng-template>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-reports" class="tab-section" [class.active]="activeTab === 'reports'">
+          <h2 class="section-title">گزارش‌ها</h2>
+          <p class="section-subtitle">
+            این تب فقط placeholder است؛ بعداً می‌تونی گزارش‌های PDF / Excel و فیلتر بازه زمانی را اضافه کنی.
+          </p>
+        </section>
+      </main>
+    </div>
   </div>
-</section>
+
+  <div class="modal-backdrop" [class.show]="isCustomerModalOpen">
+    <div class="modal" *ngIf="isCustomerModalOpen">
+      <div class="modal-header">
+        <h3 class="modal-title">{{ editingCustomer ? 'ویرایش مشتری' : 'مشتری جدید' }}</h3>
+        <button type="button" class="modal-close" (click)="closeCustomerModal()" aria-label="بستن">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="$event.preventDefault(); saveCustomer();">
+          <div class="form-row">
+            <label class="form-label" for="customerName">نام مشتری</label>
+            <input id="customerName" class="form-input" required [(ngModel)]="customerForm.name" name="name" />
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="customerPhone">شماره تماس</label>
+            <input id="customerPhone" class="form-input" required [(ngModel)]="customerForm.phone" name="phone" />
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="customerNote">یادداشت (اختیاری)</label>
+            <textarea
+              id="customerNote"
+              class="form-textarea"
+              [(ngModel)]="customerForm.note"
+              name="note"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="primary-btn" (click)="saveCustomer()">ذخیره</button>
+        <button type="button" class="btn-outline" (click)="closeCustomerModal()">انصراف</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" [class.show]="isDeleteModalOpen">
+    <div class="modal" *ngIf="isDeleteModalOpen">
+      <div class="modal-header">
+        <h3 class="modal-title">حذف مشتری</h3>
+        <button type="button" class="modal-close" (click)="cancelDelete()" aria-label="بستن">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>آیا از حذف این مشتری اطمینان دارید؟ این عملیات قابل بازگشت نیست.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-danger" (click)="deleteCustomer()">حذف</button>
+        <button type="button" class="btn-outline" (click)="cancelDelete()">انصراف</button>
+      </div>
+    </div>
+  </div>
+</div>
