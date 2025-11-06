@@ -1,25 +1,33 @@
 <header class="site-header" [class.scrolled]="isScrolled">
   <div class="header-container">
+    <!-- لوگو -->
     <a routerLink="/" class="logo" (click)="closeMenu()">
       <span class="logo-icon" aria-hidden="true">💈</span>
       <span class="logo-text" i18n>تایمیناسیون</span>
     </a>
-    <nav [class.open]="isMenuOpen">
+
+    <!-- ناوبری -->
+    <nav class="nav" [class.open]="isMenuOpen">
       <a routerLink="/" (click)="closeMenu()" i18n>خانه</a>
       <a routerLink="/" fragment="features-business" (click)="closeMenu()" i18n>کسب‌و‌کارها</a>
       <a routerLink="/" fragment="faq" (click)="closeMenu()" i18n>سوالات</a>
       <a routerLink="/" fragment="blog" (click)="closeMenu()" i18n>بلاگ</a>
       <a routerLink="/business-register" class="cta" (click)="closeMenu()" i18n>ثبت آرایشگاه</a>
+
       <ng-container *ngIf="!isAuthenticated; else authenticatedLinks">
         <a routerLink="/auth/login" class="auth-link" (click)="closeMenu()" i18n>ورود</a>
         <a routerLink="/auth/register" class="auth-link signup" (click)="closeMenu()" i18n>عضویت</a>
       </ng-container>
+
       <ng-template #authenticatedLinks>
         <a routerLink="/user-dashboard" class="auth-link" (click)="closeMenu()" i18n>داشبورد من</a>
         <button type="button" class="auth-link logout" (click)="logout()" i18n>خروج</button>
       </ng-template>
     </nav>
+
+    <!-- اکشن‌های بالای هدر -->
     <div class="header-actions">
+      <!-- دکمه تم -->
       <button
         class="theme-toggle"
         type="button"
@@ -29,10 +37,15 @@
       >
         <span aria-hidden="true">{{ isDarkMode ? '☀️' : '🌙' }}</span>
       </button>
-      <button class="menu-toggle" type="button" (click)="toggleMenu()" aria-label="باز و بسته کردن منو">
-        <span></span>
-        <span></span>
-        <span></span>
+
+      <!-- دکمه منو موبایل -->
+      <button
+        class="menu-toggle"
+        type="button"
+        (click)="toggleMenu()"
+        aria-label="باز و بسته کردن منو"
+      >
+        <span></span><span></span><span></span>
       </button>
     </div>
   </div>

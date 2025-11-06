@@ -1,9 +1,15 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Inject,
+  OnDestroy,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
@@ -12,7 +18,9 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./layout-header.component.css'],
   standalone: false,
 })
-export class LayoutHeaderComponent implements OnInit, OnDestroy {
+export class LayoutHeaderComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   isMenuOpen = false;
   isScrolled = false;
   isDarkMode = false;
@@ -27,25 +35,36 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     private readonly router: Router,
   ) {}
 
+  /* -------------------------------
+   🟢 INITIALIZATION
+  -------------------------------- */
   ngOnInit(): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
+    if (!this.isBrowser()) return;
 
+    // دریافت تم ذخیره‌شده از LocalStorage
     const storedPreference = window.localStorage.getItem(this.themeStorageKey);
-    if (storedPreference === 'dark' || storedPreference === 'light') {
+
+    if (storedPreference) {
       this.isDarkMode = storedPreference === 'dark';
     } else {
-      this.isDarkMode = false;
-      window.localStorage.setItem(this.themeStorageKey, 'light');
+      // اگر چیزی ذخیره نشده بود، از تنظیمات سیستم کاربر پیروی کن
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.isDarkMode = prefersDark;
+      window.localStorage.setItem(
+        this.themeStorageKey,
+        prefersDark ? 'dark' : 'light'
+      );
     }
 
-    this.applyThemeClass();
-
     this.isAuthenticated = this.authService.isAuthenticated();
+
     this.authService.authStatus$
       .pipe(takeUntil(this.destroy$))
       .subscribe(status => (this.isAuthenticated = status));
+  }
+
+  ngAfterViewInit(): void {
+    this.applyThemeClass();
   }
 
   ngOnDestroy(): void {
@@ -53,11 +72,12 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  /* -------------------------------
+   🧭 SCROLL & MENU CONTROL
+  -------------------------------- */
   @HostListener('window:scroll')
   onWindowScroll(): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
+    if (!this.isBrowser()) return;
     this.isScrolled = window.scrollY > 10;
   }
 
@@ -69,16 +89,26 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     this.isMenuOpen = false;
   }
 
+  /* -------------------------------
+   🌙 DARK MODE
+  -------------------------------- */
   toggleDarkMode(): void {
+    if (!this.isBrowser()) return;
+
     this.isDarkMode = !this.isDarkMode;
     this.applyThemeClass();
+    window.localStorage.setItem(
+      this.themeStorageKey,
+      this.isDarkMode ? 'dark' : 'light'
+    );
+  }
 
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(
-        this.themeStorageKey,
-        this.isDarkMode ? 'dark' : 'light',
-      );
-    }
+  private applyThemeClass(): void {
+    const root = this.document.documentElement;
+    if (!root) return;
+
+    const theme = this.isDarkMode ? 'dark' : 'light';
+    root.setAttribute('data-theme', theme);
   }
 
   get themeToggleLabel(): string {
@@ -87,32 +117,23 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
       : $localize`فعال کردن حالت شب`;
   }
 
-  async logout(): Promise<void> {
+  /* -------------------------------
+   🚪 LOGOUT
+  -------------------------------- */
+  logout(): void {
     this.authService.logout();
     this.closeMenu();
-    await this.router.navigate(['/auth/login'], {
+    this.router.navigate(['/auth/login'], {
       state: {
         infoMessage: $localize`با موفقیت از حساب کاربری خود خارج شدید.`,
       },
     });
   }
 
-  private applyThemeClass(): void {
-    const body = this.document?.body;
-    const root = this.document?.documentElement;
-
-    if (!body || !root) {
-      return;
-    }
-
-    const theme = this.isDarkMode ? 'dark' : 'light';
-
-    body.classList.remove('dark-theme', 'light-theme');
-
-    const themeClass = `${theme}-theme`;
-    body.classList.add(themeClass);
-
-    root.setAttribute('data-theme', theme);
-    body.setAttribute('data-theme', theme);
+  /* -------------------------------
+   🧠 UTILITIES
+  -------------------------------- */
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && !!this.document?.defaultView;
   }
 }
