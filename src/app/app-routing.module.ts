@@ -43,6 +43,18 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'business-dashboard',
+    loadChildren: () =>
+      import('./components/business-dashboard/business-dashboard.module').then(m => m.BusinessDashboardModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-dashboard',
+    loadChildren: () =>
+      import('./components/admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'auth',
     loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule),
   },

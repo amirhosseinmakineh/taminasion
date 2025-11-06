@@ -1,0 +1,10 @@
+@import '../../shared/styles/dashboard-theme.css';
+
+.dashboard {
+  place-items: center;
+}
+
+.empty-state {
+  max-width: 640px;
+  margin: 0 auto;
+}
