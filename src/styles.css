@@ -36,6 +36,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+body.light-theme {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
 img,
 video {
   height: auto;
