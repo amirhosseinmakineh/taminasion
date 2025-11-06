@@ -36,11 +36,8 @@ export class LayoutHeaderComponent implements OnInit, OnDestroy {
     if (storedPreference === 'dark' || storedPreference === 'light') {
       this.isDarkMode = storedPreference === 'dark';
     } else {
-      this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      window.localStorage.setItem(
-        this.themeStorageKey,
-        this.isDarkMode ? 'dark' : 'light',
-      );
+      this.isDarkMode = false;
+      window.localStorage.setItem(this.themeStorageKey, 'light');
     }
 
     this.applyThemeClass();
