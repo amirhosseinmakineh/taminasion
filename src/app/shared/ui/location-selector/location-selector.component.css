@@ -5,8 +5,8 @@
   border-radius: 1rem;
   box-shadow: 0 12px 32px var(--shadow-color);
   display: flex;
-  gap: 1rem;
-  padding: 1.25rem;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  padding: clamp(1rem, 3vw, 1.5rem);
   width: 100%;
 }
 
@@ -18,7 +18,7 @@
 .fields {
   display: flex;
   flex: 1;
-  gap: 1rem;
+  gap: clamp(0.75rem, 3vw, 1.25rem);
   width: 100%;
 }
 
@@ -48,6 +48,7 @@ select {
   font-size: 0.95rem;
   padding: 0.75rem 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 48px;
 }
 
 select:focus {
@@ -70,12 +71,14 @@ select:disabled {
   font-size: 1rem;
   font-weight: 700;
   padding: 0.85rem 1.75rem;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  min-height: 48px;
 }
 
 .search-btn:hover,
 .search-btn:focus {
   opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
@@ -89,5 +92,20 @@ select:disabled {
 
   .search-btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .location-selector {
+    padding: 1rem;
+  }
+
+  select {
+    font-size: 0.9rem;
+    padding-inline: 0.75rem;
+  }
+
+  .search-btn {
+    font-size: 0.95rem;
   }
 }

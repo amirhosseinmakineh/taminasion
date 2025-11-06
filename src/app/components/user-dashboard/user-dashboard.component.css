@@ -24,7 +24,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 1rem;
+  gap: clamp(0.85rem, 3vw, 1.25rem);
 }
 
 .reservation-list li {
@@ -36,6 +36,12 @@
   border-radius: 1rem;
   align-items: center;
   border: 1px solid rgba(59, 130, 246, 0.18);
+}
+
+@media (max-width: 900px) {
+  .dashboard__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .reservation-list h3 {

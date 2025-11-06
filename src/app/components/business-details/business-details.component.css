@@ -23,7 +23,7 @@
 
 .cover {
   position: relative;
-  height: 300px;
+  height: clamp(220px, 28vw, 320px);
   width: 100%;
   background: var(--surface-alt);
 }
@@ -38,12 +38,12 @@
 .logo-box {
   position: absolute;
   bottom: -48px;
-  right: 5%;
-  width: 96px;
-  height: 96px;
+  right: clamp(24px, 6vw, 5%);
+  width: clamp(82px, 12vw, 110px);
+  height: clamp(82px, 12vw, 110px);
   background: var(--surface);
   color: var(--text);
-  font-size: 2.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,26 +59,26 @@
 }
 
 .container {
-  max-width: 1100px;
+  max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 clamp(1rem, 4vw, 2rem) clamp(2.5rem, 6vw, 3rem);
 }
 
 .card {
   background: var(--surface);
-  border-radius: 12px;
-  margin-top: 80px;
+  border-radius: 16px;
+  margin-top: clamp(64px, 8vw, 88px);
   box-shadow: 0 2px 20px var(--shadow-color);
   overflow: hidden;
 }
 
 .info-header {
-  padding: 64px 32px 16px 32px;
+  padding: clamp(3.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.5rem) 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .info-header h1 {
@@ -113,16 +113,22 @@
 .tabs {
   display: flex;
   border-bottom: 1px solid var(--border);
-  padding: 0 32px;
+  padding: 0 clamp(1rem, 4vw, 2rem);
   overflow-x: auto;
+  gap: 0.25rem;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tabs button {
-  padding: 12px 16px;
+  padding: 12px 18px;
   border: none;
   background: transparent;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   border-bottom: 2px solid transparent;
   transition: color 0.2s ease, border-color 0.2s ease;
@@ -141,13 +147,14 @@
 
 .tab-content {
   display: none;
-  padding: 32px;
-  gap: 2rem;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  gap: clamp(1.25rem, 3vw, 2rem);
 }
 
 .tab-content.active {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start;
 }
 
 .tab-content p {
@@ -210,7 +217,7 @@
   font-size: 0.95rem;
   background: var(--surface-alt);
   padding: 0.75rem 1rem;
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
 .schedule {
@@ -227,8 +234,9 @@
   justify-content: space-between;
   background: var(--surface-alt);
   padding: 0.6rem 1rem;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text);
+  gap: 0.5rem;
 }
 
 .review {
@@ -254,8 +262,8 @@
   gap: 0.75rem;
   margin-top: 1.5rem;
   background: var(--surface-alt);
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: clamp(1.25rem, 4vw, 1.75rem);
+  border-radius: 14px;
   box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
 }
 
@@ -271,6 +279,7 @@
   padding: 0.75rem 1rem;
   background: rgba(248, 250, 252, 0.9);
   color: inherit;
+  min-height: 48px;
 }
 
 .review-form select:focus,
@@ -316,6 +325,12 @@
   color: #b91c1c;
 }
 
+@media (max-width: 1024px) {
+  .tab-content.active {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .tab-content.active {
     grid-template-columns: 1fr;
@@ -324,6 +339,7 @@
   .logo-box {
     right: 50%;
     transform: translateX(50%);
+    bottom: -42px;
   }
 
   .info-header {
@@ -334,5 +350,55 @@
 
   .tabs {
     padding: 0 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .info-header {
+    padding-top: 3.5rem;
+  }
+
+  .tabs button {
+    font-size: 0.85rem;
+    padding-inline: 12px;
+  }
+
+  .review-form {
+    padding: 1.25rem;
+  }
+
+  .review {
+    border-radius: 10px;
+  }
+
+  .schedule li,
+  .services li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    border-radius: 12px;
+  }
+
+  .logo-box {
+    width: 74px;
+    height: 74px;
+    font-size: 1.6rem;
+  }
+
+  .tabs {
+    padding-inline: 12px;
+  }
+
+  .tab-content {
+    padding: 1.25rem;
+  }
+
+  .review-form select,
+  .review-form textarea {
+    min-height: 42px;
   }
 }
