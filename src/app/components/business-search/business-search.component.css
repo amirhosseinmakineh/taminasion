@@ -4,9 +4,9 @@
 
 .page {
   direction: rtl;
-  margin: 24px auto;
-  max-width: 1152px;
-  padding: 0 16px 48px;
+  margin: clamp(16px, 4vw, 32px) auto;
+  max-width: var(--container-max);
+  padding: 0 clamp(12px, 3vw, 24px) clamp(40px, 6vw, 56px);
   background: var(--bg);
 }
 
@@ -21,6 +21,7 @@
 .topbar {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 20px;
 }
@@ -30,9 +31,15 @@
   border: 1px solid var(--border);
   border-radius: 999px;
   box-shadow: 0 6px 20px var(--shadow-color);
-  display: flex;
+  display: inline-flex;
   gap: 6px;
   padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabset::-webkit-scrollbar {
+  display: none;
 }
 
 .tab {
@@ -41,6 +48,7 @@
   cursor: pointer;
   font-size: 13px;
   padding: 8px 14px;
+  white-space: nowrap;
 }
 
 .tab.is-active {
@@ -70,8 +78,9 @@
 
 .grid {
   display: grid;
-  gap: 16px;
-  grid-template-columns: 320px 1fr;
+  gap: clamp(14px, 2vw, 20px);
+  grid-template-columns: minmax(280px, 320px) 1fr;
+  align-items: start;
 }
 
 .sidebar {
@@ -80,7 +89,7 @@
   border-radius: 18px;
   box-shadow: 0 6px 20px var(--shadow-color);
   height: max-content;
-  padding: 16px;
+  padding: clamp(16px, 3vw, 20px);
   position: sticky;
   top: 14px;
 }
@@ -140,7 +149,7 @@
 .results {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(12px, 2vw, 18px);
 }
 
 .card {
@@ -148,13 +157,13 @@
   border: 1px solid var(--border);
   border-radius: 18px;
   box-shadow: 0 6px 20px var(--shadow-color);
-  padding: 16px 18px;
+  padding: clamp(14px, 2.5vw, 20px);
 }
 
 .card__row {
   align-items: center;
   display: flex;
-  gap: 16px;
+  gap: clamp(12px, 2vw, 20px);
   justify-content: space-between;
 }
 
@@ -241,6 +250,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 160px;
 }
 
 .btn {
@@ -296,9 +306,9 @@
   border-radius: 12px;
   left: 50%;
   max-height: 90vh;
-  max-width: 520px;
+  max-width: min(520px, 92vw);
   overflow: auto;
-  padding: 20px;
+  padding: clamp(18px, 4vw, 24px);
   position: fixed;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -345,11 +355,22 @@
   background: var(--surface);
   border-radius: 8px;
   padding: 6px 10px;
+  min-width: 120px;
 }
 
 .modal-footer {
   margin-top: 16px;
   text-align: center;
+}
+
+@media (max-width: 1120px) {
+  .grid {
+    grid-template-columns: minmax(260px, 280px) 1fr;
+  }
+
+  .actions {
+    min-width: 140px;
+  }
 }
 
 @media (max-width: 992px) {
@@ -359,6 +380,27 @@
 
   .sidebar {
     position: static;
+    display: grid;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    gap: 10px;
+  }
+
+  .date-chip {
+    margin-right: 0;
+  }
+
+  .actions {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .actions .btn {
+    width: 100%;
   }
 }
 
@@ -378,11 +420,48 @@
     flex-direction: column;
   }
 
-  .actions {
+  .service-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .service-row select {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding-inline: 12px;
+  }
+
+  .sidebar {
+    padding: 14px;
+  }
+
+  .date-chip {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .price-range {
+    flex-direction: column;
+  }
+
+  .price-input {
     width: 100%;
   }
 
-  .actions .btn {
-    width: 100%;
+  .tab {
+    font-size: 12px;
+    padding-inline: 12px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .modal {
+    width: calc(100% - 24px);
   }
 }
