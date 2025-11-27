@@ -1,0 +1,27 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">تب اصلی</p>
+      <h2>ویدیو مارکتینگ</h2>
+      <p class="subtitle">آپلود و مدیریت ویدیوهای تبلیغاتی سالن.</p>
+    </div>
+    <button type="button" class="btn-primary">آپلود ویدیو جدید</button>
+  </div>
+
+  <div class="video-grid" *ngIf="videos.length; else emptyState">
+    <article class="video-card" *ngFor="let video of videos">
+      <div class="thumbnail"></div>
+      <div class="video-card__body">
+        <h3>ویدیو شماره {{ video }}</h3>
+        <span class="badge">آماده</span>
+      </div>
+    </article>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty">
+      <p>فعلاً ویدیویی ثبت نشده است.</p>
+      <button type="button" class="btn-primary">آپلود اولین ویدیو</button>
+    </div>
+  </ng-template>
+</section>

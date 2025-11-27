@@ -1,0 +1,46 @@
+<div class="layout" dir="rtl">
+  <aside class="sidebar" [class.sidebar--open]="sidebarOpen">
+    <div class="sidebar__brand">
+      <div class="logo">TN</div>
+      <div>
+        <div class="brand__title">{{ salonName }}</div>
+        <div class="brand__subtitle">پنل صاحب کسب‌وکار</div>
+      </div>
+      <button class="sidebar__close" type="button" (click)="closeSidebar()">✕</button>
+    </div>
+
+    <nav class="sidebar__nav" aria-label="مسیرهای داشبورد">
+      <a
+        *ngFor="let item of navItems"
+        [routerLink]="item.path"
+        routerLinkActive="active"
+        class="nav-link"
+        (click)="closeSidebar()"
+        >{{ item.label }}</a
+      >
+    </nav>
+  </aside>
+
+  <div class="overlay" *ngIf="sidebarOpen" (click)="closeSidebar()"></div>
+
+  <div class="content">
+    <header class="topbar">
+      <div class="topbar__left">
+        <button class="menu-btn" type="button" (click)="toggleSidebar()">☰</button>
+        <div>
+          <p class="eyebrow">خوش آمدید</p>
+          <h1 class="title">{{ salonName }}</h1>
+        </div>
+      </div>
+      <div class="topbar__actions">
+        <button type="button" class="icon-btn" aria-label="اعلان‌ها">🔔</button>
+        <button type="button" class="icon-btn" aria-label="تغییر تم">🌗</button>
+        <div class="avatar" aria-label="صاحب سالن">{{ ownerName.charAt(0) }}</div>
+      </div>
+    </header>
+
+    <main class="page">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

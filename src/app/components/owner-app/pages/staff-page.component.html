@@ -1,0 +1,23 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">تب اصلی</p>
+      <h2>مدیریت کارمندان</h2>
+      <p class="subtitle">کارت‌های هر کارمند در اینجا نمایش داده می‌شود.</p>
+    </div>
+    <button type="button" class="btn-primary">افزودن کارمند جدید</button>
+  </div>
+
+  <div class="staff-grid">
+    <article class="staff-card" *ngFor="let index of [1,2,3,4]">
+      <div class="staff-card__header">
+        <div class="avatar">{{ index }}</div>
+        <div>
+          <h3>نام کارمند</h3>
+          <p class="role">نقش (آرایشگر، ناخن‌کار ...)</p>
+        </div>
+      </div>
+      <span class="badge" [class.badge--online]="index % 2 === 0">{{ index % 2 === 0 ? 'آنلاین' : 'آفلاین' }}</span>
+    </article>
+  </div>
+</section>
