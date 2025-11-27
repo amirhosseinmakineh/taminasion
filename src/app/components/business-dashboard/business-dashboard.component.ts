@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { LayoutHeaderModule } from "../../shared/ui/layout-header/layout-header.module";
 
 type UserStatus = 'active' | 'pending' | 'blocked';
@@ -17,9 +18,10 @@ interface ManagedUser {
 
 @Component({
   selector: 'app-business-dashboard',
+  standalone: true,
   templateUrl: './business-dashboard.component.html',
   styleUrls: ['./business-dashboard.component.css'],
-  imports: [LayoutHeaderModule],
+  imports: [CommonModule, LayoutHeaderModule],
 })
 export class BusinessDashboardComponent {
   readonly managedUsers: ManagedUser[] = [
