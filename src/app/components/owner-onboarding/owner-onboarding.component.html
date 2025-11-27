@@ -1,0 +1,128 @@
+<section class="onboarding">
+  <header class="onboarding__header">
+    <div>
+      <p class="eyebrow">ویزارد ثبت اطلاعات اولیه</p>
+      <h1>خوش آمدید! اطلاعات سالن خود را تکمیل کنید</h1>
+      <p class="subtitle">
+        تا قبل از تکمیل این مراحل به داشبورد اصلی دسترسی ندارید. هر زمان خواستید می‌توانید جزئیات را ویرایش کنید.
+      </p>
+    </div>
+    <div class="progress">
+      <span>مرحله {{ step }} از {{ totalSteps }}</span>
+      <div class="progress__bar">
+        <div class="progress__bar-fill" [style.width.%]="(step / totalSteps) * 100"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="onboarding__card">
+    <nav class="steps" aria-label="پیشرفت مراحل">
+      <div *ngFor="let index of [1, 2, 3, 4]" class="step" [class.active]="index === step" [class.passed]="index < step">
+        <span class="step__index">{{ index }}</span>
+        <span class="step__label">
+          {{ index === 1 ? 'اطلاعات سالن' : index === 2 ? 'ساعات کاری' : index === 3 ? 'خدمات پایه' : 'تأیید نهایی' }}
+        </span>
+      </div>
+    </nav>
+
+    <div class="step-content" *ngIf="step === 1">
+      <h2>اطلاعات سالن</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>نام سالن *</span>
+          <input type="text" [(ngModel)]="business.name" placeholder="مثلاً: سالن نازی" required />
+        </label>
+        <label class="field">
+          <span>شماره تماس *</span>
+          <input type="tel" [(ngModel)]="business.phone" placeholder="0912 123 4567" required />
+        </label>
+        <label class="field">
+          <span>آدرس *</span>
+          <input type="text" [(ngModel)]="business.address" placeholder="تهران، خیابان ..." required />
+        </label>
+        <label class="field">
+          <span>شهر *</span>
+          <input type="text" [(ngModel)]="business.city" placeholder="تهران" required />
+        </label>
+        <label class="field field--file">
+          <span>لوگو (اختیاری)</span>
+          <input type="file" (change)="handleLogoChange($event)" accept="image/*" />
+          <small *ngIf="business.logo">{{ business.logo.name }}</small>
+        </label>
+      </div>
+    </div>
+
+    <div class="step-content" *ngIf="step === 2">
+      <h2>ساعت کاری</h2>
+      <p class="subtitle">روزهای فعال و بازه زمانی کاری را مشخص کنید.</p>
+      <div class="chip-group">
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('شنبه')" (click)="toggleDay('شنبه')">شنبه</button>
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('یکشنبه')" (click)="toggleDay('یکشنبه')">یکشنبه</button>
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('دوشنبه')" (click)="toggleDay('دوشنبه')">دوشنبه</button>
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('سه‌شنبه')" (click)="toggleDay('سه‌شنبه')">سه‌شنبه</button>
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('چهارشنبه')" (click)="toggleDay('چهارشنبه')">چهارشنبه</button>
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('پنجشنبه')" (click)="toggleDay('پنجشنبه')">پنجشنبه</button>
+        <button type="button" class="chip" [class.chip--active]="hours.days.includes('جمعه')" (click)="toggleDay('جمعه')">جمعه</button>
+      </div>
+      <div class="time-range">
+        <label class="field">
+          <span>شروع</span>
+          <input type="time" [(ngModel)]="hours.start" />
+        </label>
+        <label class="field">
+          <span>پایان</span>
+          <input type="time" [(ngModel)]="hours.end" />
+        </label>
+      </div>
+    </div>
+
+    <div class="step-content" *ngIf="step === 3">
+      <h2>خدمات پایه</h2>
+      <p class="subtitle">سرویس‌های اصلی که در سالن ارائه می‌شود را انتخاب کنید.</p>
+      <div class="service-grid">
+        <label class="service" *ngFor="let service of services">
+          <input type="checkbox" [(ngModel)]="service.selected" />
+          <div class="service__body">
+            <span class="service__title">{{ service.label }}</span>
+            <span class="service__desc">امکان تعریف جزئیات بعداً اضافه می‌شود.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="step-content" *ngIf="step === 4">
+      <h2>تأیید نهایی</h2>
+      <div class="summary">
+        <div>
+          <h3>اطلاعات سالن</h3>
+          <ul>
+            <li><strong>نام:</strong> {{ business.name || '—' }}</li>
+            <li><strong>شماره تماس:</strong> {{ business.phone || '—' }}</li>
+            <li><strong>شهر:</strong> {{ business.city || '—' }}</li>
+            <li><strong>آدرس:</strong> {{ business.address || '—' }}</li>
+          </ul>
+        </div>
+        <div>
+          <h3>ساعات کاری</h3>
+          <p>{{ hours.days.join('، ') || 'روز کاری انتخاب نشده' }}</p>
+          <p>{{ hours.start }} تا {{ hours.end }}</p>
+        </div>
+        <div>
+          <h3>خدمات انتخاب شده</h3>
+          <p>{{ services.filter(s => s.selected).map(s => s.label).join('، ') || 'فعلاً سرویسی انتخاب نشده' }}</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="actions">
+      <button type="button" class="btn btn--ghost" [disabled]="step === 1" (click)="goToPreviousStep()">قبلی</button>
+      <div class="actions__spacer"></div>
+      <button *ngIf="step < totalSteps" type="button" class="btn btn--primary" [disabled]="!canProceed()" (click)="goToNextStep()">
+        مرحله بعد
+      </button>
+      <button *ngIf="step === totalSteps" type="button" class="btn btn--success" (click)="submit()">
+        تأیید و ورود به داشبورد
+      </button>
+    </footer>
+  </div>
+</section>

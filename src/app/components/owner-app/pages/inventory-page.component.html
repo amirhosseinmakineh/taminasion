@@ -1,0 +1,41 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">تب اصلی</p>
+      <h2>مدیریت وسایل سالن</h2>
+      <p class="subtitle">انبار را به‌روز نگه دارید.</p>
+    </div>
+    <button type="button" class="btn-primary">افزودن وسیله جدید</button>
+  </div>
+
+  <div class="filters">
+    <label>
+      <span>نوع وسیله</span>
+      <select [(ngModel)]="filter">
+        <option value="consumable">مواد مصرفی</option>
+        <option value="device">دستگاه</option>
+        <option value="hand-tool">ابزار دستی</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="table" role="table" aria-label="وسایل سالن">
+    <div class="table__head" role="row">
+      <div role="columnheader">نام وسیله</div>
+      <div role="columnheader">دسته</div>
+      <div role="columnheader">تعداد موجود</div>
+      <div role="columnheader">حداقل موجودی</div>
+      <div role="columnheader">وضعیت</div>
+    </div>
+    <div class="table__row" role="row">
+      <div role="cell">اسپری مو</div>
+      <div role="cell">مواد مصرفی</div>
+      <div role="cell">۲</div>
+      <div role="cell">۵</div>
+      <div role="cell" class="warning">رو به اتمام</div>
+    </div>
+    <div class="empty" role="row">
+      <div role="cell" class="empty__text">اگر وسیله‌ای ثبت نشده بود، این پیام نمایش داده می‌شود.</div>
+    </div>
+  </div>
+</section>

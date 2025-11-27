@@ -1,0 +1,32 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">تب اصلی</p>
+      <h2>مدیریت مشتری‌ها</h2>
+      <p class="subtitle">در این بخش می‌توانید مشتریان سالن را مدیریت کنید.</p>
+    </div>
+    <button type="button" class="btn-primary">افزودن مشتری جدید</button>
+  </div>
+
+  <div class="filters">
+    <input type="search" [(ngModel)]="search" placeholder="جستجوی مشتری" />
+    <select [(ngModel)]="filter">
+      <option value="all">همه</option>
+      <option value="vip">VIP</option>
+      <option value="new">جدید</option>
+    </select>
+  </div>
+
+  <div class="table" role="table" aria-label="لیست مشتریان">
+    <div class="table__head" role="row">
+      <div role="columnheader">نام مشتری</div>
+      <div role="columnheader">شماره تماس</div>
+      <div role="columnheader">تعداد نوبت</div>
+      <div role="columnheader">آخرین مراجعه</div>
+      <div role="columnheader">وضعیت</div>
+    </div>
+    <div class="empty" role="row">
+      <div role="cell" class="empty__text">فعلاً داده‌ای وجود ندارد.</div>
+    </div>
+  </div>
+</section>

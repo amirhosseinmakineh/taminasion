@@ -1,0 +1,19 @@
+<section class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">تب اصلی</p>
+      <h2>تنظیمات سالن</h2>
+      <p class="subtitle">گزینه‌های پایه برای مدیریت تنظیمات.</p>
+    </div>
+  </div>
+
+  <div class="options">
+    <article class="option" *ngFor="let option of options">
+      <div class="icon">⚙️</div>
+      <div>
+        <h3>{{ option.title }}</h3>
+        <p>{{ option.description }}</p>
+      </div>
+    </article>
+  </div>
+</section>

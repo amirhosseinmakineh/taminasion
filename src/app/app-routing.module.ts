@@ -2,8 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ResetPasswordRedirectComponent } from './components/auth/reset-password-redirect/reset-password-redirect.component';
 import { AuthGuard } from './guards/auth.guard';
+import { OnboardingRedirectGuard } from './guards/onboarding-redirect.guard';
 
 const routes: Routes = [
+  {
+    path: 'onboarding',
+    canActivate: [OnboardingRedirectGuard],
+    loadComponent: () =>
+      import('./components/owner-onboarding/owner-onboarding.component').then(m => m.OwnerOnboardingComponent),
+  },
+  {
+    path: 'app',
+    loadChildren: () => import('./components/owner-app/owner-app.module').then(m => m.OwnerAppModule),
+  },
   {
     path: 'business-search',
     loadChildren: () =>
