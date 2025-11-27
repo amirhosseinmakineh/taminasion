@@ -1,12 +1,15 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { BusinessProfileStateService } from '../state/business-profile-state.service';
 
 @Component({
   selector: 'app-business-dashboard-layout',
+  standalone: true,
   templateUrl: './business-dashboard-layout.component.html',
-  styleUrls: ['./business-dashboard-layout.component.css']
+  styleUrls: ['./business-dashboard-layout.component.css'],
+  imports: [CommonModule, RouterModule]
 })
 export class BusinessDashboardLayoutComponent {
   isSidebarOpen = false;
