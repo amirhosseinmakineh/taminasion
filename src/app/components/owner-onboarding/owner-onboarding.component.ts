@@ -100,6 +100,11 @@ export class OwnerOnboardingComponent {
     return true;
   }
 
+  get selectedServicesSummary(): string {
+    const labels = this.services.filter(service => service.selected).map(service => service.label);
+    return labels.join('، ') || 'فعلاً سرویسی انتخاب نشده';
+  }
+
   handleLogoChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     this.business.logo = target.files?.[0] ?? null;

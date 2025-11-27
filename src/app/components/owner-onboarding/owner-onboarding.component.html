@@ -109,7 +109,7 @@
         </div>
         <div>
           <h3>خدمات انتخاب شده</h3>
-          <p>{{ services.filter(s => s.selected).map(s => s.label).join('، ') || 'فعلاً سرویسی انتخاب نشده' }}</p>
+          <p>{{ selectedServicesSummary }}</p>
         </div>
       </div>
     </div>
