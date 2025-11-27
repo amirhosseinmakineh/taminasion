@@ -1,0 +1,43 @@
+<div class="dashboard-shell">
+  <header class="topbar">
+    <div class="brand" (click)="navigate('/business/customers')">
+      <div class="brand-mark">BO</div>
+      <div>
+        <div class="brand-title">Business Owner</div>
+        <div class="brand-sub">داشبورد مدیریت</div>
+      </div>
+    </div>
+
+    <button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle navigation">
+      <span class="menu-icon"></span>
+    </button>
+  </header>
+
+  <div class="alert" *ngIf="(profileCompleted$ | async) === false">
+    پروفایل کسب‌وکار کامل نشده است. برای دسترسی به بخش‌های داشبورد ابتدا فرم تکمیل پروفایل را پر کنید.
+  </div>
+
+  <div class="content-wrapper">
+    <aside class="sidebar" [class.open]="isSidebarOpen">
+      <ng-container *ngIf="(profileCompleted$ | async); else lockedState">
+        <nav>
+          <a routerLink="/business/customers" routerLinkActive="active" (click)="closeSidebar()">مدیریت مشتری‌ها</a>
+          <a routerLink="/business/employees" routerLinkActive="active" (click)="closeSidebar()">مدیریت کارمندان</a>
+          <a routerLink="/business/accounting" routerLinkActive="active" (click)="closeSidebar()">حسابداری</a>
+          <a routerLink="/business/video-marketing" routerLinkActive="active" (click)="closeSidebar()">ویدیو مارکتینگ</a>
+          <a routerLink="/business/equipment" routerLinkActive="active" (click)="closeSidebar()">مدیریت تجهیزات سالن</a>
+        </nav>
+      </ng-container>
+      <ng-template #lockedState>
+        <div class="locked-message">
+          <h4>دسترسی محدود</h4>
+          <p>برای مشاهده تب‌ها ابتدا پروفایل خود را تکمیل کنید.</p>
+        </div>
+      </ng-template>
+    </aside>
+
+    <main class="page-area">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

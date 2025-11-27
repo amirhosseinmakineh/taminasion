@@ -1,0 +1,55 @@
+<section class="setup-card">
+  <div>
+    <h2>تکمیل پروفایل کسب‌وکار</h2>
+    <p class="muted">برای دسترسی به تب‌های داشبورد، اطلاعات زیر را تکمیل کنید.</p>
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="submitProfile()" novalidate>
+    <div class="form-grid">
+      <label class="field">
+        <span>نام کسب‌وکار</span>
+        <input formControlName="businessName" placeholder="مثلاً سالن زیبایی آفتاب" />
+        <small *ngIf="profileForm.get('businessName')?.touched && profileForm.get('businessName')?.invalid">این فیلد الزامی است.</small>
+      </label>
+
+      <label class="field">
+        <span>نام و نام خانوادگی</span>
+        <input formControlName="ownerName" placeholder="نام مدیر" />
+        <small *ngIf="profileForm.get('ownerName')?.touched && profileForm.get('ownerName')?.invalid">این فیلد الزامی است.</small>
+      </label>
+
+      <label class="field">
+        <span>شماره تماس</span>
+        <input formControlName="phone" placeholder="09xx xxx xxxx" />
+        <small *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid">این فیلد الزامی است.</small>
+      </label>
+
+      <label class="field">
+        <span>دسته‌بندی کسب‌وکار</span>
+        <select formControlName="category">
+          <option value="" disabled>انتخاب کنید</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+        <small *ngIf="profileForm.get('category')?.touched && profileForm.get('category')?.invalid">این فیلد الزامی است.</small>
+      </label>
+
+      <label class="field full-width">
+        <span>آدرس</span>
+        <textarea formControlName="address" rows="3" placeholder="آدرس دقیق سالن"></textarea>
+        <small *ngIf="profileForm.get('address')?.touched && profileForm.get('address')?.invalid">این فیلد الزامی است.</small>
+      </label>
+
+      <label class="field">
+        <span>لوگو</span>
+        <div class="upload-box">
+          <input type="file" formControlName="logo" />
+          <p>فایل را انتخاب کنید (UI فقط)</p>
+        </div>
+      </label>
+    </div>
+
+    <button type="submit" [disabled]="submitting" class="primary-btn">
+      {{ submitting ? 'در حال ثبت...' : 'ثبت و ادامه' }}
+    </button>
+  </form>
+</section>
