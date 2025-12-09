@@ -29,7 +29,7 @@
 
       <label class="field" [formGroupName]="'city'">
         <span>شهر</span>
-        <select formControlName="id" (change)="onCityChange($event.target.value)">
+        <select formControlName="id" (change)="onCityChange($any($event.target)?.value)">
           <option value="" disabled>انتخاب کنید</option>
           <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
         </select>
@@ -39,7 +39,7 @@
 
       <label class="field" [formGroupName]="'region'">
         <span>منطقه</span>
-        <select formControlName="id" (change)="onRegionChange($event.target.value)">
+        <select formControlName="id" (change)="onRegionChange($any($event.target)?.value)">
           <option value="" disabled>انتخاب کنید</option>
           <option *ngFor="let region of regions" [value]="region.id">{{ region.regionName }}</option>
         </select>
@@ -49,7 +49,7 @@
 
       <label class="field" [formGroupName]="'neighborhood'">
         <span>محله</span>
-        <select formControlName="id" (change)="onNeighborhoodChange($event.target.value)">
+        <select formControlName="id" (change)="onNeighborhoodChange($any($event.target)?.value)">
           <option value="" disabled>انتخاب کنید</option>
           <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">{{ neighborhood.neighborhoodName }}</option>
         </select>

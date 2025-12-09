@@ -96,7 +96,7 @@ export class BusinessProfileSetupComponent implements OnInit {
     });
   }
 
-  onCityChange(cityId: string): void {
+  onCityChange(cityId: string | null | undefined): void {
     const selectedCity = this.cities.find(city => String(city.id) === cityId);
     const cityGroup = this.profileForm.get('city');
     const regionGroup = this.profileForm.get('region');
@@ -119,7 +119,7 @@ export class BusinessProfileSetupComponent implements OnInit {
     }
   }
 
-  onRegionChange(regionId: string): void {
+  onRegionChange(regionId: string | null | undefined): void {
     const selectedRegion = this.regions.find(region => String(region.id) === regionId);
     const regionGroup = this.profileForm.get('region');
     const neighborhoodGroup = this.profileForm.get('neighborhood');
@@ -139,7 +139,7 @@ export class BusinessProfileSetupComponent implements OnInit {
     }
   }
 
-  onNeighborhoodChange(neighborhoodId: string): void {
+  onNeighborhoodChange(neighborhoodId: string | null | undefined): void {
     const selectedNeighborhood = this.neighborhoods.find(item => String(item.id) === neighborhoodId);
     const neighborhoodGroup = this.profileForm.get('neighborhood');
 
