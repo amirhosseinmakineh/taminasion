@@ -32,12 +32,13 @@ export class LoginComponent {
   isSubmitting = false;
 
   constructor() {
-    const queryMessages = this.consumeQueryParams();
-    const navigationState = this.consumeNavigationState();
-    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
+    const { errorMessage: errorMessageFromQuery, infoMessage: infoMessageFromQuery } =
+      this.consumeQueryParams();
+    const { errorMessage: errorMessageFromState, infoMessage: infoMessageFromState } =
+      this.consumeNavigationState() ?? {};
 
-    const errorMessage = navigationState?.errorMessage || queryMessages.errorMessage;
-    const infoMessage = navigationState?.infoMessage || queryMessages.infoMessage;
+    const errorMessage = errorMessageFromState || errorMessageFromQuery;
+    const infoMessage = infoMessageFromState || infoMessageFromQuery;
 
     if (errorMessage) {
       this.feedbackType = 'error';
