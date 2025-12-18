@@ -16,11 +16,20 @@ export class AuthService {
   private readonly apiBaseUrl = environment.apiBaseUrl;
   private readonly baseUrl = `${this.apiBaseUrl}/User`;
   private readonly tokenStorageKey = 'authToken';
+  private readonly userIdStorageKey = 'authUserId';
   private readonly authStatusSubject = new BehaviorSubject<boolean>(this.hasStoredToken());
 
   readonly authStatus$ = this.authStatusSubject.asObservable();
 
   constructor(private readonly http: HttpClient) {}
+
+  get userId(): string | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+
+    return window.localStorage.getItem(this.userIdStorageKey);
+  }
 
   register(payload: RegisterRequest): Observable<AuthResponse<AuthUserDto>> {
     const body = {
@@ -48,6 +57,11 @@ export class AuthService {
         const token = this.extractToken(response.data);
         if (response.isSuccess && token) {
           this.storeToken(token);
+        }
+
+        const userId = this.extractUserId(response.data);
+        if (response.isSuccess && userId) {
+          this.storeUserId(userId);
         }
       }),
     );
@@ -90,6 +104,7 @@ export class AuthService {
       return;
     }
     window.localStorage.removeItem(this.tokenStorageKey);
+    window.localStorage.removeItem(this.userIdStorageKey);
     this.authStatusSubject.next(false);
   }
 
@@ -128,5 +143,35 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  private extractUserId(data: unknown): string | null {
+    if (!data || typeof data !== 'object') {
+      return null;
+    }
+
+    const record = data as Record<string, unknown>;
+    const user = record['user'];
+
+    if (user && typeof user === 'object') {
+      const userId = (user as Record<string, unknown>)['id'];
+      if (typeof userId === 'string') {
+        return userId;
+      }
+    }
+
+    if (typeof record['id'] === 'string') {
+      return record['id'];
+    }
+
+    return null;
+  }
+
+  private storeUserId(userId: string): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(this.userIdStorageKey, userId);
   }
 }
