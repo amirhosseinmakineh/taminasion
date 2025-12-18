@@ -28,13 +28,6 @@
           <span class="error" *ngIf="password?.hasError('required') && password?.touched">رمز عبور الزامی است.</span>
         </div>
 
-        <div class="form-field checkbox-field">
-          <label>
-            <input type="checkbox" formControlName="isBusinessOwner" />
-            <span>صاحب کسب‌وکار هستم</span>
-          </label>
-        </div>
-
         <div class="helper-link">
           <a routerLink="../forgot-password">رمز عبور خود را فراموش کرده‌اید؟</a>
         </div>
@@ -48,6 +41,8 @@
       <div class="footer-text">
         حساب کاربری ندارید؟
         <a routerLink="../register">ثبت‌نام کنید</a>
+        <span class="separator">|</span>
+        <a routerLink="../register" class="owner-link">صاحب کسب‌وکار هستم</a>
       </div>
     </div>
   </div>

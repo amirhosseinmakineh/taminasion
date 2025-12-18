@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../../services/auth.service';
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
 import { LoginRequest } from '../../../../models/auth/login-request.model';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,8 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly toastService = inject(ToastService);
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -29,14 +32,20 @@ export class LoginComponent {
   isSubmitting = false;
 
   constructor() {
+    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
     const navigationState = this.consumeNavigationState();
 
-    if (navigationState?.errorMessage) {
+    const errorMessage = navigationState?.errorMessage || errorMessageFromQuery;
+    const infoMessage = navigationState?.infoMessage || infoMessageFromQuery;
+
+    if (errorMessage) {
       this.feedbackType = 'error';
-      this.feedbackMessage = navigationState.errorMessage;
-    } else if (navigationState?.infoMessage) {
+      this.feedbackMessage = errorMessage;
+      this.toastService.error(this.feedbackMessage);
+    } else if (infoMessage) {
       this.feedbackType = 'info';
-      this.feedbackMessage = navigationState.infoMessage;
+      this.feedbackMessage = infoMessage;
+      this.toastService.info(this.feedbackMessage);
     }
   }
 
@@ -66,24 +75,47 @@ export class LoginComponent {
           if (response.isSuccess) {
             this.feedbackType = 'success';
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
+            this.toastService.success(this.feedbackMessage);
             this.loginForm.reset();
-            void this.router.navigate(['/admin-dashboard']);
+            void this.router.navigate(['/business']);
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
             this.feedbackMessage = response.message || 'در فرآیند ورود مشکلی پیش آمد.';
+            this.toastService.error(this.feedbackMessage);
           }
         },
         error: () => {
           this.authService.clearStoredToken();
           this.feedbackType = 'error';
           this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
+          this.toastService.error(this.feedbackMessage);
         },
       });
   }
 
   clearFeedback(): void {
     this.feedbackMessage = '';
+  }
+
+  private consumeQueryParams(): { errorMessageFromQuery?: string; infoMessageFromQuery?: string } {
+    const queryParams = this.route.snapshot.queryParamMap;
+    const errorMessageFromQuery = queryParams.get('errorMessage') || undefined;
+    const infoMessageFromQuery = queryParams.get('infoMessage') || undefined;
+
+    if ((errorMessageFromQuery || infoMessageFromQuery) && typeof window !== 'undefined') {
+      void this.router.navigate([], {
+        relativeTo: this.route,
+        replaceUrl: true,
+        queryParams: {
+          errorMessage: null,
+          infoMessage: null,
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
+
+    return { errorMessageFromQuery, infoMessageFromQuery };
   }
 
   private consumeNavigationState(): { errorMessage?: string; infoMessage?: string } | null {
@@ -105,4 +137,5 @@ export class LoginComponent {
 
     return state;
   }
+
 }
