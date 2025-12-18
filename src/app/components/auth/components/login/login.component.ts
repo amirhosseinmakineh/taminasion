@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -32,8 +32,9 @@ export class LoginComponent {
 
   constructor() {
     const navigationState = this.consumeNavigationState();
+    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
 
-    if (navigationState?.errorMessage) {
+    if (navigationState?.errorMessage || errorMessageFromQuery) {
       this.feedbackType = 'error';
       this.feedbackMessage = navigationState?.errorMessage || '';
       this.toastService.error(this.feedbackMessage);
