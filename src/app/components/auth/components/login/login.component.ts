@@ -34,6 +34,7 @@ export class LoginComponent {
   constructor() {
     const queryMessages = this.consumeQueryParams();
     const navigationState = this.consumeNavigationState();
+    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
 
     const errorMessage = navigationState?.errorMessage || queryMessages.errorMessage;
     const infoMessage = navigationState?.infoMessage || queryMessages.infoMessage;
