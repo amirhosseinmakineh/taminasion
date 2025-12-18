@@ -186,6 +186,13 @@
   accent-color: var(--primary);
 }
 
+.achievement-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
 .actions {
   display: flex;
   align-items: center;

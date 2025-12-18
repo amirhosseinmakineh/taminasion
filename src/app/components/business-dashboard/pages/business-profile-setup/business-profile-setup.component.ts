@@ -84,7 +84,7 @@ export class BusinessProfileSetupComponent implements OnInit {
         businessOwnerName: ['', [Validators.required]],
         description: ['', [Validators.required]],
         achevmentNames: this.fb.control<string[]>([], [Validators.required]),
-        businessDayTimeDtos: this.fb.array([], [Validators.required]),
+        businessDayTimeDtos: this.fb.array([]),
       }),
       dayIds: this.fb.control<number[]>([], [Validators.required]),
       timeIds: this.fb.control<number[]>([], [Validators.required])
@@ -107,6 +107,10 @@ export class BusinessProfileSetupComponent implements OnInit {
 
   get isNeighborhoodDisabled(): boolean {
     return this.profileForm.get('neighborhood')?.disabled ?? true;
+  }
+
+  get achievementTags(): string[] {
+    return (this.profileForm.get('business.achevmentNames')?.value as string[]) ?? [];
   }
 
   private loadCities(): void {
@@ -303,7 +307,11 @@ export class BusinessProfileSetupComponent implements OnInit {
           Boolean(this.profileForm.get('city.id')?.value) &&
           Boolean(this.profileForm.get('region.id')?.value) &&
           Boolean(this.profileForm.get('neighborhood.id')?.value) &&
-          (this.profileForm.get('business')?.valid ?? false)
+          (this.profileForm.get('business.businessLogo')?.valid ?? false) &&
+          (this.profileForm.get('business.businessName')?.valid ?? false) &&
+          (this.profileForm.get('business.businessOwnerName')?.valid ?? false) &&
+          (this.profileForm.get('business.description')?.valid ?? false) &&
+          (this.profileForm.get('business.achevmentNames')?.valid ?? false)
         );
       case 3:
         return (

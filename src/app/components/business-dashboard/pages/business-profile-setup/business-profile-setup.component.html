@@ -148,6 +148,9 @@
               placeholder="مثلاً برنده مسابقات آرایشگری"
             ></textarea>
             <small *ngIf="profileForm.get('business.achevmentNames')?.touched && profileForm.get('business.achevmentNames')?.invalid">این فیلد الزامی است.</small>
+            <div class="achievement-tags" *ngIf="achievementTags.length">
+              <span class="chip" *ngFor="let tag of achievementTags">{{ tag }}</span>
+            </div>
           </label>
         </div>
       </div>
