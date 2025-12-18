@@ -6,6 +6,7 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../../../services/auth.service';
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
 import { LoginRequest } from '../../../../models/auth/login-request.model';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -33,10 +35,12 @@ export class LoginComponent {
 
     if (navigationState?.errorMessage) {
       this.feedbackType = 'error';
-      this.feedbackMessage = navigationState.errorMessage;
+      this.feedbackMessage = navigationState?.errorMessage || '';
+      this.toastService.error(this.feedbackMessage);
     } else if (navigationState?.infoMessage) {
       this.feedbackType = 'info';
-      this.feedbackMessage = navigationState.infoMessage;
+      this.feedbackMessage = navigationState?.infoMessage || '';
+      this.toastService.info(this.feedbackMessage);
     }
   }
 
@@ -66,18 +70,21 @@ export class LoginComponent {
           if (response.isSuccess) {
             this.feedbackType = 'success';
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
+            this.toastService.success(this.feedbackMessage);
             this.loginForm.reset();
-            void this.router.navigate(['/admin-dashboard']);
+            void this.router.navigate(['/business']);
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
             this.feedbackMessage = response.message || 'در فرآیند ورود مشکلی پیش آمد.';
+            this.toastService.error(this.feedbackMessage);
           }
         },
         error: () => {
           this.authService.clearStoredToken();
           this.feedbackType = 'error';
           this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
+          this.toastService.error(this.feedbackMessage);
         },
       });
   }
@@ -105,4 +112,5 @@ export class LoginComponent {
 
     return state;
   }
+
 }
