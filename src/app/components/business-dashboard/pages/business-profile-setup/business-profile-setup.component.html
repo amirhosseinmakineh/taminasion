@@ -83,9 +83,9 @@
           <small *ngIf="profileForm.get('city')?.touched && !profileForm.get('city.id')?.value">انتخاب شهر الزامی است.</small>
         </label>
 
-        <label class="field" [class.field--disabled]="profileForm.get('region')?.disabled" [formGroupName]="'region'">
+        <label class="field" [class.field--disabled]="isRegionDisabled" [formGroupName]="'region'">
           <span>منطقه</span>
-          <select formControlName="id" (change)="onRegionChange($any($event.target)?.value)" [disabled]="profileForm.get('region')?.disabled">
+          <select formControlName="id" (change)="onRegionChange($any($event.target)?.value)" [disabled]="isRegionDisabled">
             <option value="" disabled>ابتدا شهر را انتخاب کنید</option>
             <option *ngFor="let region of regions" [value]="region.id">{{ region.regionName }}</option>
           </select>
@@ -93,12 +93,12 @@
           <small *ngIf="profileForm.get('region')?.touched && !profileForm.get('region.id')?.value">انتخاب منطقه الزامی است.</small>
         </label>
 
-        <label class="field" [class.field--disabled]="profileForm.get('neighborhood')?.disabled" [formGroupName]="'neighborhood'">
+        <label class="field" [class.field--disabled]="isNeighborhoodDisabled" [formGroupName]="'neighborhood'">
           <span>محله</span>
           <select
             formControlName="id"
             (change)="onNeighborhoodChange($any($event.target)?.value)"
-            [disabled]="profileForm.get('neighborhood')?.disabled"
+            [disabled]="isNeighborhoodDisabled"
           >
             <option value="" disabled>ابتدا منطقه را انتخاب کنید</option>
             <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">{{ neighborhood.neighborhoodName }}</option>

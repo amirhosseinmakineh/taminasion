@@ -101,6 +101,14 @@ export class BusinessProfileSetupComponent implements OnInit {
     return this.profileForm.get('business.businessDayTimeDtos') as FormArray;
   }
 
+  get isRegionDisabled(): boolean {
+    return this.profileForm.get('region')?.disabled ?? true;
+  }
+
+  get isNeighborhoodDisabled(): boolean {
+    return this.profileForm.get('neighborhood')?.disabled ?? true;
+  }
+
   private loadCities(): void {
     this.businessService.getCities().subscribe(cities => {
       this.cities = cities;
