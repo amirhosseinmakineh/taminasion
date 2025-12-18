@@ -18,6 +18,7 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly toastService = inject(ToastService);
 
   protected readonly loginForm = this.fb.nonNullable.group({
@@ -31,16 +32,20 @@ export class LoginComponent {
   isSubmitting = false;
 
   constructor() {
+    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
     const navigationState = this.consumeNavigationState();
     const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
 
-    if (navigationState?.errorMessage || errorMessageFromQuery) {
+    const errorMessage = navigationState?.errorMessage || errorMessageFromQuery;
+    const infoMessage = navigationState?.infoMessage || infoMessageFromQuery;
+
+    if (errorMessage) {
       this.feedbackType = 'error';
-      this.feedbackMessage = navigationState?.errorMessage || '';
+      this.feedbackMessage = errorMessage;
       this.toastService.error(this.feedbackMessage);
-    } else if (navigationState?.infoMessage) {
+    } else if (infoMessage) {
       this.feedbackType = 'info';
-      this.feedbackMessage = navigationState?.infoMessage || '';
+      this.feedbackMessage = infoMessage;
       this.toastService.info(this.feedbackMessage);
     }
   }
@@ -92,6 +97,26 @@ export class LoginComponent {
 
   clearFeedback(): void {
     this.feedbackMessage = '';
+  }
+
+  private consumeQueryParams(): { errorMessageFromQuery?: string; infoMessageFromQuery?: string } {
+    const queryParams = this.route.snapshot.queryParamMap;
+    const errorMessageFromQuery = queryParams.get('errorMessage') || undefined;
+    const infoMessageFromQuery = queryParams.get('infoMessage') || undefined;
+
+    if ((errorMessageFromQuery || infoMessageFromQuery) && typeof window !== 'undefined') {
+      void this.router.navigate([], {
+        relativeTo: this.route,
+        replaceUrl: true,
+        queryParams: {
+          errorMessage: null,
+          infoMessage: null,
+        },
+        queryParamsHandling: 'merge',
+      });
+    }
+
+    return { errorMessageFromQuery, infoMessageFromQuery };
   }
 
   private consumeNavigationState(): { errorMessage?: string; infoMessage?: string } | null {
