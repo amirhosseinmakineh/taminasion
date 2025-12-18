@@ -32,12 +32,12 @@ export class LoginComponent {
   isSubmitting = false;
 
   constructor() {
-    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
+    const queryMessages = this.consumeQueryParams();
     const navigationState = this.consumeNavigationState();
     const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
 
-    const errorMessage = navigationState?.errorMessage || errorMessageFromQuery;
-    const infoMessage = navigationState?.infoMessage || infoMessageFromQuery;
+    const errorMessage = navigationState?.errorMessage || queryMessages.errorMessage;
+    const infoMessage = navigationState?.infoMessage || queryMessages.infoMessage;
 
     if (errorMessage) {
       this.feedbackType = 'error';
@@ -99,12 +99,12 @@ export class LoginComponent {
     this.feedbackMessage = '';
   }
 
-  private consumeQueryParams(): { errorMessageFromQuery?: string; infoMessageFromQuery?: string } {
+  private consumeQueryParams(): { errorMessage?: string; infoMessage?: string } {
     const queryParams = this.route.snapshot.queryParamMap;
-    const errorMessageFromQuery = queryParams.get('errorMessage') || undefined;
-    const infoMessageFromQuery = queryParams.get('infoMessage') || undefined;
+    const errorMessage = queryParams.get('errorMessage') || undefined;
+    const infoMessage = queryParams.get('infoMessage') || undefined;
 
-    if ((errorMessageFromQuery || infoMessageFromQuery) && typeof window !== 'undefined') {
+    if ((errorMessage || infoMessage) && typeof window !== 'undefined') {
       void this.router.navigate([], {
         relativeTo: this.route,
         replaceUrl: true,
@@ -116,7 +116,7 @@ export class LoginComponent {
       });
     }
 
-    return { errorMessageFromQuery, infoMessageFromQuery };
+    return { errorMessage, infoMessage };
   }
 
   private consumeNavigationState(): { errorMessage?: string; infoMessage?: string } | null {
