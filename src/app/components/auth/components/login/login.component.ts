@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
 
@@ -17,6 +17,7 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,13 +31,14 @@ export class LoginComponent {
 
   constructor() {
     const navigationState = this.consumeNavigationState();
+    const { errorMessageFromQuery, infoMessageFromQuery } = this.consumeQueryParams();
 
-    if (navigationState?.errorMessage) {
+    if (navigationState?.errorMessage || errorMessageFromQuery) {
       this.feedbackType = 'error';
-      this.feedbackMessage = navigationState.errorMessage;
-    } else if (navigationState?.infoMessage) {
+      this.feedbackMessage = navigationState?.errorMessage || errorMessageFromQuery || '';
+    } else if (navigationState?.infoMessage || infoMessageFromQuery) {
       this.feedbackType = 'info';
-      this.feedbackMessage = navigationState.infoMessage;
+      this.feedbackMessage = navigationState?.infoMessage || infoMessageFromQuery || '';
     }
   }
 
@@ -67,7 +69,10 @@ export class LoginComponent {
             this.feedbackType = 'success';
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
             this.loginForm.reset();
-            void this.router.navigate(['/admin-dashboard']);
+            const businessOwnerId = this.extractUserId(response.data);
+            void this.router.navigate(['/business'], {
+              queryParams: businessOwnerId ? { id: businessOwnerId } : undefined,
+            });
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
@@ -104,5 +109,43 @@ export class LoginComponent {
     }
 
     return state;
+  }
+
+  private consumeQueryParams(): { errorMessageFromQuery: string | null; infoMessageFromQuery: string | null } {
+    const queryParamMap = this.route.snapshot.queryParamMap;
+    const errorMessageFromQuery = queryParamMap.get('errorMessage');
+    const infoMessageFromQuery = queryParamMap.get('infoMessage');
+
+    if ((errorMessageFromQuery || infoMessageFromQuery) && typeof window !== 'undefined') {
+      void this.router.navigate([], {
+        queryParams: { errorMessage: null, infoMessage: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
+
+    return { errorMessageFromQuery, infoMessageFromQuery };
+  }
+
+  private extractUserId(data: unknown): string | null {
+    if (!data || typeof data !== 'object') {
+      return null;
+    }
+
+    const record = data as Record<string, unknown>;
+    const user = record['user'];
+
+    if (user && typeof user === 'object') {
+      const userId = (user as Record<string, unknown>)['id'];
+      if (typeof userId === 'string') {
+        return userId;
+      }
+    }
+
+    if (typeof record['id'] === 'string') {
+      return record['id'];
+    }
+
+    return null;
   }
 }

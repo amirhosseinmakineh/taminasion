@@ -28,7 +28,7 @@ export class BusinessDashboardLayoutComponent {
   }
 
   navigate(path: string): void {
-    this.router.navigate([path]);
+    this.router.navigate([path], { queryParamsHandling: 'preserve' });
     this.closeSidebar();
   }
 }
