@@ -6,6 +6,7 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../../../services/auth.service';
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
 import { LoginRequest } from '../../../../models/auth/login-request.model';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
+  private readonly toastService = inject(ToastService);
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -35,10 +36,12 @@ export class LoginComponent {
 
     if (navigationState?.errorMessage || errorMessageFromQuery) {
       this.feedbackType = 'error';
-      this.feedbackMessage = navigationState?.errorMessage || errorMessageFromQuery || '';
-    } else if (navigationState?.infoMessage || infoMessageFromQuery) {
+      this.feedbackMessage = navigationState?.errorMessage || '';
+      this.toastService.error(this.feedbackMessage);
+    } else if (navigationState?.infoMessage) {
       this.feedbackType = 'info';
-      this.feedbackMessage = navigationState?.infoMessage || infoMessageFromQuery || '';
+      this.feedbackMessage = navigationState?.infoMessage || '';
+      this.toastService.info(this.feedbackMessage);
     }
   }
 
@@ -68,21 +71,21 @@ export class LoginComponent {
           if (response.isSuccess) {
             this.feedbackType = 'success';
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
+            this.toastService.success(this.feedbackMessage);
             this.loginForm.reset();
-            const businessOwnerId = this.extractUserId(response.data);
-            void this.router.navigate(['/business'], {
-              queryParams: businessOwnerId ? { id: businessOwnerId } : undefined,
-            });
+            void this.router.navigate(['/business']);
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
             this.feedbackMessage = response.message || 'در فرآیند ورود مشکلی پیش آمد.';
+            this.toastService.error(this.feedbackMessage);
           }
         },
         error: () => {
           this.authService.clearStoredToken();
           this.feedbackType = 'error';
           this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
+          this.toastService.error(this.feedbackMessage);
         },
       });
   }
@@ -111,41 +114,4 @@ export class LoginComponent {
     return state;
   }
 
-  private consumeQueryParams(): { errorMessageFromQuery: string | null; infoMessageFromQuery: string | null } {
-    const queryParamMap = this.route.snapshot.queryParamMap;
-    const errorMessageFromQuery = queryParamMap.get('errorMessage');
-    const infoMessageFromQuery = queryParamMap.get('infoMessage');
-
-    if ((errorMessageFromQuery || infoMessageFromQuery) && typeof window !== 'undefined') {
-      void this.router.navigate([], {
-        queryParams: { errorMessage: null, infoMessage: null },
-        queryParamsHandling: 'merge',
-        replaceUrl: true,
-      });
-    }
-
-    return { errorMessageFromQuery, infoMessageFromQuery };
-  }
-
-  private extractUserId(data: unknown): string | null {
-    if (!data || typeof data !== 'object') {
-      return null;
-    }
-
-    const record = data as Record<string, unknown>;
-    const user = record['user'];
-
-    if (user && typeof user === 'object') {
-      const userId = (user as Record<string, unknown>)['id'];
-      if (typeof userId === 'string') {
-        return userId;
-      }
-    }
-
-    if (typeof record['id'] === 'string') {
-      return record['id'];
-    }
-
-    return null;
-  }
 }

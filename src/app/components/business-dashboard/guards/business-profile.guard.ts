@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, catchError, map, of } from 'rxjs';
 
 import { BusinessOwnerService } from '../../../services/business-owner.service';
 import { BusinessProfileStateService } from '../state/business-profile-state.service';
+import { AuthService } from '../../../services/auth.service';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class BusinessProfileGuard implements CanActivate, CanActivateChild {
@@ -11,33 +13,27 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
     private readonly profileState: BusinessProfileStateService,
     private readonly router: Router,
     private readonly businessOwnerService: BusinessOwnerService,
+    private readonly authService: AuthService,
+    private readonly toastService: ToastService,
   ) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ): ReturnType<BusinessProfileGuard['evaluateAccess']> {
-    return this.evaluateAccess(route, state.url);
+  canActivate(_route: unknown, state: RouterStateSnapshot): ReturnType<BusinessProfileGuard['evaluateAccess']> {
+    return this.evaluateAccess(state.url);
   }
 
-  canActivateChild(
-    childRoute: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ): ReturnType<BusinessProfileGuard['evaluateAccess']> {
-    return this.evaluateAccess(childRoute, state.url);
+  canActivateChild(_childRoute: unknown, state: RouterStateSnapshot): ReturnType<BusinessProfileGuard['evaluateAccess']> {
+    return this.evaluateAccess(state.url);
   }
 
-  private evaluateAccess(
-    route: ActivatedRouteSnapshot,
-    targetUrl: string,
-  ): Observable<boolean | UrlTree> | boolean | UrlTree {
+  private evaluateAccess(targetUrl: string): Observable<boolean | UrlTree> | boolean | UrlTree {
     const isProfileRoute = targetUrl.includes('/business/profile-setup');
-    const businessOwnerId = this.getBusinessOwnerId(route);
+    const businessOwnerId = this.authService.userId;
 
     if (!businessOwnerId) {
-      return this.router.createUrlTree(['/auth/login'], {
-        queryParams: { errorMessage: $localize`شناسه کاربر یافت نشد. لطفاً دوباره وارد شوید.` },
-      });
+      this.toastService.error($localize`شناسه کاربر یافت نشد. لطفاً دوباره وارد شوید.`);
+      void this.router.navigate(['/auth/login'], { state: { errorMessage: $localize`برای ادامه وارد شوید.` } });
+      this.authService.clearStoredToken();
+      return false;
     }
 
     if (this.profileState.isProfileCompleted) {
@@ -53,42 +49,28 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
           this.profileState.completeProfile();
 
           if (isProfileRoute) {
-            return this.router.createUrlTree(['/business/customers'], {
-              queryParams: { id: businessOwnerId },
-            });
+            return this.router.createUrlTree(['/business/customers']);
           }
 
           return true;
         }
 
         if (message?.includes('دسترسی ندارید')) {
-          return this.router.createUrlTree(['/auth/login'], {
-            queryParams: { errorMessage: message },
-          });
+          this.toastService.error(message);
+          void this.router.navigate(['/auth/login'], { state: { errorMessage: message } });
+          this.authService.clearStoredToken();
+          return false;
         }
 
-        return this.router.createUrlTree(['/business/profile-setup'], {
-          queryParams: {
-            id: businessOwnerId,
-            errorMessage:
-              message || $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
-          },
-        });
+        this.toastService.info(
+          message || $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
+        );
+        return this.router.createUrlTree(['/business/profile-setup']);
       }),
-      catchError(() =>
-        of(
-          this.router.createUrlTree(['/business/profile-setup'], {
-            queryParams: {
-              id: businessOwnerId,
-              errorMessage: $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
-            },
-          }),
-        ),
-      ),
+      catchError(() => {
+        this.toastService.error($localize`خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.`);
+        return of(this.router.createUrlTree(['/business/profile-setup']));
+      }),
     );
-  }
-
-  private getBusinessOwnerId(route: ActivatedRouteSnapshot): string | null {
-    return route.queryParamMap.get('id') ?? route.parent?.queryParamMap.get('id') ?? null;
   }
 }
