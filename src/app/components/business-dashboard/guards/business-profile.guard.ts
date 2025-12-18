@@ -36,7 +36,7 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
 
     if (!businessOwnerId) {
       return this.router.createUrlTree(['/auth/login'], {
-        state: { errorMessage: $localize`شناسه کاربر یافت نشد. لطفاً دوباره وارد شوید.` },
+        queryParams: { errorMessage: $localize`شناسه کاربر یافت نشد. لطفاً دوباره وارد شوید.` },
       });
     }
 
