@@ -1,122 +1,164 @@
 <section class="setup-card">
-  <div>
-    <h2>تکمیل پروفایل کسب‌وکار</h2>
-    <p class="muted">برای دسترسی به تب‌های داشبورد، اطلاعات زیر را تکمیل کنید.</p>
+  <div class="setup-header">
+    <div>
+      <h2>تکمیل پروفایل کسب‌وکار</h2>
+      <p class="muted">برای دسترسی به تب‌های داشبورد، مراحل زیر را به ترتیب تکمیل کنید.</p>
+    </div>
+    <div class="step-counter">مرحله {{ currentStep }} از {{ totalSteps }}</div>
   </div>
 
+  <nav class="stepper" aria-label="مراحل تکمیل پروفایل">
+    <button
+      type="button"
+      *ngFor="let step of steps"
+      class="stepper__item"
+      [class.stepper__item--active]="currentStep === step.id"
+      [class.stepper__item--done]="currentStep > step.id"
+      [disabled]="!canVisitStep(step.id)"
+      (click)="goToStep(step.id)"
+    >
+      <span class="stepper__index">{{ step.id }}</span>
+      <div class="stepper__labels">
+        <span class="stepper__title">{{ step.label }}</span>
+        <small>{{ step.id === 1 ? 'اطلاعات کاربری و درباره من' : step.id === 2 ? 'جزئیات کسب‌وکار و موقعیت' : 'روز و ساعت‌های فعالیت' }}</small>
+      </div>
+    </button>
+  </nav>
+
   <form [formGroup]="profileForm" (ngSubmit)="submitProfile()" novalidate>
-    <div class="form-grid">
-      <label class="field">
-        <span>عکس پروفایل</span>
-        <div class="upload-box">
-          <input type="file" (change)="onImageSelected($event)" />
-          <p>{{ profileForm.get('imageName')?.value || 'فایل را انتخاب کنید' }}</p>
-        </div>
-        <small *ngIf="profileForm.get('imageName')?.touched && profileForm.get('imageName')?.invalid">این فیلد الزامی است.</small>
-      </label>
-
-      <label class="field">
-        <span>نام خانوادگی</span>
-        <input formControlName="family" placeholder="مثلاً احمدی" />
-        <small *ngIf="profileForm.get('family')?.touched && profileForm.get('family')?.invalid">این فیلد الزامی است.</small>
-      </label>
-
-      <label class="field">
-        <span>سن</span>
-        <input type="number" formControlName="age" placeholder="سن مالک" />
-        <small *ngIf="profileForm.get('age')?.touched && profileForm.get('age')?.invalid">این فیلد الزامی است.</small>
-      </label>
-
-      <label class="field" [formGroupName]="'city'">
-        <span>شهر</span>
-        <select formControlName="id" (change)="onCityChange($any($event.target)?.value)">
-          <option value="" disabled>انتخاب کنید</option>
-          <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
-        </select>
-        <input type="hidden" formControlName="name" />
-        <small *ngIf="profileForm.get('city')?.touched && profileForm.get('city')?.invalid">انتخاب شهر الزامی است.</small>
-      </label>
-
-      <label class="field" [formGroupName]="'region'">
-        <span>منطقه</span>
-        <select formControlName="id" (change)="onRegionChange($any($event.target)?.value)">
-          <option value="" disabled>انتخاب کنید</option>
-          <option *ngFor="let region of regions" [value]="region.id">{{ region.regionName }}</option>
-        </select>
-        <input type="hidden" formControlName="regionName" />
-        <small *ngIf="profileForm.get('region')?.touched && profileForm.get('region')?.invalid">انتخاب منطقه الزامی است.</small>
-      </label>
-
-      <label class="field" [formGroupName]="'neighborhood'">
-        <span>محله</span>
-        <select formControlName="id" (change)="onNeighborhoodChange($any($event.target)?.value)">
-          <option value="" disabled>انتخاب کنید</option>
-          <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">{{ neighborhood.neighborhoodName }}</option>
-        </select>
-        <input type="hidden" formControlName="neighborhoodName" />
-        <small *ngIf="profileForm.get('neighborhood')?.touched && profileForm.get('neighborhood')?.invalid">انتخاب محله الزامی است.</small>
-      </label>
-    </div>
-
-    <div class="section" [formGroupName]="'business'">
-      <h3>اطلاعات کسب‌وکار</h3>
+    <div class="step-panel" *ngIf="currentStep === 1">
+      <h3>اطلاعات کاربری</h3>
+      <p class="muted">ابتدا اطلاعات هویتی، معرفی شخصی و بنر را تکمیل کنید تا مراحل بعد آزاد شود.</p>
       <div class="form-grid">
         <label class="field">
-          <span>لوگوی کسب‌وکار</span>
+          <span>عکس پروفایل</span>
           <div class="upload-box">
-            <input type="file" (change)="onLogoSelected($event)" />
-            <p>{{ profileForm.get('business.businessLogo')?.value || 'فایل را انتخاب کنید' }}</p>
+            <input type="file" (change)="onImageSelected($event)" />
+            <p>{{ profileForm.get('imageName')?.value || 'فایل را انتخاب کنید' }}</p>
           </div>
-          <small *ngIf="profileForm.get('business.businessLogo')?.touched && profileForm.get('business.businessLogo')?.invalid">
-            این فیلد الزامی است.
-          </small>
+          <small *ngIf="profileForm.get('imageName')?.touched && profileForm.get('imageName')?.invalid">این فیلد الزامی است.</small>
         </label>
 
         <label class="field">
-          <span>نام کسب‌وکار</span>
-          <input formControlName="businessName" placeholder="مثلاً سالن زیبایی آفتاب" />
-          <small *ngIf="profileForm.get('business.businessName')?.touched && profileForm.get('business.businessName')?.invalid">این فیلد الزامی است.</small>
+          <span>بنر پروفایل</span>
+          <div class="upload-box">
+            <input type="file" (change)="onBannerSelected($event)" />
+            <p>{{ profileForm.get('bannerImageName')?.value || 'بنر را بارگذاری کنید' }}</p>
+          </div>
+          <small *ngIf="profileForm.get('bannerImageName')?.touched && profileForm.get('bannerImageName')?.invalid">این فیلد الزامی است.</small>
         </label>
 
         <label class="field">
-          <span>مالک کسب‌وکار</span>
-          <input formControlName="businessOwnerName" placeholder="نام مالک" />
-          <small *ngIf="profileForm.get('business.businessOwnerName')?.touched && profileForm.get('business.businessOwnerName')?.invalid">این فیلد الزامی است.</small>
+          <span>نام خانوادگی</span>
+          <input formControlName="family" placeholder="مثلاً احمدی" />
+          <small *ngIf="profileForm.get('family')?.touched && profileForm.get('family')?.invalid">این فیلد الزامی است.</small>
         </label>
 
         <label class="field">
-          <span>میزان هزینه (میانگین خدمات)</span>
-          <input type="number" formControlName="amount" placeholder="به تومان" />
-          <small *ngIf="profileForm.get('business.amount')?.touched && profileForm.get('business.amount')?.invalid">این فیلد الزامی است.</small>
-        </label>
-
-        <label class="field">
-          <span>امتیاز کاربران</span>
-          <input type="number" formControlName="userRate" step="0.1" min="0" max="5" placeholder="0 تا 5" />
-          <small *ngIf="profileForm.get('business.userRate')?.touched && profileForm.get('business.userRate')?.invalid">این فیلد الزامی است.</small>
+          <span>سن</span>
+          <input type="number" formControlName="age" placeholder="سن مالک" />
+          <small *ngIf="profileForm.get('age')?.touched && profileForm.get('age')?.invalid">این فیلد الزامی است.</small>
         </label>
 
         <label class="field full-width">
-          <span>توضیحات</span>
-          <textarea formControlName="description" rows="3" placeholder="معرفی کوتاه کسب‌وکار"></textarea>
-          <small *ngIf="profileForm.get('business.description')?.touched && profileForm.get('business.description')?.invalid">این فیلد الزامی است.</small>
-        </label>
-
-        <label class="field full-width">
-          <span>افتخارات و دستاوردها (هر مورد در خط جدید یا جداشده با کاما)</span>
-          <textarea
-            rows="3"
-            [value]="achievementText"
-            (input)="updateAchievements($any($event.target).value)"
-            placeholder="مثلاً برنده مسابقات آرایشگری"
-          ></textarea>
-          <small *ngIf="profileForm.get('business.achevmentNames')?.touched && profileForm.get('business.achevmentNames')?.invalid">این فیلد الزامی است.</small>
+          <span>درباره من</span>
+          <textarea formControlName="aboutMe" rows="3" placeholder="توضیح کوتاه درباره خودتان"></textarea>
+          <small *ngIf="profileForm.get('aboutMe')?.touched && profileForm.get('aboutMe')?.invalid">این فیلد الزامی است.</small>
         </label>
       </div>
     </div>
 
-    <div class="section">
+    <div class="step-panel" *ngIf="currentStep === 2">
+      <h3>اطلاعات کسب‌وکار و موقعیت</h3>
+      <p class="muted">بعد از انتخاب شهر، منطقه فعال می‌شود و بعد از انتخاب منطقه، محله در دسترس خواهد بود.</p>
+
+      <div class="form-grid">
+        <label class="field" [formGroupName]="'city'">
+          <span>شهر</span>
+          <select formControlName="id" (change)="onCityChange($any($event.target)?.value)">
+            <option value="" disabled>انتخاب کنید</option>
+            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+          </select>
+          <input type="hidden" formControlName="name" />
+          <small *ngIf="profileForm.get('city')?.touched && !profileForm.get('city.id')?.value">انتخاب شهر الزامی است.</small>
+        </label>
+
+        <label class="field" [class.field--disabled]="isRegionDisabled" [formGroupName]="'region'">
+          <span>منطقه</span>
+          <select formControlName="id" (change)="onRegionChange($any($event.target)?.value)" [disabled]="isRegionDisabled">
+            <option value="" disabled>ابتدا شهر را انتخاب کنید</option>
+            <option *ngFor="let region of regions" [value]="region.id">{{ region.regionName }}</option>
+          </select>
+          <input type="hidden" formControlName="regionName" />
+          <small *ngIf="profileForm.get('region')?.touched && !profileForm.get('region.id')?.value">انتخاب منطقه الزامی است.</small>
+        </label>
+
+        <label class="field" [class.field--disabled]="isNeighborhoodDisabled" [formGroupName]="'neighborhood'">
+          <span>محله</span>
+          <select
+            formControlName="id"
+            (change)="onNeighborhoodChange($any($event.target)?.value)"
+            [disabled]="isNeighborhoodDisabled"
+          >
+            <option value="" disabled>ابتدا منطقه را انتخاب کنید</option>
+            <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood.id">{{ neighborhood.neighborhoodName }}</option>
+          </select>
+          <input type="hidden" formControlName="neighborhoodName" />
+          <small *ngIf="profileForm.get('neighborhood')?.touched && !profileForm.get('neighborhood.id')?.value">انتخاب محله الزامی است.</small>
+        </label>
+      </div>
+
+      <div class="section" [formGroupName]="'business'">
+        <div class="form-grid">
+          <label class="field">
+            <span>لوگوی کسب‌وکار</span>
+            <div class="upload-box">
+              <input type="file" (change)="onLogoSelected($event)" />
+              <p>{{ profileForm.get('business.businessLogo')?.value || 'فایل را انتخاب کنید' }}</p>
+            </div>
+            <small *ngIf="profileForm.get('business.businessLogo')?.touched && profileForm.get('business.businessLogo')?.invalid">
+              این فیلد الزامی است.
+            </small>
+          </label>
+
+          <label class="field">
+            <span>نام کسب‌وکار</span>
+            <input formControlName="businessName" placeholder="مثلاً سالن زیبایی آفتاب" />
+            <small *ngIf="profileForm.get('business.businessName')?.touched && profileForm.get('business.businessName')?.invalid">این فیلد الزامی است.</small>
+          </label>
+
+          <label class="field">
+            <span>مالک کسب‌وکار</span>
+            <input formControlName="businessOwnerName" placeholder="نام مالک" />
+            <small *ngIf="profileForm.get('business.businessOwnerName')?.touched && profileForm.get('business.businessOwnerName')?.invalid">این فیلد الزامی است.</small>
+          </label>
+
+          <label class="field full-width">
+            <span>توضیحات</span>
+            <textarea formControlName="description" rows="3" placeholder="معرفی کوتاه کسب‌وکار"></textarea>
+            <small *ngIf="profileForm.get('business.description')?.touched && profileForm.get('business.description')?.invalid">این فیلد الزامی است.</small>
+          </label>
+
+          <label class="field full-width">
+            <span>افتخارات و دستاوردها (هر مورد در خط جدید یا جداشده با کاما)</span>
+            <textarea
+              rows="3"
+              [value]="achievementText"
+              (input)="updateAchievements($any($event.target).value)"
+              placeholder="مثلاً برنده مسابقات آرایشگری"
+            ></textarea>
+            <small *ngIf="profileForm.get('business.achevmentNames')?.touched && profileForm.get('business.achevmentNames')?.invalid">این فیلد الزامی است.</small>
+            <div class="achievement-tags" *ngIf="achievementTags.length">
+              <span class="chip" *ngFor="let tag of achievementTags">{{ tag }}</span>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-panel" *ngIf="currentStep === 3">
       <h3>روزها و زمان‌های ارائه خدمات</h3>
+      <p class="muted">بعد از انتخاب روز و بازه زمانی، ترکیب‌ها به صورت خودکار ساخته می‌شوند.</p>
       <div class="option-grid">
         <div class="option-group">
           <p>روزهای کاری</p>
@@ -142,8 +184,21 @@
       </div>
     </div>
 
-    <button type="submit" [disabled]="submitting" class="primary-btn">
-      {{ submitting ? 'در حال ثبت...' : 'ثبت و ادامه' }}
-    </button>
+    <div class="actions">
+      <button type="button" class="btn btn--ghost" [disabled]="currentStep === 1 || submitting" (click)="goToPreviousStep()">قبلی</button>
+      <div class="actions__spacer"></div>
+      <button
+        *ngIf="currentStep < totalSteps"
+        type="button"
+        class="btn btn--primary"
+        [disabled]="!isStepValid(currentStep) || submitting"
+        (click)="goToNextStep()"
+      >
+        مرحله بعد
+      </button>
+      <button *ngIf="currentStep === totalSteps" type="submit" class="btn btn--success" [disabled]="submitting">
+        {{ submitting ? 'در حال ثبت...' : 'ثبت و ادامه' }}
+      </button>
+    </div>
   </form>
 </section>

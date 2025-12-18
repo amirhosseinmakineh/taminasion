@@ -21,6 +21,7 @@ export class LoginComponent {
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
+    isBusinessOwner: [false],
   });
 
   feedbackMessage = '';

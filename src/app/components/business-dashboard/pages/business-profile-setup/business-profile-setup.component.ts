@@ -17,6 +17,15 @@ import { BusinessNeighborhood } from '../../../../models/business/business-neigh
 })
 export class BusinessProfileSetupComponent implements OnInit {
   submitting = false;
+  currentStep = 1;
+
+  readonly steps = [
+    { id: 1, label: 'اطلاعات کاربری' },
+    { id: 2, label: 'اطلاعات کسب‌وکار و موقعیت' },
+    { id: 3, label: 'زمان‌بندی خدمات' }
+  ];
+
+  readonly totalSteps = this.steps.length;
 
   profileForm: FormGroup;
 
@@ -53,7 +62,9 @@ export class BusinessProfileSetupComponent implements OnInit {
   ) {
     this.profileForm = this.fb.group({
       imageName: ['', [Validators.required]],
+      bannerImageName: ['', [Validators.required]],
       family: ['', [Validators.required]],
+      aboutMe: ['', [Validators.required, Validators.minLength(10)]],
       age: [null, [Validators.required, Validators.min(1)]],
       city: this.fb.group({
         id: [null, [Validators.required]],
@@ -73,9 +84,7 @@ export class BusinessProfileSetupComponent implements OnInit {
         businessOwnerName: ['', [Validators.required]],
         description: ['', [Validators.required]],
         achevmentNames: this.fb.control<string[]>([], [Validators.required]),
-        amount: [null, [Validators.required, Validators.min(0)]],
-        userRate: [null, [Validators.required, Validators.min(0), Validators.max(5)]],
-        businessDayTimeDtos: this.fb.array([], [Validators.required]),
+        businessDayTimeDtos: this.fb.array([]),
       }),
       dayIds: this.fb.control<number[]>([], [Validators.required]),
       timeIds: this.fb.control<number[]>([], [Validators.required])
@@ -84,10 +93,24 @@ export class BusinessProfileSetupComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCities();
+    this.disableRegionControl();
+    this.disableNeighborhoodControl();
   }
 
   get businessDayTimeDtos(): FormArray {
     return this.profileForm.get('business.businessDayTimeDtos') as FormArray;
+  }
+
+  get isRegionDisabled(): boolean {
+    return this.profileForm.get('region')?.disabled ?? true;
+  }
+
+  get isNeighborhoodDisabled(): boolean {
+    return this.profileForm.get('neighborhood')?.disabled ?? true;
+  }
+
+  get achievementTags(): string[] {
+    return (this.profileForm.get('business.achevmentNames')?.value as string[]) ?? [];
   }
 
   private loadCities(): void {
@@ -112,17 +135,24 @@ export class BusinessProfileSetupComponent implements OnInit {
     this.regions = [];
     this.neighborhoods = [];
 
-    if (selectedCity) {
-      this.businessService.getRegionsAndBusinessesByCity(selectedCity.id).subscribe(response => {
-        this.regions = response.regions ?? [];
-      });
+    if (!selectedCity) {
+      this.disableRegionControl();
+      this.disableNeighborhoodControl();
+      return;
     }
+
+    this.enableRegionControl();
+
+    this.businessService.getRegionsAndBusinessesByCity(selectedCity.id).subscribe(response => {
+      this.regions = response.regions ?? [];
+    });
   }
 
   onRegionChange(regionId: string | null | undefined): void {
     const selectedRegion = this.regions.find(region => String(region.id) === regionId);
     const regionGroup = this.profileForm.get('region');
     const neighborhoodGroup = this.profileForm.get('neighborhood');
+    const selectedCityId = this.profileForm.get('city.id')?.value as number | null;
 
     regionGroup?.patchValue({
       id: selectedRegion?.id ?? null,
@@ -132,11 +162,16 @@ export class BusinessProfileSetupComponent implements OnInit {
     neighborhoodGroup?.reset();
     this.neighborhoods = [];
 
-    if (selectedRegion) {
-      this.businessService.getNeighborhoodsAndBusinessesByRegion(selectedRegion.id).subscribe(response => {
-        this.neighborhoods = response.neighborhoods ?? [];
-      });
+    if (!selectedRegion || !selectedCityId) {
+      this.disableNeighborhoodControl();
+      return;
     }
+
+    this.enableNeighborhoodControl();
+
+    this.businessService.getNeighborhoodsAndBusinesses(selectedCityId, selectedRegion.id).subscribe(response => {
+      this.neighborhoods = response.neighborhoods ?? [];
+    });
   }
 
   onNeighborhoodChange(neighborhoodId: string | null | undefined): void {
@@ -164,6 +199,7 @@ export class BusinessProfileSetupComponent implements OnInit {
 
     control.setValue(Array.from(currentValue));
     control.markAsDirty();
+    control.markAsTouched();
     this.syncBusinessDayTimes();
   }
 
@@ -178,17 +214,21 @@ export class BusinessProfileSetupComponent implements OnInit {
   }
 
   onLogoSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const fileName = input.files?.[0]?.name ?? '';
+    const fileName = this.extractFileName(event);
     this.profileForm.get('business.businessLogo')?.setValue(fileName);
     this.profileForm.get('business.businessLogo')?.markAsTouched();
   }
 
   onImageSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    const fileName = input.files?.[0]?.name ?? '';
+    const fileName = this.extractFileName(event);
     this.profileForm.get('imageName')?.setValue(fileName);
     this.profileForm.get('imageName')?.markAsTouched();
+  }
+
+  onBannerSelected(event: Event): void {
+    const fileName = this.extractFileName(event);
+    this.profileForm.get('bannerImageName')?.setValue(fileName);
+    this.profileForm.get('bannerImageName')?.markAsTouched();
   }
 
   private syncBusinessDayTimes(): void {
@@ -198,6 +238,8 @@ export class BusinessProfileSetupComponent implements OnInit {
     this.businessDayTimeDtos.clear();
 
     if (!days?.length || !times?.length) {
+      this.businessDayTimeDtos.markAsTouched();
+      this.businessDayTimeDtos.markAsDirty();
       return;
     }
 
@@ -215,13 +257,114 @@ export class BusinessProfileSetupComponent implements OnInit {
         );
       });
     });
+
+    this.businessDayTimeDtos.markAsTouched();
+    this.businessDayTimeDtos.markAsDirty();
+  }
+
+  goToNextStep(): void {
+    if (!this.isStepValid(this.currentStep)) {
+      this.markStepTouched(this.currentStep);
+      return;
+    }
+
+    this.currentStep = Math.min(this.currentStep + 1, this.totalSteps);
+  }
+
+  goToPreviousStep(): void {
+    this.currentStep = Math.max(1, this.currentStep - 1);
+  }
+
+  goToStep(stepId: number): void {
+    if (stepId < this.currentStep) {
+      this.currentStep = stepId;
+      return;
+    }
+
+    if (stepId === this.currentStep) {
+      return;
+    }
+
+    if (this.isStepValid(this.currentStep)) {
+      this.currentStep = stepId;
+    } else {
+      this.markStepTouched(this.currentStep);
+    }
+  }
+
+  isStepValid(stepId: number): boolean {
+    switch (stepId) {
+      case 1:
+        return (
+          (this.profileForm.get('imageName')?.valid ?? false) &&
+          (this.profileForm.get('bannerImageName')?.valid ?? false) &&
+          (this.profileForm.get('family')?.valid ?? false) &&
+          (this.profileForm.get('age')?.valid ?? false) &&
+          (this.profileForm.get('aboutMe')?.valid ?? false)
+        );
+      case 2:
+        return (
+          Boolean(this.profileForm.get('city.id')?.value) &&
+          Boolean(this.profileForm.get('region.id')?.value) &&
+          Boolean(this.profileForm.get('neighborhood.id')?.value) &&
+          (this.profileForm.get('business.businessLogo')?.valid ?? false) &&
+          (this.profileForm.get('business.businessName')?.valid ?? false) &&
+          (this.profileForm.get('business.businessOwnerName')?.valid ?? false) &&
+          (this.profileForm.get('business.description')?.valid ?? false) &&
+          (this.profileForm.get('business.achevmentNames')?.valid ?? false)
+        );
+      case 3:
+        return (
+          (this.profileForm.get('dayIds')?.valid ?? false) &&
+          (this.profileForm.get('timeIds')?.valid ?? false) &&
+          this.businessDayTimeDtos.length > 0
+        );
+      default:
+        return this.profileForm.valid;
+    }
+  }
+
+  canVisitStep(stepId: number): boolean {
+    if (stepId <= this.currentStep) {
+      return true;
+    }
+
+    if (stepId === this.currentStep + 1) {
+      return this.isStepValid(this.currentStep);
+    }
+
+    if (stepId === this.currentStep + 2) {
+      return this.isStepValid(this.currentStep) && this.isStepValid(this.currentStep + 1);
+    }
+
+    return false;
   }
 
   submitProfile(): void {
-    if (this.profileForm.invalid) {
+    const allStepsValid = [1, 2, 3].every(stepId => this.isStepValid(stepId));
+
+    if (!allStepsValid || this.profileForm.invalid) {
       this.profileForm.markAllAsTouched();
       return;
     }
+
+    const businessGroup = this.profileForm.get('business') as FormGroup | null;
+    const cityGroup = this.profileForm.get('city') as FormGroup | null;
+    const regionGroup = this.profileForm.get('region') as FormGroup | null;
+    const neighborhoodGroup = this.profileForm.get('neighborhood') as FormGroup | null;
+
+    const payload = {
+      ...this.profileForm.getRawValue(),
+      business: {
+        ...(businessGroup?.getRawValue?.() ?? {}),
+        city: cityGroup?.getRawValue?.(),
+        region: regionGroup?.getRawValue?.(),
+        neighborhood: neighborhoodGroup?.getRawValue?.(),
+      },
+    };
+
+    // eslint-disable-next-line no-console
+    console.log('اطلاعات نهایی پروفایل کسب‌وکار', payload);
 
     this.submitting = true;
 
@@ -230,5 +373,51 @@ export class BusinessProfileSetupComponent implements OnInit {
       this.submitting = false;
       this.router.navigate(['/business/customers']);
     }, 400);
+  }
+
+  private extractFileName(event: Event): string {
+    const input = event.target as HTMLInputElement;
+    return input.files?.[0]?.name ?? '';
+  }
+
+  private disableRegionControl(): void {
+    this.profileForm.get('region')?.reset();
+    this.profileForm.get('region')?.disable();
+  }
+
+  private enableRegionControl(): void {
+    this.profileForm.get('region')?.enable();
+  }
+
+  private disableNeighborhoodControl(): void {
+    this.profileForm.get('neighborhood')?.reset();
+    this.profileForm.get('neighborhood')?.disable();
+  }
+
+  private enableNeighborhoodControl(): void {
+    this.profileForm.get('neighborhood')?.enable();
+  }
+
+  private markStepTouched(stepId: number): void {
+    if (stepId === 1) {
+      this.profileForm.get('imageName')?.markAsTouched();
+      this.profileForm.get('bannerImageName')?.markAsTouched();
+      this.profileForm.get('family')?.markAsTouched();
+      this.profileForm.get('age')?.markAsTouched();
+      this.profileForm.get('aboutMe')?.markAsTouched();
+    }
+
+    if (stepId === 2) {
+      this.profileForm.get('city')?.markAllAsTouched();
+      this.profileForm.get('region')?.markAllAsTouched();
+      this.profileForm.get('neighborhood')?.markAllAsTouched();
+      this.profileForm.get('business')?.markAllAsTouched();
+    }
+
+    if (stepId === 3) {
+      this.profileForm.get('dayIds')?.markAllAsTouched();
+      this.profileForm.get('timeIds')?.markAllAsTouched();
+      this.businessDayTimeDtos.markAllAsTouched();
+    }
   }
 }
