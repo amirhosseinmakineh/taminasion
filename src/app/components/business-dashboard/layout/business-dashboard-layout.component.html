@@ -21,11 +21,21 @@
     <aside class="sidebar" [class.open]="isSidebarOpen">
       <ng-container *ngIf="(profileCompleted$ | async); else lockedState">
         <nav>
-          <a routerLink="/business/customers" routerLinkActive="active" (click)="closeSidebar()">مدیریت مشتری‌ها</a>
-          <a routerLink="/business/employees" routerLinkActive="active" (click)="closeSidebar()">مدیریت کارمندان</a>
-          <a routerLink="/business/accounting" routerLinkActive="active" (click)="closeSidebar()">حسابداری</a>
-          <a routerLink="/business/video-marketing" routerLinkActive="active" (click)="closeSidebar()">ویدیو مارکتینگ</a>
-          <a routerLink="/business/equipment" routerLinkActive="active" (click)="closeSidebar()">مدیریت تجهیزات سالن</a>
+          <a routerLink="/business/customers" routerLinkActive="active" (click)="closeSidebar()">
+            مدیریت مشتری‌ها
+          </a>
+          <a routerLink="/business/employees" routerLinkActive="active" (click)="closeSidebar()">
+            مدیریت کارمندان
+          </a>
+          <a routerLink="/business/accounting" routerLinkActive="active" (click)="closeSidebar()">
+            حسابداری
+          </a>
+          <a routerLink="/business/video-marketing" routerLinkActive="active" (click)="closeSidebar()">
+            ویدیو مارکتینگ
+          </a>
+          <a routerLink="/business/equipment" routerLinkActive="active" (click)="closeSidebar()">
+            مدیریت تجهیزات سالن
+          </a>
         </nav>
       </ng-container>
       <ng-template #lockedState>
