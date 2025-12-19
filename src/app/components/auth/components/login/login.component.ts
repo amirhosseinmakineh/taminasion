@@ -9,7 +9,6 @@ import { LoginRequest } from '../../../../models/auth/login-request.model';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { BusinessOwnerService } from '../../../../services/business-owner.service';
 import { BusinessProfileStateService } from '../../../business-dashboard/state/business-profile-state.service';
-import { response } from 'express';
 
 @Component({
   selector: 'app-login',
@@ -82,7 +81,7 @@ export class LoginComponent {
         next: (response: AuthResponse<unknown>) => {
           if (response.isSuccess) {
             this.feedbackType = 'success';
-            this.feedbackMessage = response.message ?? '';
+            this.feedbackMessage = this.normalizeMessage(response.message);
             if (this.feedbackMessage) {
               this.toastService.success(this.feedbackMessage);
             }
@@ -91,18 +90,19 @@ export class LoginComponent {
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
-            this.feedbackMessage = response.message ?? '';
+            this.feedbackMessage = this.normalizeMessage(response.message);
             if (this.feedbackMessage) {
               this.toastService.error(this.feedbackMessage);
             }
           }
         },
         error: (res) => {
-        error: (res) => {
           this.authService.clearStoredToken();
           this.feedbackType = 'error';
-          this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
-          this.toastService.error(this.feedbackMessage);
+          this.feedbackMessage = this.normalizeMessage(res?.error?.message ?? res?.message);
+          if (this.feedbackMessage) {
+            this.toastService.error(this.feedbackMessage);
+          }
         },
       });
   }
@@ -121,7 +121,7 @@ export class LoginComponent {
 
     this.businessOwnerService.checkBusinessOwnerProfile(businessOwnerId).subscribe({
       next: response => {
-        const message = response.message?.trim();
+        const message = this.normalizeMessage(response.message);
 
         if (response.isSuccess) {
           this.businessProfileState.completeProfile();
@@ -146,6 +146,26 @@ export class LoginComponent {
         return;
       },
     });
+  }
+
+  private normalizeMessage(message: unknown): string {
+    if (!message) {
+      return '';
+    }
+
+    if (typeof message === 'string') {
+      return message.trim();
+    }
+
+    if (Array.isArray(message)) {
+      return message.filter(item => typeof item === 'string').join(' ').trim();
+    }
+
+    if (typeof message === 'object') {
+      return JSON.stringify(message);
+    }
+
+    return String(message).trim();
   }
 
   private consumeQueryParams(): { errorMessage?: string; infoMessage?: string } {
