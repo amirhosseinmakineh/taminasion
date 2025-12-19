@@ -9,6 +9,7 @@ import { LoginRequest } from '../../../../models/auth/login-request.model';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { BusinessOwnerService } from '../../../../services/business-owner.service';
 import { BusinessProfileStateService } from '../../../business-dashboard/state/business-profile-state.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-login',
@@ -64,6 +65,7 @@ export class LoginComponent {
   }
 
   submit(): void {
+    debugger;
     if (this.loginForm.invalid || this.isSubmitting) {
       this.loginForm.markAllAsTouched();
       return;
@@ -91,10 +93,10 @@ export class LoginComponent {
             this.toastService.error(this.feedbackMessage);
           }
         },
-        error: () => {
+        error: (res) => {
           this.authService.clearStoredToken();
           this.feedbackType = 'error';
-          this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
+          this.feedbackMessage = res.message;
           this.toastService.error(this.feedbackMessage);
         },
       });
