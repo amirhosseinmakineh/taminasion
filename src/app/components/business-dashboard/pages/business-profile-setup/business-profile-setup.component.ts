@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs';
 import { BusinessProfileStateService } from '../../state/business-profile-state.service';
 import { BusinessService } from '../../../../services/business.service';
 import { BusinessCity } from '../../../../models/business/business-city.model';
 import { BusinessRegion } from '../../../../models/business/business-region.model';
 import { BusinessNeighborhood } from '../../../../models/business/business-neighborhood.model';
+import { BusinessOwnerService } from '../../../../services/business-owner.service';
+import { UpdateBusinessOwnerInfoDto } from '../../../../models/business-owner/update-business-owner-info.dto';
 
 @Component({
   selector: 'app-business-profile-setup',
@@ -58,7 +61,8 @@ export class BusinessProfileSetupComponent implements OnInit {
     private fb: FormBuilder,
     private profileState: BusinessProfileStateService,
     private router: Router,
-    private businessService: BusinessService
+    private businessService: BusinessService,
+    private businessOwnerService: BusinessOwnerService
   ) {
     this.profileForm = this.fb.group({
       imageName: ['', [Validators.required]],
@@ -362,26 +366,35 @@ export class BusinessProfileSetupComponent implements OnInit {
     const regionGroup = this.profileForm.get('region') as FormGroup | null;
     const neighborhoodGroup = this.profileForm.get('neighborhood') as FormGroup | null;
 
-    const payload = {
-      ...this.profileForm.getRawValue(),
-      business: {
-        ...(businessGroup?.getRawValue?.() ?? {}),
-        city: cityGroup?.getRawValue?.(),
-        region: regionGroup?.getRawValue?.(),
-        neighborhood: neighborhoodGroup?.getRawValue?.(),
-      },
+    const rawPayload = this.profileForm.getRawValue();
+    const payload: UpdateBusinessOwnerInfoDto = {
+      imageName: rawPayload.imageName,
+      family: rawPayload.family,
+      age: rawPayload.age,
+      city: cityGroup?.getRawValue?.(),
+      region: regionGroup?.getRawValue?.(),
+      neighborhood: neighborhoodGroup?.getRawValue?.(),
+      business: businessGroup?.getRawValue?.(),
+      dayIdes: rawPayload.dayIds,
+      timeIdes: rawPayload.timeIds,
+      bannerName: rawPayload.bannerImageName,
+      aboutMe: rawPayload.aboutMe,
     };
-
-    // eslint-disable-next-line no-console
-    console.log('اطلاعات نهایی پروفایل کسب‌وکار', payload);
 
     this.submitting = true;
 
-    setTimeout(() => {
-      this.profileState.completeProfile();
-      this.submitting = false;
-      this.router.navigate(['/business/customers']);
-    }, 400);
+    this.businessOwnerService
+      .completeOwnerProfile(payload)
+      .pipe(finalize(() => (this.submitting = false)))
+      .subscribe({
+        next: () => {
+          this.profileState.completeProfile();
+          this.router.navigate(['/business/customers']);
+        },
+        error: () => {
+          this.profileState.markProfileIncomplete();
+        },
+      });
   }
 
   private extractFileName(event: Event): string {
