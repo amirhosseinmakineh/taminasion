@@ -80,22 +80,29 @@ export class LoginComponent {
         next: (response: AuthResponse<unknown>) => {
           if (response.isSuccess) {
             this.feedbackType = 'success';
-            this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
-            this.toastService.success(this.feedbackMessage);
+            this.feedbackMessage = response.message ?? '';
+            if (this.feedbackMessage) {
+              this.toastService.success(this.feedbackMessage);
+            }
             this.loginForm.reset();
             this.checkBusinessOwnerProfile();
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
-            this.feedbackMessage = response.message || 'در فرآیند ورود مشکلی پیش آمد.';
-            this.toastService.error(this.feedbackMessage);
+            this.feedbackMessage = response.message ?? '';
+            if (this.feedbackMessage) {
+              this.toastService.error(this.feedbackMessage);
+            }
           }
         },
-        error: () => {
+        error: (res) => {
           this.authService.clearStoredToken();
           this.feedbackType = 'error';
-          this.feedbackMessage = 'در ارتباط با سرور مشکلی رخ داده است. لطفاً دوباره تلاش کنید.';
-          this.toastService.error(this.feedbackMessage);
+          const message = res?.error?.message ?? res?.message ?? '';
+          this.feedbackMessage = message;
+          if (message) {
+            this.toastService.error(message);
+          }
         },
       });
   }
@@ -108,7 +115,6 @@ export class LoginComponent {
     const businessOwnerId = this.authService.userId;
 
     if (!businessOwnerId) {
-      this.toastService.error('شناسه کاربر یافت نشد. لطفاً دوباره وارد شوید.');
       this.authService.clearStoredToken();
       return;
     }
@@ -124,18 +130,20 @@ export class LoginComponent {
         }
 
         if (message?.includes('دسترسی ندارید')) {
-          this.toastService.error(message);
+          if (message) {
+            this.toastService.error(message);
+          }
           this.authService.clearStoredToken();
           return;
         }
 
-        this.toastService.info(
-          message || $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
-        );
+        if (message) {
+          this.toastService.info(message);
+        }
         void this.router.navigate(['/business/profile-setup']);
       },
       error: () => {
-        this.toastService.error($localize`خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.`);
+        return;
       },
     });
   }
