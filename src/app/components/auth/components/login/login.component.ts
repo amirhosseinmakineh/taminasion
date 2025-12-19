@@ -140,6 +140,7 @@ export class LoginComponent {
         if (message) {
           this.toastService.info(message);
         }
+        this.businessProfileState.markProfileIncomplete();
         void this.router.navigate(['/business/profile-setup']);
       },
       error: () => {
