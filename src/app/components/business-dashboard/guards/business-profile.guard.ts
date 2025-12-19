@@ -40,6 +40,14 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
       return true;
     }
 
+    if (this.profileState.isProfileChecked) {
+      if (isProfileRoute) {
+        return true;
+      }
+
+      return this.router.createUrlTree(['/business/profile-setup']);
+    }
+
     return this.businessOwnerService.checkBusinessOwnerProfile(businessOwnerId).pipe(
       map(response => {
         const message = response.message?.trim();
@@ -62,6 +70,7 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
           return false;
         }
 
+        this.profileState.markProfileIncomplete();
         this.toastService.info(
           message || $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
         );
