@@ -129,7 +129,7 @@ export class AuthService {
     }
 
     if (typeof data === 'string') {
-      return data;
+      return this.extractTokenFromLoginDto(data);
     }
 
     if (typeof data === 'object') {
@@ -146,6 +146,10 @@ export class AuthService {
   }
 
   private extractUserId(data: unknown): string | null {
+    if (typeof data === 'string') {
+      return this.extractUserIdFromLoginDto(data);
+    }
+
     if (!data || typeof data !== 'object') {
       return null;
     }
@@ -165,6 +169,25 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  private extractTokenFromLoginDto(data: string): string | null {
+    const match = /Token\s*=\s*([^\s,}]+)/i.exec(data);
+    if (match?.[1]) {
+      return match[1];
+    }
+
+    if (data.includes('.') && data.split('.').length >= 3) {
+      return data;
+    }
+
+    return null;
+  }
+
+  private extractUserIdFromLoginDto(data: string): string | null {
+    const matches = [...data.matchAll(/Id\s*=\s*([0-9a-f-]{36})/gi)].map(match => match[1]);
+    const nonZeroId = matches.find(id => id.toLowerCase() !== '00000000-0000-0000-0000-000000000000');
+    return nonZeroId ?? matches[0] ?? null;
   }
 
   private storeUserId(userId: string): void {
