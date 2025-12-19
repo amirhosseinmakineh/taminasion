@@ -64,6 +64,7 @@ export class LoginComponent {
   }
 
   submit(): void {
+    debugger;
     if (this.loginForm.invalid || this.isSubmitting) {
       this.loginForm.markAllAsTouched();
       return;
