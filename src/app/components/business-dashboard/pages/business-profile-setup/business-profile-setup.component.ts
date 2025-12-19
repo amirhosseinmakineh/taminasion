@@ -72,11 +72,13 @@ export class BusinessProfileSetupComponent implements OnInit {
       }),
       region: this.fb.group({
         id: [null, [Validators.required]],
-        regionName: ['', [Validators.required]]
+        regionName: ['', [Validators.required]],
+        cityId: [null, [Validators.required]]
       }),
       neighborhood: this.fb.group({
         id: [null, [Validators.required]],
-        neighborhoodName: ['', [Validators.required]]
+        neighborhoodName: ['', [Validators.required]],
+        regionId: [null, [Validators.required]]
       }),
       business: this.fb.group({
         businessLogo: ['', [Validators.required]],
@@ -142,6 +144,9 @@ export class BusinessProfileSetupComponent implements OnInit {
     }
 
     this.enableRegionControl();
+    regionGroup?.patchValue({
+      cityId: selectedCity.id
+    });
 
     this.businessService.getRegionsAndBusinessesByCity(selectedCity.id).subscribe(response => {
       this.regions = response.regions ?? [];
@@ -156,7 +161,8 @@ export class BusinessProfileSetupComponent implements OnInit {
 
     regionGroup?.patchValue({
       id: selectedRegion?.id ?? null,
-      regionName: selectedRegion?.regionName ?? ''
+      regionName: selectedRegion?.regionName ?? '',
+      cityId: selectedCityId
     });
 
     neighborhoodGroup?.reset();
@@ -168,6 +174,9 @@ export class BusinessProfileSetupComponent implements OnInit {
     }
 
     this.enableNeighborhoodControl();
+    neighborhoodGroup?.patchValue({
+      regionId: selectedRegion.id
+    });
 
     this.businessService.getNeighborhoodsAndBusinesses(selectedCityId, selectedRegion.id).subscribe(response => {
       this.neighborhoods = response.neighborhoods ?? [];
