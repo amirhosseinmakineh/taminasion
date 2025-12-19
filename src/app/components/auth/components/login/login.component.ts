@@ -7,6 +7,8 @@ import { AuthService } from '../../../../services/auth.service';
 import { AuthResponse } from '../../../../models/auth/auth-response.model';
 import { LoginRequest } from '../../../../models/auth/login-request.model';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { BusinessOwnerService } from '../../../../services/business-owner.service';
+import { BusinessProfileStateService } from '../../../business-dashboard/state/business-profile-state.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +22,8 @@ export class LoginComponent {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly toastService = inject(ToastService);
+  private readonly businessOwnerService = inject(BusinessOwnerService);
+  private readonly businessProfileState = inject(BusinessProfileStateService);
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -79,7 +83,7 @@ export class LoginComponent {
             this.feedbackMessage = response.message || 'احراز هویت با موفقیت انجام شد';
             this.toastService.success(this.feedbackMessage);
             this.loginForm.reset();
-            void this.router.navigate(['/business']);
+            this.checkBusinessOwnerProfile();
           } else {
             this.authService.clearStoredToken();
             this.feedbackType = 'error';
@@ -98,6 +102,42 @@ export class LoginComponent {
 
   clearFeedback(): void {
     this.feedbackMessage = '';
+  }
+
+  private checkBusinessOwnerProfile(): void {
+    const businessOwnerId = this.authService.userId;
+
+    if (!businessOwnerId) {
+      this.toastService.error('شناسه کاربر یافت نشد. لطفاً دوباره وارد شوید.');
+      this.authService.clearStoredToken();
+      return;
+    }
+
+    this.businessOwnerService.checkBusinessOwnerProfile(businessOwnerId).subscribe({
+      next: response => {
+        const message = response.message?.trim();
+
+        if (response.isSuccess) {
+          this.businessProfileState.completeProfile();
+          void this.router.navigate(['/business/customers']);
+          return;
+        }
+
+        if (message?.includes('دسترسی ندارید')) {
+          this.toastService.error(message);
+          this.authService.clearStoredToken();
+          return;
+        }
+
+        this.toastService.info(
+          message || $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
+        );
+        void this.router.navigate(['/business/profile-setup']);
+      },
+      error: () => {
+        this.toastService.error($localize`خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.`);
+      },
+    });
   }
 
   private consumeQueryParams(): { errorMessage?: string; infoMessage?: string } {
