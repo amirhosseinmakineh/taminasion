@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, finalize, map, of, shareReplay } from 'rxjs';
 
 import { BusinessOwnerService } from '../../../services/business-owner.service';
 import { BusinessProfileStateService } from '../state/business-profile-state.service';
@@ -9,6 +9,8 @@ import { ToastService } from '../../../shared/services/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class BusinessProfileGuard implements CanActivate, CanActivateChild {
+  private pendingCheck?: Observable<boolean | UrlTree>;
+
   constructor(
     private readonly profileState: BusinessProfileStateService,
     private readonly router: Router,
@@ -40,7 +42,19 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
       return true;
     }
 
-    return this.businessOwnerService.checkBusinessOwnerProfile(businessOwnerId).pipe(
+    if (this.profileState.isProfileChecked) {
+      if (isProfileRoute) {
+        return true;
+      }
+
+      return this.router.createUrlTree(['/business/profile-setup']);
+    }
+
+    if (this.pendingCheck) {
+      return this.pendingCheck;
+    }
+
+    this.pendingCheck = this.businessOwnerService.checkBusinessOwnerProfile(businessOwnerId).pipe(
       map(response => {
         const message = response.message?.trim();
         const isCompleted = response.isSuccess;
@@ -62,6 +76,7 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
           return false;
         }
 
+        this.profileState.markProfileIncomplete();
         this.toastService.info(
           message || $localize`جهت مشاهده داشبورد کسب و کار باید پروفایل خود را تکمیل کنید`,
         );
@@ -71,6 +86,12 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
         this.toastService.error($localize`خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.`);
         return of(this.router.createUrlTree(['/business/profile-setup']));
       }),
+      finalize(() => {
+        this.pendingCheck = undefined;
+      }),
+      shareReplay({ bufferSize: 1, refCount: true }),
     );
+
+    return this.pendingCheck;
   }
 }
