@@ -84,6 +84,7 @@ export class BusinessProfileGuard implements CanActivate, CanActivateChild {
       }),
       catchError(() => {
         this.toastService.error($localize`خطا در ارتباط با سرور. لطفاً دوباره تلاش کنید.`);
+        this.profileState.markProfileIncomplete();
         return of(this.router.createUrlTree(['/business/profile-setup']));
       }),
       finalize(() => {
