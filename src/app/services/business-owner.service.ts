@@ -13,7 +13,7 @@ export class BusinessOwnerService {
   constructor(private readonly http: HttpClient) {}
 
   checkBusinessOwnerProfile(businessOwnerId: string): Observable<AuthResponse<string>> {
-    const url = `${this.baseUrl}/CheckBusinessOwnerProfile`;
+    const url = `${this.baseUrl}`;
     const params = new HttpParams().set('userId', businessOwnerId);
     return this.http.get<AuthResponse<string>>(url, { params });
   }
